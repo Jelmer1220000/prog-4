@@ -1,10 +1,10 @@
 const assert = require('assert');
-const logger = require('../config/config')
 const users = require('../data/users')
 
 let userController = {
 
 getAllUsers(req, res) {
+    console.log("get all called")
     res.status(200).json({
         message: "Succes",
         userList: users
@@ -12,12 +12,12 @@ getAllUsers(req, res) {
 },
 
 getUserById(req, res, next) {
-    logger.info("Get user by Id called")
-    logger.info("Searching for user: " + req.params.userId)
+    console.log("Get user by Id called")
+    console.log("Searching for user: " + req.params.userId)
    let found = false;
     for (let i = 0; i < users.length; i++) {
         if (req.params.userId == users[i].ID) {
-            logger.info("Found")
+            console.log("Found")
             found = true;
             res.status(201).json({
                 message: "Found user!",
@@ -33,10 +33,10 @@ getUserById(req, res, next) {
 },
 
 createUser(req, res) {
-    logger.info('Create user called')
+    console.log('Create user called')
     const user = req.body
     user.ID = users.length + 1;
-    logger.info(req.body);
+    console.log(req.body);
     users.push(user)
     res.status(201).json({
         message: "Succesfully created user!",
@@ -45,7 +45,7 @@ createUser(req, res) {
 },
 
 validateUser(req, res, next) {
-    logger.info('validating user')
+    console.log('validating user')
     try {
       const {firstName, lastName, street, city, isActive, emailAdress, password, phonenumber} = req.body
       assert(typeof firstName === 'string', 'First Name is missing!')
@@ -56,10 +56,10 @@ validateUser(req, res, next) {
       assert(typeof emailAdress === 'string', 'emailAdress is missing!')
       assert(typeof password === 'string', 'Password is missing!')
       assert(typeof phonenumber === 'string', 'phonenumber is missing!')
-      logger.trace('User data is valid!')
+      console.log('User data is valid!')
       next()
     } catch (err) {
-      logger.trace('This info is Invalid: ', err)
+     console.log('This info is Invalid: ', err)
       res.status(400).json({
         message: 'Error! Please fill in all required information.',
         error: err.toString()
