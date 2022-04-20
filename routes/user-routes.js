@@ -1,6 +1,7 @@
 const express = require('express')
 const usercontroller = require('../controllers/user-controller')
 var bodyParser = require('body-parser')
+const userController = require('../controllers/user-controller')
 const router = express.Router()
 
 var jsonParser = bodyParser.json()
@@ -10,9 +11,10 @@ var jsonParser = bodyParser.json()
 router.get('/users', usercontroller.getAllUsers)
 router.get('/user/:userId', usercontroller.getUserById)
 
-router.post('/user', jsonParser,usercontroller.validateUser, usercontroller.createUser)
+router.put('/user/:userId', jsonParser, usercontroller.validateUser, usercontroller.changeUser)
 
-// router.put('/user/:userId', "Not available yet")
-// router.delete('/user/:userId', "Nada")
+router.post('/user', jsonParser, usercontroller.validateUser, usercontroller.createUser)
+
+router.delete('/user/:userId', userController.deleteUser)
 
 module.exports = router
