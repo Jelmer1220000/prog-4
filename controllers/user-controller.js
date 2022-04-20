@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { logger } = require('../../../Programmeren 4/nodejs-samen-eten-server2/src/config/config');
+const logger = require('../config/config')
 const users = require('../data/users')
 
 let userController = {
