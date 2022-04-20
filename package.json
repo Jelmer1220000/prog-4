@@ -1,5 +1,5 @@
 {
-  "name": "programmeren-4",
+  "name": "server",
   "version": "1.0.0",
   "description": "Nodejs server voor programmeren 4",
   "main": "index.js",
