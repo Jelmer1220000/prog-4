@@ -18,7 +18,7 @@ let userController = {
         console.log('Found')
         res.status(201).json({
           message: 'Found user!',
-          user: item
+          user: item[0]
         })
       } else {
         res.status(400).json({
@@ -79,21 +79,20 @@ let userController = {
 
   changeUser(req, res) {
    let item = users.filter((item) => item.ID == req.params.userId);
+   console.log(item[0])
         if (users.length > 0){
         console.log('Found')
-        const user = req.body
-        item.firstName = user.firstName
-        item.lastName = user.lastName
-        item.city = user.city
-        item.emailAdress = user.emailAdress
-        item.password = user.password
-        item.phoneNumber = user.phoneNumber
-        item.street = user.street
-        item.isActive = user.isActive
-
+        let Id = item[0].ID
+        let user = {
+          Id,
+          ...req.body
+        }
+       users.splice(item.indexOf()-1, 1)
+       users.push(user)
         res.status(200).json({
           message: 'Succesfully updated',
-          user: item
+          old: item[0],
+          new: user
         })
       } else {
         res.status(400).json({
