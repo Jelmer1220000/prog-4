@@ -1,19 +1,22 @@
 const express = require('express')
 const usercontroller = require('../controllers/user-controller')
-var bodyParser = require('body-parser')
+// var bodyParser = require('body-parser')
 const userController = require('../controllers/user-controller')
+const validator = require('../controllers/validator')
 const router = express.Router()
 
-var jsonParser = bodyParser.json()
+// var jsonParser = bodyParser.json()
 
-// Movie routes
+// User routes
 
 router.get('/users', usercontroller.getAllUsers)
 router.get('/user/:userId', usercontroller.getUserById)
 
-router.put('/user/:userId', jsonParser, usercontroller.validateUser, usercontroller.changeUser)
+router.put('/user/:userId', validator.validateUser, validator.validateEmail, usercontroller.changeUser)
 
-router.post('/user', jsonParser, usercontroller.validateUser, usercontroller.createUser)
+router.get('/user/profile', usercontroller.getProfile)
+
+router.post('/user', validator.validateUser, validator.validateEmail, usercontroller.createUser)
 
 router.delete('/user/:userId', userController.deleteUser)
 

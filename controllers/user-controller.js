@@ -1,120 +1,102 @@
-const assert = require('assert')
-const users = require('../data/users')
+const database = require('../data/users')
+const name = "Database: ";
 
-let userController = {
+module.exports = {
+  //GET
   getAllUsers(req, res) {
-    console.log('get all called')
+    console.log(`${name} get all called`)
+    database.sort((a, b) => a.ID - b.ID)
     res.status(200).json({
-      message: 'Succes',
-      userList: users
+      Status: 200,
+      message: 'Succesfully retrieved all users',
+      hint: 'Users get sorted on ID, new users are on bottom',
+      userList: database
     })
   },
-
+  //GET
   getUserById(req, res, next) {
-    console.log('Get user by Id called')
-    console.log('Searching for user: ' + req.params.userId)
-    let item = users.filter((item) => item.ID == req.params.userId);
-        if (users.length > 0){
+    console.log(`${name} Get user by Id called`)
+    //Filter on requested ID
+    let item = database.filter((item) => item.ID == req.params.userId);
+        if (item.length > 0){
         console.log('Found')
         res.status(201).json({
+          Status: 201,
           message: 'Found user!',
           user: item[0]
         })
       } else {
         res.status(400).json({
+          Status: 400,
           message: `No user found with id: ${req.params.userId}`
         })
     }
   },
-
+  //POST
   createUser(req, res) {
-    console.log('Create user called')
-    let ID = users.length + 1
+    console.log(`${name} Create user called`)
+    let ID = database.length + 1
+    //User aanmaken met ID van database grote + 1 (zodat er nooit dezelfde ID wordt toegevoegd)
     let user = {
      ID,
       ...req.body
     }
-    console.log(user)
-    users.push(user)
+    database.push(user)
+    database.sort((a, b) => a.ID - b.ID)
     res.status(201).json({
+      Status: 201,
       message: 'Succesfully created user!',
       user: req.body
     })
   },
-
-  validateUser(req, res, next) {
-    console.log('validating user')
-    try {
-      const {
-        firstName,
-        lastName,
-        street,
-        city,
-        isActive,
-        emailAdress,
-        password,
-        phonenumber
-      } = req.body
-      assert(typeof firstName === 'string', 'First Name is missing!')
-      assert(typeof lastName === 'string', 'Last Name is missing!')
-      assert(typeof street === 'string', 'Street is missing!')
-      assert(typeof city === 'string', 'City is missing!')
-      assert(
-        typeof isActive === 'boolean',
-        'Is the user active or not? isActive is missing!'
-      )
-      assert(typeof emailAdress === 'string', 'emailAdress is missing!')
-      assert(typeof password === 'string', 'Password is missing!')
-      assert(typeof phonenumber === 'string', 'phonenumber is missing!')
-      console.log('User data is valid!')
-      next()
-    } catch (err) {
-      console.log('This info is Invalid: ', err)
-      res.status(400).json({
-        message: 'Error! Please fill in all required information.',
-        error: err.toString()
-      })
-    }
-  },
-
+  //PUT
   changeUser(req, res) {
-   let item = users.filter((item) => item.ID == req.params.userId);
-   console.log(item[0])
-        if (users.length > 0){
-        console.log('Found')
-        let Id = item[0].ID
+   let item = database.filter((item) => item.ID == req.params.userId);
+        if (item.length > 0){
+          //Transfering ID from old user to new User
+        let ID = item[0].ID
         let user = {
-          Id,
+          ID,
           ...req.body
         }
-       users.splice(item.indexOf()-1, 1)
-       users.push(user)
-        res.status(200).json({
+        //Replacing the old with new one.
+       database.splice(database.indexOf(item[0]), 1, user)
+        res.status(201).json({
+          Status: 201,
           message: 'Succesfully updated',
-          old: item[0],
-          new: user
+          old_info: item[0],
+          new_info: user
         })
       } else {
         res.status(400).json({
+          Status: 400,
           message: `No user found with id: ${req.params.userId}`
         })
       }
   },
-
+  //DELETE
   deleteUser(req, res) {
-     let item = users.filter((item) => item.ID == req.params.userId);
-        if (users.length > 0){
-        console.log('Found user to delete')
-        users.splice(item.indexOf() -1, 1)
+     let item = database.filter((item) => item.ID == req.params.userId);
+        if (item.length > 0){
+        console.log(`${name} Found user to delete`)
+        database.splice(database.indexOf(item[0]), 1)
         res.status(201).json({
+          Status: 201,
           message: 'Succesfully deleted user!'
         })
       } else {
         res.status(400).json({
+          Status: 400,
           message: `No user found with id: ${req.params.userId}`
         })
       }
-    }
-  }
+    },
 
-module.exports = userController
+    getProfile(req, res) {
+      res.status(200).json({
+        Status: 200,
+        Message: `This Endpoint is currently Unavailable!`
+      })
+    }
+
+  }
