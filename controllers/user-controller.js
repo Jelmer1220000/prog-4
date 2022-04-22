@@ -46,7 +46,7 @@ module.exports = {
     res.status(201).json({
       Status: 201,
       message: 'Succesfully created user!',
-      user: req.body
+      user: user
     })
   },
   //PUT
