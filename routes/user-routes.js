@@ -10,8 +10,8 @@ const router = express.Router()
 // User routes
 
 router.get('/users', usercontroller.getAllUsers)
-router.get('/user/:userId', usercontroller.getUserById)
 router.get('/user/profile', usercontroller.getProfile)
+router.get('/user/:userId', usercontroller.getUserById)
 
 router.put('/user/:userId', validator.validateUser, validator.validateEmail, usercontroller.changeUser)
 
