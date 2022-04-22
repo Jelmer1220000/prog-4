@@ -3,5 +3,4 @@
 /.nyc_output
 /.scannerwork
 /.vscode
-/site
-/home.html
+controllers/meal-controller.js

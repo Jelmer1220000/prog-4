@@ -9,7 +9,7 @@ const router = express.Router()
 
 // User routes
 
-router.get('/users', usercontroller.getAllUsers)
+router.get('/user', usercontroller.getAllUsers)
 router.get('/user/profile', usercontroller.getProfile)
 router.get('/user/:userId', usercontroller.getUserById)
 
