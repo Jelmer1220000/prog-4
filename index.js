@@ -4,14 +4,16 @@ const path = require('path')
 const app = express()
 const userRoutes = require('./routes/user-routes')
 const port = process.env.PORT || 3000
-//Algemene opvang voor base Url
+
+
+//Logging
 app.get('*', (req, res, next) => {
   console.log(`Method ${req.method} is aangeroepen`);
   console.log(`Op ${req.url}`)
   next()
 })
 
-
+//Algemene opvang voor base Url
 app.get('/', (req, res) => {
     res.status(200).json({
       Message: `Welcome to my API`,
