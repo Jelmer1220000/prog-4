@@ -20,9 +20,10 @@ app.get('/', (req, res) => {
       Message2: `To get Started please enter one of the endpoints below! (with correct body if requested)`,
       Endpoint1: `GET /api/users`,
       Endpoint2: `GET /api/user/{id}`,
-      Endpoint3: `POST /api/user`,
-      Endpoint4: `PUT /api/user/{id}`,
-      Endpoint5: `DELETE /api/user/{id}`
+      Endpoint3: `GET /api/user/profile`,
+      Endpoint4: `POST /api/user`,
+      Endpoint5: `PUT /api/user/{id}`,
+      Endpoint6: `DELETE /api/user/{id}`
     })
 })
 //Json Parser
@@ -36,9 +37,10 @@ app.all('*', (req, res) => {
     Message: `No endpoint found with: ${req.url}`,
     Endpoint1: `GET /api/users`,
     Endpoint2: `GET /api/user/{id}`,
-    Endpoint3: `POST /api/user`,
-    Endpoint4: `PUT /api/user/{id}`,
-    Endpoint5: `DELETE /api/user/{id}`
+    Endpoint3: `GET /api/user/profile`,
+    Endpoint4: `POST /api/user`,
+    Endpoint5: `PUT /api/user/{id}`,
+    Endpoint6: `DELETE /api/user/{id}`
   })
 })
 

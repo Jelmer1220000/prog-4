@@ -11,10 +11,9 @@ const router = express.Router()
 
 router.get('/users', usercontroller.getAllUsers)
 router.get('/user/:userId', usercontroller.getUserById)
+router.get('/user/profile', usercontroller.getProfile)
 
 router.put('/user/:userId', validator.validateUser, validator.validateEmail, usercontroller.changeUser)
-
-router.get('/user/profile', usercontroller.getProfile)
 
 router.post('/user', validator.validateUser, validator.validateEmail, usercontroller.createUser)
 
