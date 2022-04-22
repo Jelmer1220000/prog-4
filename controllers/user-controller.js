@@ -6,6 +6,10 @@ module.exports = {
   getAllUsers(req, res) {
     console.log(`${name} get all called`)
     database.sort((a, b) => a.ID - b.ID)
+    database.forEach((item) => {
+      let number = database.indexOf(item)
+      item.ID = number + 1;
+     })
     res.status(200).json({
       Status: 200,
       message: 'Succesfully retrieved all users',
