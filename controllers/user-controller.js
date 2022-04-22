@@ -35,7 +35,7 @@ module.exports = {
   //POST
   createUser(req, res) {
     console.log(`${name} Create user called`)
-    let ID = database.length + 1
+   let ID = database.length + 1;
     //User aanmaken met ID van database grote + 1 (zodat er nooit dezelfde ID wordt toegevoegd)
     let user = {
      ID,
@@ -80,9 +80,14 @@ module.exports = {
         if (item.length > 0){
         console.log(`${name} Found user to delete`)
         database.splice(database.indexOf(item[0]), 1)
+        database.forEach((item) => {
+         let number = database.indexOf(item)
+         item.ID = number + 1;
+        })
         res.status(201).json({
           Status: 201,
-          message: 'Succesfully deleted user!'
+          message: 'Succesfully deleted user!',
+          hint: `ID's have been Adjusted to fit their place! (Keep this in mind while checking if it worked)`
         })
       } else {
         res.status(400).json({
