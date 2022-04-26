@@ -2,7 +2,7 @@
 
 module.exports = [
   (user1 = {
-    ID: 1,
+    id: 1,
     firstName: 'John',
     lastName: 'Doe',
     street: 'Lovendijkstraat 61',
@@ -13,7 +13,7 @@ module.exports = [
     phoneNumber: '06-11223344'
   }),
   (user2 = {
-    ID: 2,
+    id: 2,
     firstName: 'John2',
     lastName: 'Doe2',
     street: 'Lovendijkstraat 61332',

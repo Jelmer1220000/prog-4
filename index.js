@@ -1,8 +1,7 @@
-const { Console } = require('console')
 const express = require('express')
-const path = require('path')
 const app = express()
-const userRoutes = require('./routes/user-routes')
+const userRoutes = require('./src/routes/user-routes')
+const mealRoutes = require('./src/routes/meal-routes')
 const port = process.env.PORT || 3000
 
 
@@ -30,6 +29,9 @@ app.get('/', (req, res) => {
 app.use(express.json());
 //Api user routes
 app.use('/api', userRoutes)
+//Api meal routes
+app.use('/api', mealRoutes)
+
 
 //Opvang voor fouten
 app.all('*', (req, res) => {
@@ -47,3 +49,5 @@ app.all('*', (req, res) => {
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`)
 })
+
+module.exports = app;
