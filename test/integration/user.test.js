@@ -105,6 +105,7 @@ describe('User Tests', () => {
         })
     })
   })
+
   describe('UC203 Request user profile', () => {
     beforeEach((done) => {
       // maak de testdatabase leeg zodat we onze testen kunnen uitvoeren.

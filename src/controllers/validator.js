@@ -39,17 +39,20 @@ module.exports = {
   validateMeal(req, res, next) {
     try {
       const {
-        name,
-        description,
         isActive,
         isVega,
         isVegan,
         isToTakeHome,
         dateTime,
-        imageUrl,
-        allergenes,
         maxAmountOfParticipants,
         price,
+        imageUrl,
+        cookId,
+        createDate,
+        updateDate,
+        name,
+        description,
+        allergenes,
       } = req.body
 
       //Check values van meal!
@@ -64,6 +67,9 @@ module.exports = {
       assert(typeof allergenes === 'array', 'allergenes is invalid!')
       assert(typeof maxAmountOfParticipants === 'number', 'maxAmountOfParticipants is invalid!')
       assert(typeof price === 'number', 'price is invalid!')
+      assert(typeof cookId === 'number', 'cookId is invalid!')
+      assert(typeof createDate === 'string', 'createDate is invalid!')
+      assert(typeof updateDate === 'string', 'updateDate is invalid!')
       next();
     } catch (err) {
       res.status(400).json({

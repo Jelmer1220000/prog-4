@@ -1,21 +1,36 @@
-const database = require('../../data/users')
+// const database = require('../../data/users')
 const name = "User controller: ";
+const dbconnection = require('../../settings/database')
 
 module.exports = {
   //GET
   getAllUsers(req, res) {
-    database.sort((a, b) => a.id - b.id)
-    database.forEach((item) => {
-      let number = database.indexOf(item)
-      item.id = number + 1;
-     })
-    res.status(200).json({
-      Status: 200,
-      message: 'Succesfully retrieved all users',
-      hint: 'Users get sorted on id, new users are on bottom',
-      userList: database
+    // database.sort((a, b) => a.id - b.id)
+    // database.forEach((item) => {
+    //   let number = database.indexOf(item)
+    //   item.id = number + 1;
+    //  })
+    // res.status(200).json({
+    //   Status: 200,
+    //   message: 'Succesfully retrieved all users',
+    //   hint: 'Users get sorted on id, new users are on bottom',
+    //   userList: database
+    // })
+
+    dbconnection.getConnection(function(err, connection) {
+      if (err) throw err;
+
+      connection.query('SELECT * FROM user;', function(error, results, fields) {
+        connection.release();
+        if (error) throw error;
+        console.log('#results = ', results.length)
+        res.status(200).json({
+          Status: 200,
+          results: results,
+        })
+      })
     })
-  },
+},
   //GET
   getUserById(req, res) {
     //Filter on requested id
