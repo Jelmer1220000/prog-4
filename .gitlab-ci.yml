@@ -38,9 +38,9 @@ unittests:
     # DB_PORT: $DB_PORT
     # DB_DATABASE: $DB_DATABASE
   before_script:
-    # - npm install --no-optional
+    - npm install --no-optional
   script:
-    - echo 'Testing not implemented yet!'
+    - npm run test
   only:
     - main
 
