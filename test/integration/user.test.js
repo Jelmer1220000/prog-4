@@ -23,10 +23,10 @@ describe('User Tests', () => {
           lastName: 'Test',
           street: 'Info',
           city: 'Breda',
-          isActive: true,
+          isActive: 1,
           emailAdress: 'Heroku.works@server.com',
           password: 'secret',
-          phonenumber: '06-11223344'
+          phoneNumber: '06-11223344'
         })
 
         .end((err, res) => {
@@ -56,10 +56,10 @@ describe('User Tests', () => {
           //Incorrect street (should be string)
           street: 6689,
           city: 'Breda',
-          isActive: true,
+          isActive: 1,
           emailAdress: 'Heroku.works@server.com',
           password: 'secret',
-          phonenumber: '06-11223344'
+          phoneNumber: '06-11223344'
         })
         .end((err, res) => {
           assert.ifError(err)
@@ -83,11 +83,11 @@ describe('User Tests', () => {
           lastName: 'Doe',
           street: 'Lovendijkstraat 61',
           city: 'Breda',
-          isActive: true,
+          isActive: 1,
           //This email already exists
-          emailAdress: 'John.Doe@server.com',
+          emailAdress: 'm.vandullemen@server.nl',
           password: 'secret',
-          phonenumber: '06-11223344',
+          phoneNumber: '06-11223344',
         })
         .end((err, res) => {
           assert.ifError(err)

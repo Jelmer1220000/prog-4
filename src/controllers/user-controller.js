@@ -1,122 +1,176 @@
-// const database = require('../../data/users')
-const name = "User controller: ";
-const dbconnection = require('../../settings/database')
+const name = 'User controller: '
+const database = require('../../database/databaseConnection')
 
 module.exports = {
   //GET
   getAllUsers(req, res) {
-    // database.sort((a, b) => a.id - b.id)
-    // database.forEach((item) => {
-    //   let number = database.indexOf(item)
-    //   item.id = number + 1;
-    //  })
-    // res.status(200).json({
-    //   Status: 200,
-    //   message: 'Succesfully retrieved all users',
-    //   hint: 'Users get sorted on id, new users are on bottom',
-    //   userList: database
-    // })
-
-    dbconnection.getConnection(function(err, connection) {
-      if (err) throw err;
-
-      connection.query('SELECT * FROM user;', function(error, results, fields) {
-        connection.release();
-        if (error) throw error;
-        console.log('#results = ', results.length)
-        res.status(200).json({
-          Status: 200,
-          results: results,
+    database.getConnection(function (err, connection) {
+      if (err)
+        return res.status(400).json({
+          Status: 400,
+          Error: err
         })
-      })
+      connection.query(
+        'SELECT * FROM user;',
+        function (error, results, fields) {
+          connection.release()
+          if (results.length > 0){
+          return res.status(200).json({
+            Status: 200,
+            results: results
+          })
+        } else {
+          res.status(400).json({
+            Status: 400,
+            Error: 'This endpoint is unavailable right now!'
+          })
+        }
+        }
+      )
     })
-},
+  },
   //GET
   getUserById(req, res) {
-    //Filter on requested id
-    let item = database.filter((item) => item.id == req.params.userId);
-        if (item.length > 0){
-        console.log('Found')
-        res.status(200).json({
-          Status: 200,
-          message: 'Found user!',
-          user: item[0]
-        })
-      } else {
-        res.status(400).json({
+    database.getConnection(function (err, connection) {
+      if (err)
+        return res.status(400).json({
           Status: 400,
-          Error: `No user found with id: ${req.params.userId}`
+          Error: err
         })
-    }
+      connection.query(
+        `SELECT * FROM user WHERE id = "${req.params.userId}";`,
+        function (error, results, fields) {
+          connection.release()
+          if (results.length > 0) {
+          return res.status(200).json({
+            Status: 200,
+            results: results
+          })
+        } else {
+          res.status(400).json({
+            Status: 400,
+            Error: 'There is no user with this id!'
+          })
+        }
+        }
+      )
+    })
   },
   //POST
   createUser(req, res) {
-   let id = database.length + 1;
-    //User aanmaken met id van database grootte + 1 (zodat er nooit dezelfde id wordt toegevoegd)
-    let user = {
-     id,
-      ...req.body
-    }
-    database.push(user)
-    database.sort((a, b) => a.id - b.id)
-    res.status(201).json({
-      Status: 201,
-      message: 'Succesfully created user!',
-      user: user
+    database.getConnection(function (err, connection) {
+      if (err)
+        return res.status(400).json({
+          Status: 400,
+          Error: err
+        })
+      let body = req.body
+      let query = `INSERT INTO user (firstName, lastName, isActive, emailAdress, password, phoneNumber, roles, street, city) VALUES ?`;
+      var values = [
+        [body.firstName, body.lastName, body.isActive, body.emailAdress, body.password, body.phoneNumber, body.roles, body.street, body.city]
+      ]
+      connection.query(
+        query, [values],
+        function (error, results, fields) {
+          if (error)
+            return res.status(400).json({
+              Status: 400,
+              Error: error
+            })
+          connection.release()
+          if (results.affectedRows > 0){
+          return res.status(200).json({
+            Status: 200,
+            result: 'Succesfully created user!'
+          })
+        } else {
+          //Never happens due to assert tests
+          res.status(400).json({
+            Status: 400,
+            Error: 'Could not create user!',
+            body: req.body
+          })
+        }
+        }
+      )
     })
   },
   //PUT
   changeUser(req, res) {
-   let item = database.filter((item) => item.id == req.params.userId);
-        if (item.length > 0){
-          //Transfering id from old user to new User
-        let id = item[0].id
-        let user = {
-          id,
-          ...req.body
-        }
-        //Replacing the old with new one.
-       database.splice(database.indexOf(item[0]), 1, user)
-        res.status(201).json({
-          Status: 201,
-          message: 'Succesfully updated',
-          old_info: item[0],
-          new_info: user
-        })
-      } else {
-        res.status(400).json({
+    database.getConnection(function (err, connection) {
+      if (err)
+        return res.status(400).json({
           Status: 400,
-          Error: `No user found with id: ${req.params.userId}`
+          Error: err
         })
-      }
+      let body = req.body
+
+      var query = `UPDATE user SET firstName = '${body.firstName}', lastName = '${body.lastName}', isActive = '${body.isActive}', emailAdress = '${body.emailAdress}', password = '${body.password}', phoneNumber = '${body.phoneNumber}', roles = '${body.roles}', street = '${body.street}', city = '${body.city}' WHERE id = ${req.params.userId}`;
+
+      connection.query(
+        query,
+        function (error, results, fields) {
+          if (error)
+            return res.status(400).json({
+              Status: 400,
+              Error: error
+            })
+          connection.release()
+          if (results.changedRows > 0) {
+          return res.status(200).json({
+            Status: 200,
+            results: `Succesfully updated user ${req.params.userId}`
+          })
+        } else {
+          res.status(400).json({
+            Status: 400,
+            results: `No user found with id: ${req.params.userId}`
+          })
+        }
+        }
+      )
+    })
   },
   //DELETE
   deleteUser(req, res) {
-     let item = database.filter((item) => item.id == req.params.userId);
-        if (item.length > 0){
-        console.log(`${name} Found user to delete`)
-        database.splice(database.indexOf(item[0]), 1)
-        database.forEach((item) => {
-         let number = database.indexOf(item)
-         item.id = number + 1;
-        })
-        res.status(201).json({
-          Status: 201,
-          message: 'Succesfully deleted user!',
-          hint: `id's have been Adjusted to fit their place! (Keep this in mind while checking if it worked)`
-        })
-      } else {
-        res.status(400).json({
+    database.getConnection(function (err, connection) {
+      if (err)
+        return res.status(400).json({
           Status: 400,
-          Error: `No user found with id: ${req.params.userId}`
+          Error: err
         })
-      }
-    },
 
-    getProfile(req, res) {
-      res.status(401).json({
-        Status: 401,
-        Error: `This Endpoint is currently Unavailable!`
-      })
-    },
+      let query = `DELETE FROM user WHERE id = ${req.params.userId}`
+
+      connection.query(
+        query,
+        function (error, results, fields) {
+          if (error)
+            return res.status(400).json({
+              Status: 400,
+              Error: error
+            })
+          connection.release()
+          if (results.affectedRows > 0) {
+          return res.status(200).json({
+            Status: 200,
+            results: `Succesfully deleted user ${req.params.userId}`
+          })
+        } else {
+          res.status(400).json({
+            Status: 400,
+            results: `No user found with id: ${req.params.userId}!`
+          })
+        }
+        }
+      )
+    })
+  },
+
+  getProfile(req, res) {
+    res.status(401).json({
+      Status: 401,
+      Error: `This Endpoint is currently Unavailable!`
+    })
   }
+}

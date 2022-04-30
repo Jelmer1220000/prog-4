@@ -1,6 +1,6 @@
 const assert = require('assert')
 const { Console } = require('console')
-const database = require('../../data/users')
+const database = require('../../database/databaseConnection')
 
 module.exports = {
   validateUser(req, res, next) {
@@ -13,7 +13,7 @@ module.exports = {
         isActive,
         emailAdress,
         password,
-        phonenumber
+        phoneNumber
       } = req.body
 
       //Check of elke value juiste formaat is
@@ -24,7 +24,7 @@ module.exports = {
       assert(typeof isActive === 'boolean', 'isActive is invalid!')
       assert(typeof emailAdress === 'string', 'emailAdress is invalid!')
       assert(typeof password === 'string', 'Password is invalid!')
-      assert(typeof phonenumber == 'string', 'phonenumber is invalid!')
+      assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
       console.log('User data is valid!')
       next()
     } catch (err) {
@@ -81,29 +81,34 @@ module.exports = {
 
   validateEmail(req, res, next) {
     let email = req.body.emailAdress;
-    //Filter Database om te kijken of Email Address al bestaat (== ipv === om cijfer (int, string) problemen te voorkomen)
-    let item = database.filter((item) => item.emailAdress.toLowerCase() == email.toLowerCase())
-    if (item.length > 0) {
-        if (req.method != 'PUT') {
-        res.status(400).json({
-            Status: 400,
-            Error: `An user with this Email adress already exists!`
+    database.getConnection(function (err, connection) {
+      if (err)
+        return res.status(400).json({
+          Status: 400,
+          Error: err
         })
-    } else {
-        //PUT request check if the Email is from the user the person is trying to change
-        if (req.params.userId != item[0].id) {
+      connection.query(
+        `SELECT * FROM user WHERE emailAdress = "${email}";`,
+        function (error, results, fields) {
+          connection.release()
+          console.log(results)
+          if (results.length > 0) {
+            if (results[0].id == req.params.userId) {
+              console.log('email check passed')
+              next();
+            } else {
             res.status(400).json({
-                Status: 400,
-                Error: `An user with this Email adress already exists!`
+              Status: 400,
+              Error: 'An user with this Email adress already exists!'
             })
-        } else {
-            console.log("Email is from same user, request accepted!")
-            next()
+          }
+          } else {
+            console.log('email check passed')
+            next();
+          }
         }
-    }
-    } else {
-        console.log("Email check passed")
-        next()
-    }
+      )
+    })
+
   }
 }
