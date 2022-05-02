@@ -28,7 +28,7 @@ variables:
 # Run unittests
 #
 unittests:
-  image: markhobson/node-chrome:latest
+  image: mariadb:latest
   stage: test
   variables:
     NODE_ENV: development
@@ -37,6 +37,8 @@ unittests:
     DB_HOST: $DB_HOST
     DB_PORT: $DB_PORT
     DB_DATABASE: $DB_DATABASE
+  services:
+    - mariadb:latest
   before_script:
     - npm install --no-optional
   script:
