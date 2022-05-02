@@ -1,6 +1,5 @@
 const name = 'User controller: '
-const database = require('../../database/databaseConnection')
-
+const database = require('../database/databaseConnection')
 module.exports = {
   //GET
   getAllUsers(req, res) {
@@ -75,7 +74,7 @@ module.exports = {
           if (error)
             return res.status(400).json({
               Status: 400,
-              Error: error
+              Error: `Your body is Invalid: ${err.sqlMessage}`
             })
           connection.release()
           if (results.affectedRows > 0){
@@ -113,7 +112,7 @@ module.exports = {
           if (error)
             return res.status(400).json({
               Status: 400,
-              Error: error
+              Error: `Your body is Invalid: ${error.sqlMessage}`
             })
           connection.release()
           if (results.changedRows > 0) {

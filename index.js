@@ -7,8 +7,8 @@ const port = process.env.PORT || 3000
 
 //Logging
 app.get('*', (req, res, next) => {
-  console.log(`Method ${req.method} is aangeroepen`);
-  console.log(`Op ${req.url}`)
+  // console.log(`Method ${req.method} is aangeroepen`);
+  // console.log(`Op ${req.url}`)
   next()
 })
 //testing commit

@@ -1,6 +1,5 @@
 const express = require('express')
 const userController = require('../controllers/user-controller')
-// var bodyParser = require('body-parser')
 const validator = require('../controllers/validator')
 const router = express.Router()
 
