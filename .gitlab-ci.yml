@@ -20,11 +20,11 @@ tests:
   stage: test
   variables:
     NODE_ENV: development
-    DB_USER: $DB_USER
-    DB_PASSWORD: $DB_PASSWORD
-    DB_HOST: $DB_HOST
-    DB_PORT: $DB_PORT
-    DB_DATABASE: $DB_DATABASE
+    DB_USER: root
+    DB_PASSWORD: root
+    DB_HOST: localhost
+    DB_PORT: 3306
+    DB_DATABASE: share-a-meal
   services:
     - mysql:latest
   before_script:
