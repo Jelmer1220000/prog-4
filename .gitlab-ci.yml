@@ -38,10 +38,7 @@ production:
   stage: deploy
   image: ruby:latest
   script:
-    # Get your key at https://dashboard.heroku.com/account
-    # and add it to your project environment variables at GitLab.
     - echo "Heroku api key = $HEROKU_API_KEY"
-    # The name of your app at Heroku. See https://dashboard.heroku.com/apps.
     - echo "Heroku appname = $HEROKU_APP_NAME"
     - apt-get update -qy
     - apt-get install -y ruby-dev
