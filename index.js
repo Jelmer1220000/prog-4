@@ -11,6 +11,7 @@ app.get('*', (req, res, next) => {
   console.log(`Op ${req.url}`)
   next()
 })
+//testing commit
 
 //Algemene opvang voor base Url
 app.get('/', (req, res) => {
