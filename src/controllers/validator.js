@@ -1,6 +1,8 @@
 const assert = require('assert')
 const { Console } = require('console')
-const database = require('../../database/databaseConnection')
+const { type } = require('express/lib/response')
+const { progress } = require('Mocha/lib/reporters')
+const database = require('../database/databaseConnection')
 
 module.exports = {
   validateUser(req, res, next) {
@@ -17,18 +19,16 @@ module.exports = {
       } = req.body
 
       //Check of elke value juiste formaat is
-      assert(typeof firstName === 'string', 'First Name is invalid!')
-      assert(typeof lastName === 'string', 'Last Name is invalid!')
-      assert(typeof street === 'string', 'Street is invalid!')
-      assert(typeof city === 'string', 'City is invalid!')
+      assert(typeof firstName === 'string', 'firstName is invalid!')
+      assert(typeof lastName === 'string', 'lastName is invalid!')
+      assert(typeof street === 'string', 'street is invalid!')
+      assert(typeof city === 'string', 'city is invalid!')
       assert(typeof isActive === 'boolean', 'isActive is invalid!')
       assert(typeof emailAdress === 'string', 'emailAdress is invalid!')
-      assert(typeof password === 'string', 'Password is invalid!')
+      assert(typeof password === 'string', 'password is invalid!')
       assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
-      console.log('User data is valid!')
       next()
     } catch (err) {
-      console.log('This info is Invalid: ', err.message)
       res.status(400).json({
         Status: 400,
         Error: err.message,
@@ -47,9 +47,6 @@ module.exports = {
         maxAmountOfParticipants,
         price,
         imageUrl,
-        cookId,
-        createDate,
-        updateDate,
         name,
         description,
         allergenes,
@@ -64,12 +61,9 @@ module.exports = {
       assert(typeof isToTakeHome === 'boolean', 'isToTakeHome is invalid!')
       assert(typeof dateTime === 'string', 'dateTime is invalid!')
       assert(typeof imageUrl === 'string', 'imageUrl is invalid!')
-      assert(typeof allergenes === 'array', 'allergenes is invalid!')
+      assert(Array.isArray(allergenes), 'allergenes is invalid!')
       assert(typeof maxAmountOfParticipants === 'number', 'maxAmountOfParticipants is invalid!')
       assert(typeof price === 'number', 'price is invalid!')
-      assert(typeof cookId === 'number', 'cookId is invalid!')
-      assert(typeof createDate === 'string', 'createDate is invalid!')
-      assert(typeof updateDate === 'string', 'updateDate is invalid!')
       next();
     } catch (err) {
       res.status(400).json({
@@ -80,7 +74,15 @@ module.exports = {
   },
 
   validateEmail(req, res, next) {
+    let forbidden = ['#','$','%','^','&','*','(',')','-','=','+'];
+    let progress = true;
     let email = req.body.emailAdress;
+    forbidden.forEach((letter) => {
+    if (email.includes(letter)) {
+    progress = false;
+  }
+})
+  if (progress == true){
     database.getConnection(function (err, connection) {
       if (err)
         return res.status(400).json({
@@ -91,10 +93,8 @@ module.exports = {
         `SELECT * FROM user WHERE emailAdress = "${email}";`,
         function (error, results, fields) {
           connection.release()
-          console.log(results)
           if (results.length > 0) {
             if (results[0].id == req.params.userId) {
-              console.log('email check passed')
               next();
             } else {
             res.status(400).json({
@@ -103,12 +103,16 @@ module.exports = {
             })
           }
           } else {
-            console.log('email check passed')
             next();
           }
         }
       )
     })
-
+  } else {
+    res.status(400).json({
+      Status: 400,
+      Error: 'emailAdress contains a forbidden symbol!'
+    })
   }
+}
 }
