@@ -1,7 +1,4 @@
 const assert = require('assert')
-const { Console } = require('console')
-const { type } = require('express/lib/response')
-const { progress } = require('Mocha/lib/reporters')
 const database = require('../database/databaseConnection')
 
 module.exports = {
