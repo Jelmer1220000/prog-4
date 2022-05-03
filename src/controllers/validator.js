@@ -37,7 +37,7 @@ module.exports = {
     validateMeal(req, res, next) {
         try {
             const {
-                isToTakeHome,
+                // isToTakeHome,
                 dateTime,
                 maxAmountOfParticipants,
                 price,
@@ -51,7 +51,7 @@ module.exports = {
             //Check values van meal!
             assert(typeof name === 'string', 'Name is invalid!')
             assert(typeof description === 'string', 'Description is invalid!')
-            assert(typeof isToTakeHome === 'boolean','isToTakeHome is invalid!')
+            // assert(typeof isToTakeHome === 'boolean','isToTakeHome is invalid!')
             assert(typeof dateTime === 'string', 'dateTime is invalid!')
             assert(typeof imageUrl === 'string', 'imageUrl is invalid!')
             assert(Array.isArray(allergenes), 'allergenes is invalid!')

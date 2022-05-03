@@ -91,7 +91,7 @@ describe('Meal tests 301-305', () => {
                     isActive: 1,
                     isVega: true,
                     isVegan: true,
-                    isToTakeHome: false,
+                    // isToTakeHome: false,
                     dateTime: '2022-04-26:18:00',
                     imageUrl: 'https://www.google.nl',
                     allergenes: ['Gluten', 'MILK'],
@@ -122,7 +122,7 @@ describe('Meal tests 301-305', () => {
                 .send({
                     name: 'Lasagne',
                     description: 'Overheerlijke Lasagne',
-                    isToTakeHome: false,
+                    // isToTakeHome: false,
                     dateTime: '2022-04-26:18:00',
                     imageUrl: 'https://www.google.nl',
                     allergenes: ['Gluten', 'MILK'],
