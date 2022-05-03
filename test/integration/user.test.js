@@ -13,8 +13,17 @@ const CLEAR_ALL =
     'DELETE IGNORE FROM `meal`; DELETE IGNORE FROM `meal_participants_user`; DELETE IGNORE FROM `user`;'
 //Im done with this fucking database testing crap through github
 const INSERT_USER =
-    'INSERT INTO `user` (firstName, lastName, isActive, emailAdress, password, phoneNumber, roles, street, city) VALUES' +
-    '("first", "last", "true", "name@server.nl", "secret", "06-11223344", "street", "city", "guest");'
+    'INSERT INTO `user` (`id`, `firstName`, `lastName`, `emailAdress`, `password`, `street`, `city` ) VALUES' +
+    '(1, "first", "last", "name@server.nl", "secret", "street", "city");'
+
+/**
+ * Query om twee meals toe te voegen. Let op de UserId, die moet matchen
+ * met de user die je ook toevoegt.
+ */
+const INSERT_MEALS =
+    'INSERT INTO `meal` (`id`, `name`, `description`, `imageUrl`, `dateTime`, `maxAmountOfParticipants`, `price`, `cookId`) VALUES' +
+    "(1, 'Meal A', 'description', 'image url', NOW(), 5, 6.50, 1)," +
+    "(2, 'Meal B', 'description', 'image url', NOW(), 5, 6.50, 1);"
 
 describe('User Tests 201-206', () => {
     describe('UC201 Register as new user', () => {
@@ -45,7 +54,7 @@ describe('User Tests 201-206', () => {
                     lastName: 'Test',
                     street: 'Info',
                     city: 'Breda',
-                    isActive: true,
+                    isActive: 1,
                     emailAdress: 'Heroku.works@server.com',
                     password: 'secret',
                     roles: '',
@@ -78,7 +87,7 @@ describe('User Tests 201-206', () => {
                     lastName: 'last',
                     street: '',
                     city: 'Breda',
-                    isActive: true,
+                    isActive: 1,
                     roles: '',
                     //# is forbidden
                     emailAdress: 'name#$%@server.nl',
@@ -113,7 +122,7 @@ describe('User Tests 201-206', () => {
                     lastName: 'last',
                     street: 'street',
                     city: 'city',
-                    isActive: true,
+                    isActive: 1,
                     emailAdress: 'name34@server.nl',
                     password: 665,
                     phoneNumber: '06-11223344',
@@ -144,7 +153,7 @@ describe('User Tests 201-206', () => {
                     lastName: 'last',
                     street: 'street',
                     city: 'city',
-                    isActive: true,
+                    isActive: 1,
                     //This email already exists
                     emailAdress: 'name@server.nl',
                     password: 'secret',
@@ -178,7 +187,7 @@ describe('User Tests 201-206', () => {
                     lastName: 'Test',
                     street: 'Info',
                     city: 'Breda',
-                    isActive: true,
+                    isActive: 1,
                     emailAdress: 'new.user7@server.com',
                     password: 'secret',
                     roles: '',

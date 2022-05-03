@@ -9,7 +9,7 @@ module.exports = {
                 lastName,
                 street,
                 city,
-                isActive,
+                // isActive,
                 emailAdress,
                 password,
                 phoneNumber,
@@ -20,7 +20,7 @@ module.exports = {
             assert(typeof lastName === 'string', 'lastName is invalid!')
             assert(typeof street === 'string', 'street is invalid!')
             assert(typeof city === 'string', 'city is invalid!')
-            assert(typeof isActive === 'boolean', 'isActive is invalid!')
+            // assert(typeof isActive === 'integer', 'isActive is invalid!')
             assert(typeof emailAdress === 'string', 'emailAdress is invalid!')
             assert(typeof password === 'string', 'password is invalid!')
             assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
@@ -36,7 +36,7 @@ module.exports = {
     validateMeal(req, res, next) {
         try {
             const {
-                isActive,
+                // isActive,
                 isVega,
                 isVegan,
                 isToTakeHome,
@@ -52,7 +52,7 @@ module.exports = {
             //Check values van meal!
             assert(typeof name === 'string', 'Name is invalid!')
             assert(typeof description === 'string', 'Description is invalid!')
-            assert(typeof isActive === 'boolean', 'isActive is invalid!')
+            // assert(typeof isActive === 'boolean', 'isActive is invalid!')
             assert(typeof isVega === 'boolean', 'isVega is invalid!')
             assert(typeof isVegan === 'boolean', 'isVegan is invalid!')
             assert(
