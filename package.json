@@ -1,29 +1,29 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "Nodejs server voor programmeren 4",
+  "name": "nodejs-prog-4",
+  "version": "0.0.1",
+  "description": "Programmeren 4 nodejs-server",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "test": "mocha --reporter spec test/**/*.test.js --exit "
+      "start": "nodemon index.js",
+      "test": "mocha -reporter spec test/**/*.test.js --exit"
   },
   "author": "Jelmer",
   "license": "ISC",
   "devDependencies": {
-    "chai": "^4.3.6",
-    "chai-http": "^4.3.0",
-    "nodemon": "^2.0.15"
+      "chai": "^4.3.6",
+      "chai-http": "^4.3.0",
+      "mocha": "^9.2.2",
+      "nodemon": "^2.0.15"
   },
   "dependencies": {
-    "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "mocha": "^10.0.0",
-    "mysql2": "^2.3.3"
+      "dotenv": "^16.0.0",
+      "express": "^4.17.3",
+      "mysql2": "^2.3.3"
   },
   "prettier": {
-    "trailingComma": "es5",
-    "tabWidth": 4,
-    "semi": false,
-    "singleQuote": true
+      "trailingComma": "es5",
+      "tabWidth": 4,
+      "semi": false,
+      "singleQuote": true
   }
 }
