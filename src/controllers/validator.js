@@ -1,4 +1,5 @@
 const assert = require('assert')
+const { type } = require('express/lib/response')
 const database = require('../database/databaseConnection')
 
 module.exports = {
@@ -36,9 +37,6 @@ module.exports = {
     validateMeal(req, res, next) {
         try {
             const {
-                // isActive,
-                isVega,
-                isVegan,
                 isToTakeHome,
                 dateTime,
                 maxAmountOfParticipants,
@@ -47,18 +45,13 @@ module.exports = {
                 name,
                 description,
                 allergenes,
+                cookId
             } = req.body
 
             //Check values van meal!
             assert(typeof name === 'string', 'Name is invalid!')
             assert(typeof description === 'string', 'Description is invalid!')
-            // assert(typeof isActive === 'boolean', 'isActive is invalid!')
-            assert(typeof isVega === 'boolean', 'isVega is invalid!')
-            assert(typeof isVegan === 'boolean', 'isVegan is invalid!')
-            assert(
-                typeof isToTakeHome === 'boolean',
-                'isToTakeHome is invalid!'
-            )
+            assert(typeof isToTakeHome === 'boolean','isToTakeHome is invalid!')
             assert(typeof dateTime === 'string', 'dateTime is invalid!')
             assert(typeof imageUrl === 'string', 'imageUrl is invalid!')
             assert(Array.isArray(allergenes), 'allergenes is invalid!')
@@ -67,6 +60,7 @@ module.exports = {
                 'maxAmountOfParticipants is invalid!'
             )
             assert(typeof price === 'number', 'price is invalid!')
+            assert(typeof cookId === 'number', 'cookId is invalid!')
             next()
         } catch (err) {
             res.status(400).json({

@@ -131,6 +131,7 @@ describe('Meal tests 301-305', () => {
                     allergenes: ['Gluten', 'MILK'],
                     maxAmountOfParticipants: 8,
                     price: 5.55,
+                    cookId: 1
                 })
                 .end((err, res) => {
                     assert.ifError(err)
