@@ -44,7 +44,7 @@ module.exports = {
                 imageUrl,
                 name,
                 description,
-                allergenes,
+                // allergenes,
                 cookId
             } = req.body
 
@@ -54,7 +54,7 @@ module.exports = {
             // assert(typeof isToTakeHome === 'boolean','isToTakeHome is invalid!')
             assert(typeof dateTime === 'string', 'dateTime is invalid!')
             assert(typeof imageUrl === 'string', 'imageUrl is invalid!')
-            assert(Array.isArray(allergenes), 'allergenes is invalid!')
+            // assert(Array.isArray(allergenes), 'allergenes is invalid!')
             assert(
                 typeof maxAmountOfParticipants === 'number',
                 'maxAmountOfParticipants is invalid!'

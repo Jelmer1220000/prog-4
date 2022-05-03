@@ -104,14 +104,13 @@ module.exports = {
             body.allergenes.forEach((aller) => {
                 allerg = allerg + aller
             })
-            let query = `INSERT INTO meal (name, description, dateTime, imageUrl, allergenes, maxAmountOfParticipants, price, cookId) VALUES ?`
+            let query = `INSERT INTO meal (id, name, description, imageUrl, dateTime, maxAmountOfParticipants, price, cookId) VALUES ?`
             var values = [
                 [
                     body.name,
                     body.description,
                     body.dateTime,
                     body.imageUrl,
-                    allerg,
                     body.maxAmountOfParticipants,
                     body.price,
                     body.cookId

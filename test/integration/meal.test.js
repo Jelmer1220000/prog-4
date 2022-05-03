@@ -120,12 +120,11 @@ describe('Meal tests 301-305', () => {
             chai.request(server)
                 .post('/api/meal')
                 .send({
+                    id: 3,
                     name: 'Lasagne',
                     description: 'Overheerlijke Lasagne',
-                    // isToTakeHome: false,
-                    dateTime: '2022-04-26:18:00',
                     imageUrl: 'https://www.google.nl',
-                    allergenes: ['Gluten', 'MILK'],
+                    dateTime: '2022-04-26:18:00',
                     maxAmountOfParticipants: 8,
                     price: 5.55,
                     cookId: 1
