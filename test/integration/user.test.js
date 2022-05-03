@@ -11,7 +11,7 @@ chai.use(chaiHttp)
 
 const CLEAR_ALL =
     'DELETE IGNORE FROM `meal`; DELETE IGNORE FROM `meal_participants_user`; DELETE IGNORE FROM `user`;'
-
+//Im done with this fucking database testing crap through github
 const INSERT_USER =
     'INSERT INTO `user` (firstName, lastName, isActive, emailAdress, password, phoneNumber, roles, street, city) VALUES' +
     '("first", "last", "true", "name@server.nl", "secret", "06-11223344", "street", "city", "guest");'
