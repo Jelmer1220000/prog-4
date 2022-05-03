@@ -12,10 +12,14 @@ chai.use(chaiHttp)
 const CLEAR_ALL =
     'DELETE IGNORE FROM `meal`; DELETE IGNORE FROM `meal_participants_user`; DELETE IGNORE FROM `user`;'
 
-const INSERT_USER =
-    'INSERT INTO `user` (id, firstName, lastName, isActive, emailAdress, password, phoneNumber, roles, street, city) VALUES' +
-    '(1,"first", "last", "true", "name@server.nl", "secret", "06-11223344", "street", "city", "guest");'
+    const INSERT_USER =
+    'INSERT INTO `user` (`id`, `firstName`, `lastName`, `emailAdress`, `password`, `street`, `city` ) VALUES' +
+    '(1, "first", "last", "name@server.nl", "secret", "street", "city");'
 
+/**
+ * Query om twee meals toe te voegen. Let op de UserId, die moet matchen
+ * met de user die je ook toevoegt.
+ */
 const INSERT_MEALS =
     'INSERT INTO `meal` (`id`, `name`, `description`, `imageUrl`, `dateTime`, `maxAmountOfParticipants`, `price`, `cookId`) VALUES' +
     "(1, 'Meal A', 'description', 'image url', NOW(), 5, 6.50, 1)," +
@@ -84,7 +88,7 @@ describe('Meal tests 301-305', () => {
                     name: 'Lasagne',
                     //Description wrong type
                     description: 543563,
-                    isActive: true,
+                    isActive: 1,
                     isVega: true,
                     isVegan: true,
                     isToTakeHome: false,
@@ -118,7 +122,7 @@ describe('Meal tests 301-305', () => {
                 .send({
                     name: 'Lasagne',
                     description: 'Overheerlijke Lasagne',
-                    isActive: true,
+                    isActive: 1,
                     isVega: true,
                     isVegan: true,
                     isToTakeHome: false,
