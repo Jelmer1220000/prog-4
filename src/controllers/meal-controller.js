@@ -122,7 +122,6 @@ module.exports = {
                 [values],
                 function (error, results, fields) {
                     if (error) {
-                        console.log(error)
                         return res.status(400).json({
                             Status: 400,
                             Error: `Your body is Invalid: ${error.sqlMessage}`,
