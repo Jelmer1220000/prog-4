@@ -212,7 +212,7 @@ describe('User Tests 201-206', () => {
         })
     })
 
-    describe('UC202 View of all users', () => {
+    describe('UC202 View all users', () => {
         beforeEach((done) => {
             // maak de testdatabase leeg zodat we onze testen kunnen uitvoeren.
             database.getConnection(function (err, connection) {
@@ -237,7 +237,6 @@ describe('User Tests 201-206', () => {
         it('TC-202-1 Retrieve all users', (done) => {
             chai.request(server)
                 .get('/api/user')
-                //User is not logged in!
                 .end((err, res) => {
                     assert.ifError(err)
                     res.should.have.status(200)
@@ -250,6 +249,24 @@ describe('User Tests 201-206', () => {
                     let { Status, results } = res.body
                     Status.should.be.an('number')
                     results.should.be.an('array')
+                    done()
+                })
+        })
+        it('TC-202-1 Retrieve user by ID', (done) => {
+            chai.request(server)
+                .get('/api/user/1')
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(200)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'results')
+
+                    let { Status, results} = res.body
+                    Status.should.be.an('number')
+                    results.should.be.an('object')
                     done()
                 })
         })
