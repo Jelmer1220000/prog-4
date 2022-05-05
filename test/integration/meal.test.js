@@ -131,6 +131,7 @@ describe('Meal tests 301-305', () => {
                 })
                 .end((err, res) => {
                     assert.ifError(err)
+                    console.log(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
