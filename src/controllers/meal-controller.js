@@ -121,11 +121,13 @@ module.exports = {
                 query,
                 [values],
                 function (error, results, fields) {
-                    if (error)
+                    if (error) {
+                        console.log(error)
                         return res.status(400).json({
                             Status: 400,
                             Error: `Your body is Invalid: ${error.sqlMessage}`,
                         })
+                    }
                     connection.release()
                     if (results.affectedRows > 0) {
                         return res.status(200).json({
