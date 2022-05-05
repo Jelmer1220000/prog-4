@@ -266,7 +266,7 @@ describe('User Tests 201-206', () => {
 
                     let { Status, results} = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('array').that.contains('object')
+                    results.should.be.an('object')
                     done()
                 })
         })

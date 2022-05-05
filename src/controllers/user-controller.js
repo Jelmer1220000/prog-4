@@ -43,7 +43,7 @@ module.exports = {
                     if (results.length > 0) {
                         return res.status(200).json({
                             Status: 200,
-                            results: results,
+                            results: results[0],
                         })
                     } else {
                         res.status(400).json({
