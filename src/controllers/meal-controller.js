@@ -110,8 +110,8 @@ module.exports = {
                     body.id,
                     body.name,
                     body.description,
-                    body.dateTime,
                     body.imageUrl,
+                    body.dateTime,
                     body.maxAmountOfParticipants,
                     body.price,
                     body.cookId
