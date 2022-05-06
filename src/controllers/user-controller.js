@@ -39,6 +39,7 @@ module.exports = {
             connection.query(
                 `SELECT * FROM user WHERE id = "${req.params.userId}";`,
                 function (error, results, fields) {
+                    console.log(results)
                     connection.release()
                     if (results.length > 0) {
                         console.log(results)
