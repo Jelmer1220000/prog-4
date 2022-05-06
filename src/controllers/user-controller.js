@@ -13,7 +13,7 @@ module.exports = {
                 'SELECT * FROM user;',
                 function (error, results, fields) {
                     connection.release()
-                    if (results.length > 0) {
+                    if (results) {
                         return res.status(200).json({
                             Status: 200,
                             results: results,
@@ -41,6 +41,7 @@ module.exports = {
                 function (error, results, fields) {
                     connection.release()
                     if (results.length > 0) {
+                        console.log(results)
                         return res.status(200).json({
                             Status: 200,
                             results: results[0],
