@@ -9,9 +9,7 @@ module.exports = {
                     Status: 400,
                     Error: err,
                 })
-            connection.query(
-                'SELECT * FROM user;',
-                function (error, results, fields) {
+            connection.query('SELECT * FROM user;', function (error, results, fields) {
                     connection.release()
                     if (results) {
                         return res.status(200).json({
@@ -37,10 +35,11 @@ module.exports = {
                     Error: err,
                 })
                 //log
-            connection.query(
-                `SELECT * FROM user WHERE id = "${req.params.userId}";`,
-                function (error, results, fields) {
+                console.log(req.params.userId)
+            connection.query(`SELECT * FROM user WHERE id = "${req.params.userId}";`, function (error, results, fields) {
+                if (error) return console.log(error)
                     console.log(results)
+                    console.log(fields)
                     connection.release()
                     if (results.length > 0) {
                         console.log(results)
