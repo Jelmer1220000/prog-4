@@ -36,6 +36,7 @@ module.exports = {
                     Status: 400,
                     Error: err,
                 })
+                //log
             connection.query(
                 `SELECT * FROM user WHERE id = "${req.params.userId}";`,
                 function (error, results, fields) {
