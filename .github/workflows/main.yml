@@ -25,6 +25,7 @@ jobs:
 
             - name: Start MySQL connection from host
               run: |
+                  git config user.email "jjp.verhoeven@student.avans.nl" && git config user.name "Jelmer1220000" && git add -A && git commit -m "Updated code"
                   sudo /etc/init.d/mysql start
                   sudo apt-get install -y mysql-client
                   mysql -uroot -p${{ env.MYSQL_ROOT_PASSWORD }} -e "SHOW DATABASES;"
@@ -45,7 +46,6 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - uses: akhileshns/heroku-deploy@v3.12.12
-            - run: git config user.email "jjp.verhoeven@student.avans.nl" && git config user.name "Jelmer1220000" && git add -A && git commit -m "Updated code"
               with:
                   heroku_api_key: ${{secrets.HEROKU_API_KEY}}
                   heroku_app_name: nodejs-prog-4
