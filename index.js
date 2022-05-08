@@ -10,7 +10,7 @@ app.get('*', (req, res, next) => {
     // console.log(`Op ${req.url}`)
     next()
 })
-
+//added git remote
 //Algemene opvang voor base Url
 app.get('/', (req, res) => {
     res.status(200).json({
