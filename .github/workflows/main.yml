@@ -45,6 +45,7 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - uses: akhileshns/heroku-deploy@v3.12.12
+            - run: git config user.email "jjp.verhoeven@student.avans.nl" && git config user.name "Jelmer1220000" && git add -A && git commit -m "Updated code"
               with:
                   heroku_api_key: ${{secrets.HEROKU_API_KEY}}
                   heroku_app_name: nodejs-prog-4
