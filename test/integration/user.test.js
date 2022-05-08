@@ -234,9 +234,9 @@ describe('User Tests 201-206', () => {
             })
         })
 
-        it('TC-202-1 Retrieve all users', (done) => {
+        it('TC-202-1 Retrieve no users', (done) => {
             chai.request(server)
-                .get('/api/user')
+                .get('/api/user?length=0')
                 .end((err, res) => {
                     assert.ifError(err)
                     res.should.have.status(200)
@@ -252,9 +252,10 @@ describe('User Tests 201-206', () => {
                     done()
                 })
         })
-        it('TC-202-1 Retrieve user by ID', (done) => {
+
+        it('TC-202-2 Retrieve 2 users', (done) => {
             chai.request(server)
-                .get('/api/user/1')
+                .get('/api/user?length=2')
                 .end((err, res) => {
                     assert.ifError(err)
                     res.should.have.status(200)
@@ -264,9 +265,85 @@ describe('User Tests 201-206', () => {
                         .an('object')
                         .that.has.all.keys('Status', 'results')
 
-                    let { Status, results} = res.body
+                    let { Status, results } = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('object')
+                    results.should.be.an('array')
+                    done()
+                })
+        })
+
+        it("TC-202-3 Retrieve users that don't exist", (done) => {
+            chai.request(server)
+                .get('/api/user?lastName=abel')
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(200)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'results')
+
+                    let { Status, results } = res.body
+                    Status.should.be.an('number')
+                    results.should.be.an('array')
+                    done()
+                })
+        })
+
+        it("TC-202-4 Retrieve users with active = false (0 users)", (done) => {
+            chai.request(server)
+                .get('/api/user?active=false')
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(200)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'results')
+
+                    let { Status, results } = res.body
+                    Status.should.be.an('number')
+                    results.should.be.an('array')
+                    done()
+                })
+        })
+
+        it("TC-202-5 Retrieve users with active = true", (done) => {
+            chai.request(server)
+                .get('/api/user?active=true')
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(200)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'results')
+
+                    let { Status, results } = res.body
+                    Status.should.be.an('number')
+                    results.should.be.an('array')
+                    done()
+                })
+        })
+
+        it("TC-202-6 Retrieve users on lastName = last (1 user)", (done) => {
+            chai.request(server)
+                .get('/api/user?lastName=last')
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(200)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'results')
+
+                    let { Status, results } = res.body
+                    Status.should.be.an('number')
+                    results.should.be.an('array')
                     done()
                 })
         })
@@ -294,7 +371,7 @@ describe('User Tests 201-206', () => {
             })
         })
 
-        it('TC-203-1 should return valid error when user is not logged in!', (done) => {
+        it('TC-203-1 invalid token', (done) => {
             chai.request(server)
                 .get('/api/user/profile')
                 //User is not logged in!
@@ -318,4 +395,304 @@ describe('User Tests 201-206', () => {
                 })
         })
     })
+
+    describe('UC204 Request user Details', () => {
+        it('TC-204-1 Invalid Token, user not Logged in', (done) => {
+            chai.request(server)
+                .get('/api/user/1')
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(200)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'results')
+
+                    let { Status, results} = res.body
+                    Status.should.be.an('number')
+                    results.should.be.an('object')
+                    done()
+                })
+        })
+
+        it('TC-204-2 Retrieve user by ID', (done) => {
+            chai.request(server)
+                .get('/api/user/900123')
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(400)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'Error')
+
+                    let { Status, Error} = res.body
+                    Status.should.be.an('number')
+                    Error.should.be.an('string').that.contains('There is no user with this id!')
+                    done()
+                })
+        })
+    })
+    describe('UC205 Editing user', () => {
+        it('TC-205-1 Retrieve user by ID', (done) => {
+            chai.request(server)
+                .put('/api/user/1')
+                .send({
+                    //Firstname missing!
+                    lastName: 'Test',
+                    street: 'Info',
+                    city: 'Breda',
+                    isActive: 1,
+                    emailAdress: 'Heroku232.works@server.com',
+                    password: 'secret',
+                    roles: '',
+                    phoneNumber: '06-11223344',
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(400)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'Error')
+
+                    let { Status, Error} = res.body
+                    Status.should.be.an('number')
+                    Error.should.be.an('string').that.contains('firstName is invalid!')
+                    done()
+            })
+        })
+
+        it('TC-205-2 Invalid postal code', (done) => {
+            chai.request(server)
+                .put('/api/user/1')
+                .send({
+                    firstName: 'heroku',
+                    lastName: 'Test',
+                    street: 'Info',
+                    city: 4,
+                    isActive: 1,
+                    emailAdress: 'Heroku232.works@server.com',
+                    password: 'secret',
+                    roles: '',
+                    phoneNumber: '06-11223344',
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(400)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'Error')
+
+                    let { Status, Error} = res.body
+                    Status.should.be.an('number')
+                    Error.should.be.an('string').that.contains('city is invalid!')
+                    done()
+            })
+        })
+
+        it('TC-205-3 Invalid phone number', (done) => {
+            chai.request(server)
+                .put('/api/user/1')
+                .send({
+                    firstName: 'Heroku',
+                    lastName: 'Test',
+                    street: 'Info',
+                    city: 'Breda',
+                    isActive: 1,
+                    emailAdress: 'Heroku.works@server.com',
+                    password: 'secret',
+                    roles: '',
+                    phoneNumber: 06-11223344,
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(400)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'Error')
+
+                    let { Status, Error} = res.body
+                    Status.should.be.an('number')
+                    Error.should.be.an('string').that.contains('phoneNumber is invalid!')
+                    done()
+            })
+        })
+
+        it("TC-205-4 User doesn't exist", (done) => {
+            chai.request(server)
+                .put('/api/user/900204')
+                .send({
+                    firstName: 'Heroku',
+                    lastName: 'Test',
+                    street: 'Info',
+                    city: 'Breda',
+                    isActive: 1,
+                    emailAdress: 'Heroku.works@server.com',
+                    password: 'secret',
+                    roles: '',
+                    phoneNumber: '06-11223344',
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(400)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'Error')
+
+                    let { Status, Error} = res.body
+                    Status.should.be.an('number')
+                    Error.should.be.an('string').that.contains('No user found with id')
+                    done()
+            })
+        })
+
+        it("TC-205-5 User is not logged in", (done) => {
+            chai.request(server)
+                .put('/api/user/2141221')
+                .send({
+                    firstName: 'Heroku',
+                    lastName: 'Test',
+                    street: 'Info',
+                    city: 'Breda',
+                    isActive: 1,
+                    emailAdress: 'Heroku.works@server.com',
+                    password: 'secret',
+                    roles: '',
+                    phoneNumber: '06-11223344',
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(400)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'Error')
+
+                    let { Status, Error} = res.body
+                    Status.should.be.an('number')
+                    Error.should.be.an('string').that.contains('No user found with id')
+                    done()
+            })
+        })
+
+        it("TC-205-6 User succesfully edited", (done) => {
+            chai.request(server)
+                .put('/api/user/1')
+                .send({
+                    firstName: 'Heroku',
+                    lastName: 'Test',
+                    street: 'Info',
+                    city: 'Breda',
+                    isActive: 1,
+                    emailAdress: 'Heroku3432.works@server.com',
+                    password: 'secret',
+                    roles: '',
+                    phoneNumber: '06-11223344',
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(200)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'result')
+
+                    let { Status, result} = res.body
+                    Status.should.be.an('number')
+                    result.should.be.an('string').that.contains('Succesfully updated user')
+                    done()
+            })
+        })
+    })
+    describe('UC206 Deleting user', () => {
+        it("TC-206-1 User doesn't exist", (done) => {
+            chai.request(server)
+                .delete('/api/user/1241244142')
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(400)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'Error')
+
+                    let { Status, Error} = res.body
+                    Status.should.be.an('number')
+                    Error.should.be.an('string').that.contains('No user found with id')
+                    done()
+                })
+            })
+
+            it("TC-206-2 User not logged in", (done) => {
+                chai.request(server)
+                    .delete('/api/user/1241244142')
+                    .end((err, res) => {
+                        assert.ifError(err)
+                        res.should.have.status(400)
+                        res.should.be.an('object')
+    
+                        res.body.should.be
+                            .an('object')
+                            .that.has.all.keys('Status', 'Error')
+    
+                        let { Status, Error} = res.body
+                        Status.should.be.an('number')
+                        Error.should.be.an('string').that.contains('No user found with id')
+                        done()
+                    })
+                })
+
+                it("TC-206-3 User isn't the Owner", (done) => {
+                    chai.request(server)
+                        .delete('/api/user/1241244142')
+                        .end((err, res) => {
+                            assert.ifError(err)
+                            res.should.have.status(400)
+                            res.should.be.an('object')
+        
+                            res.body.should.be
+                                .an('object')
+                                .that.has.all.keys('Status', 'Error')
+        
+                            let { Status, Error} = res.body
+                            Status.should.be.an('number')
+                            Error.should.be.an('string').that.contains('No user found with id')
+                            done()
+                        })
+                    })
+
+                    it("TC-206-1 User doesn't exist", (done) => {
+                        chai.request(server)
+                            .delete('/api/user/1')
+                            .end((err, res) => {
+                                assert.ifError(err)
+                                res.should.have.status(200)
+                                res.should.be.an('object')
+            
+                                res.body.should.be
+                                    .an('object')
+                                    .that.has.all.keys('Status', 'result')
+            
+                                let { Status, result} = res.body
+                                Status.should.be.an('number')
+                                result.should.be.an('string').that.contains('Succesfully deleted user')
+                                done()
+                            })
+                        })
+
+        })
+        
 })

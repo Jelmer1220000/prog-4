@@ -9,8 +9,28 @@ module.exports = {
                     Status: 400,
                     Error: err,
                 })
-            connection.query('SELECT * FROM user;', function (error, results, fields) {
+                let amount = 1000;
+                let lastName = '%';
+                let isActive = '%';
+                console.log(req.query)
+                if (Object.keys(req.query).length != 0) {
+                    if (req.query.lastName != null){
+                        lastName = req.query.lastName;
+                    }
+                    if (req.query.length != null){
+                        amount = req.query.length;
+                    }
+                    if (req.query.active != null) {
+                        if (req.query.active == 'true') {
+                            isActive = '1';
+                        } else {
+                            isActive = '0';
+                        }
+                    }
+                }
+            connection.query(`SELECT * FROM user WHERE lastName LIKE '${lastName}' && isActive LIKE '${isActive}' LIMIT ${amount};`, function (error, results, fields) {
                     connection.release()
+                    if (error) return console.log(error)
                     if (results) {
                         return res.status(200).json({
                             Status: 200,
@@ -34,15 +54,10 @@ module.exports = {
                     Status: 400,
                     Error: err,
                 })
-                //log
-                console.log(req.params.userId)
             connection.query(`SELECT * FROM user WHERE id = ${req.params.userId};`, function (error, results, fields) {
                 if (error) return console.log(error)
-                    console.log(results)
-                    console.log(fields)
                     connection.release()
                     if (results.length > 0) {
-                        console.log(results)
                         return res.status(200).json({
                             Status: 200,
                             results: results[0],
@@ -129,12 +144,12 @@ module.exports = {
                 if (results.changedRows > 0) {
                     return res.status(200).json({
                         Status: 200,
-                        results: `Succesfully updated user ${req.params.userId}`,
+                        result: `Succesfully updated user ${req.params.userId}`,
                     })
                 } else {
                     res.status(400).json({
                         Status: 400,
-                        results: `No user found with id: ${req.params.userId}`,
+                        Error: `No user found with id: ${req.params.userId}`,
                     })
                 }
             })
@@ -161,12 +176,12 @@ module.exports = {
                 if (results.affectedRows > 0) {
                     return res.status(200).json({
                         Status: 200,
-                        results: `Succesfully deleted user ${req.params.userId}`,
+                        result: `Succesfully deleted user: ${req.params.userId}`,
                     })
                 } else {
                     res.status(400).json({
                         Status: 400,
-                        results: `No user found with id: ${req.params.userId}!`,
+                        Error: `No user found with id: ${req.params.userId}!`,
                     })
                 }
             })
