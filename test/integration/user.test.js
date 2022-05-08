@@ -616,6 +616,7 @@ describe('User Tests 201-206', () => {
             })
         })
     })
+    
     describe('UC206 Deleting user', () => {
         it("TC-206-1 User doesn't exist", (done) => {
             chai.request(server)
