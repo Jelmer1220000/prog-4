@@ -36,7 +36,7 @@ module.exports = {
                 })
                 //log
                 console.log(req.params.userId)
-            connection.query(`SELECT * FROM user WHERE id = "${req.params.userId}";`, function (error, results, fields) {
+            connection.query(`SELECT * FROM user WHERE id = ${req.params.userId};`, function (error, results, fields) {
                 if (error) return console.log(error)
                     console.log(results)
                     console.log(fields)
