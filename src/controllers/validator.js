@@ -87,7 +87,7 @@ module.exports = {
                         Error: err,
                     })
                 connection.query(
-                    `SELECT * FROM user WHERE emailAdress = "${email}";`,
+                    `SELECT * FROM user WHERE emailAdress = ${email};`,
                     function (error, results, fields) {
                         connection.release()
                         if (results.length > 0) {
