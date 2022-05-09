@@ -35,13 +35,14 @@ module.exports = {
     validateMeal(req, res, next) {
         try {
             const {
-                // isToTakeHome,
-                dateTime,
-                maxAmountOfParticipants,
-                price,
-                imageUrl,
                 name,
                 description,
+                // isToTakeHome,
+                dateTime,
+                imageUrl,
+                maxAmountOfParticipants,
+                price,
+
                 // allergenes,
                 cookId
             } = req.body

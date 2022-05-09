@@ -100,10 +100,6 @@ module.exports = {
                     Error: err,
                 })
             let body = req.body
-            // let allerg = ''
-            // body.allergenes.forEach((aller) => {
-            //     allerg = allerg + aller
-            // })
            let query = 'INSERT INTO `meal` (`id`, `name`, `description`, `imageUrl`, `dateTime`, `maxAmountOfParticipants`, `price`, `cookId`) VALUES ?'
             var values = [
                 [
