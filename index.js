@@ -16,7 +16,7 @@ app.use('/api', userRoutes)
 app.use('/api', mealRoutes)
 //added git remote
 //Algemene opvang voor base Url
-app.get('/', (req, res) => {
+app.get('', (req, res) => {
     res.status(200).json({
         Message: `Welcome to my API`,
         Message2: `To get Started please enter one of the endpoints below! (with correct body if requested)`,
