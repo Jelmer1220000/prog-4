@@ -24,14 +24,14 @@ app.get('/', (req, res) => {
     })
 })
 
-app.all('*', (req, res) => {
-    res.status(404).json({
-        Message: `Welcome to my API`,
-        Message2: `To get Started please enter one of the endpoints below! (with correct body if requested)`,
-        Endpoints: [`GET /api/user`, `GET /api/user/{id}`, `GET /api/user/profile`, `POST /api/user`, `PUT /api/user/{id}`, `DELETE /api/user/{id}`],
-        Parameters: ['All parameters are for GET /api/user', 'length=(amount of people)', 'active=(true or false)', 'lastName=(lastName of user to search)']
-    })
-})
+// app.all('*', (req, res) => {
+//     res.status(404).json({
+//         Message: `Welcome to my API`,
+//         Message2: `To get Started please enter one of the endpoints below! (with correct body if requested)`,
+//         Endpoints: [`GET /api/user`, `GET /api/user/{id}`, `GET /api/user/profile`, `POST /api/user`, `PUT /api/user/{id}`, `DELETE /api/user/{id}`],
+//         Parameters: ['All parameters are for GET /api/user', 'length=(amount of people)', 'active=(true or false)', 'lastName=(lastName of user to search)']
+//     })
+// })
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`)
