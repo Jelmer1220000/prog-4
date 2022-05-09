@@ -23,8 +23,26 @@ module.exports = {
             assert(typeof emailAdress === 'string', 'emailAdress is invalid!')
             assert(typeof password === 'string', 'password is invalid!')
             assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
-            next()
-        } catch (err) {
+            database.getConnection(function (err, connection) {
+                if (err)
+                    return res.status(400).json({
+                        Status: 400,
+                        message: err,
+                    })
+                connection.query(
+                    `SELECT * FROM user WHERE firstName = '${req.body.firstName}' && lastName = '${req.body.lastName}';`,
+                    function (error, results, fields) {
+                        connection.release()
+                        if (results.length > 0) {
+                            throw err;
+                        } else {
+                            next()
+                        }
+                    }
+                )
+                })
+
+            } catch (err) {
             res.status(400).json({
                 Status: 400,
                 message: err.message,
@@ -70,14 +88,19 @@ module.exports = {
 
     validateEmail(req, res, next) {
         let forbidden = ['#', '$', '%', '^', '&', '*', '(', ')', '-', '=', '+']
-        let progress = true
+        let progress = true;
         let email = req.body.emailAdress
         forbidden.forEach((letter) => {
             if (email.includes(letter)) {
                 progress = false
             }
         })
-        if (progress == true) {
+        if (progress != true) {
+            return res.status(409).json({
+                Status: 409,
+                message: 'emailAdress contains a forbidden symbol!',
+            })
+        }
             database.getConnection(function (err, connection) {
                 if (err)
                     return res.status(400).json({
@@ -92,7 +115,7 @@ module.exports = {
                             if (results[0].id == req.params.userId) {
                                 next()
                             } else {
-                                res.status(409).json({
+                                return res.status(409).json({
                                     Status: 409,
                                     message: 'An user with this Email adress already exists!',
                                 })
@@ -103,11 +126,5 @@ module.exports = {
                     }
                 )
             })
-        } else {
-            res.status(409).json({
-                Status: 409,
-                message: 'emailAdress contains a forbidden symbol!',
-            })
-        }
-    },
-}
+        },
+    }

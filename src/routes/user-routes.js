@@ -13,15 +13,15 @@ router.get('/:userId', userController.getUserById)
 
 router.put(
     '/:userId',
-    validator.validateUser,
     validator.validateEmail,
+    validator.validateUser,
     userController.changeUser
 )
 
 router.post(
     '',
-    validator.validateUser,
     validator.validateEmail,
+    validator.validateUser,
     userController.createUser
 )
 

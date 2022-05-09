@@ -84,7 +84,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .post('/api/user')
                 .send({
-                    firstName: 'first',
+                    firstName: 'firdaswddst',
                     lastName: 'last',
                     street: '',
                     city: 'Breda',
@@ -118,8 +118,8 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .post('/api/user')
                 .send({
-                    firstName: 'first',
-                    lastName: 'last',
+                    firstName: 'fsdsd',
+                    lastName: 'dfssfef',
                     street: 'street',
                     city: 'city',
                     isActive: 1,
@@ -188,7 +188,7 @@ describe('User Tests 201-206', () => {
                     street: 'Info',
                     city: 'Breda',
                     isActive: 1,
-                    emailAdress: 'new.user7@server.com',
+                    emailAdress: 'new.user57@server.com',
                     password: 'secret',
                     phoneNumber: '06-11223344',
                 })
@@ -216,7 +216,6 @@ describe('User Tests 201-206', () => {
             // maak de testdatabase leeg zodat we onze testen kunnen uitvoeren.
             database.getConnection(function (err, connection) {
                 if (err) throw err // not connected!
-
                 // Use the connection
                 connection.query(
                     CLEAR_ALL + INSERT_USER,
@@ -648,7 +647,7 @@ describe('User Tests 201-206', () => {
                 })
         })
 
-        it("TC-204-2 Retrieve user by ID, Id does exist", (done) => {
+        it("TC-204-3 Retrieve user by ID, Id does exist", (done) => {
             chai.request(server)
                 .get('/api/user/1')
                 .end((err, res) => {
@@ -937,7 +936,7 @@ describe('User Tests 201-206', () => {
                 })
         })
 
-        it("TC-206-1 User succesfully deleted", (done) => {
+        it("TC-206-4 User succesfully deleted", (done) => {
             chai.request(server)
                 .delete('/api/user/1')
                 .end((err, res) => {
