@@ -59,11 +59,11 @@ module.exports = {
                     if (results.length > 0) {
                         return res.status(200).json({
                             Status: 200,
-                            results: results[0],
+                            result: results[0],
                         })
                     } else {
-                        res.status(400).json({
-                            Status: 400,
+                        res.status(404).json({
+                            Status: 404,
                             Error: 'There is no user with this id!',
                         })
                     }

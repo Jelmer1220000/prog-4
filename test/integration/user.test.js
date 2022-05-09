@@ -582,34 +582,39 @@ describe('User Tests 201-206', () => {
                     done()
                 })
         })
+
+        it('TC-203-2 Valide token, user exists', (done) => {
+            chai.request(server)
+                .get('/api/user/profile')
+                //User is not logged in!
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(404)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'Error')
+
+                    let { Status, Error } = res.body
+                    Status.should.be.an('number')
+                    Error.should.be
+                        .an('string')
+                        .that.contains(
+                            'This Endpoint is currently Unavailable!'
+                        )
+                    done()
+                })
+        })
     })
 
     describe('UC204 Request user Details', () => {
         it('TC-204-1 Invalid Token, user not Logged in', (done) => {
             chai.request(server)
-                .get('/api/user/1')
+                .get('/api/user/982134892')
                 .end((err, res) => {
                     assert.ifError(err)
-                    res.should.have.status(200)
-                    res.should.be.an('object')
-
-                    res.body.should.be
-                        .an('object')
-                        .that.has.all.keys('Status', 'results')
-
-                    let { Status, results } = res.body
-                    Status.should.be.an('number')
-                    results.should.be.an('object')
-                    done()
-                })
-        })
-
-        it('TC-204-2 Retrieve user by ID', (done) => {
-            chai.request(server)
-                .get('/api/user/900123')
-                .end((err, res) => {
-                    assert.ifError(err)
-                    res.should.have.status(400)
+                    res.should.have.status(404)
                     res.should.be.an('object')
 
                     res.body.should.be
@@ -621,6 +626,58 @@ describe('User Tests 201-206', () => {
                     Error.should.be
                         .an('string')
                         .that.contains('There is no user with this id!')
+                    done()
+                })
+        })
+
+        it("TC-204-2 Retrieve user by ID, Id doesn't exist", (done) => {
+            chai.request(server)
+                .get('/api/user/900123')
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(404)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'Error')
+
+                    let { Status, Error } = res.body
+                    Status.should.be.an('number')
+                    Error.should.be
+                        .an('string')
+                        .that.contains('There is no user with this id!')
+                    done()
+                })
+        })
+
+        it("TC-204-2 Retrieve user by ID, Id does exist", (done) => {
+            chai.request(server)
+                .get('/api/user/1')
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(200)
+                    res.should.be.an('object')
+
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'result')
+
+                    let { Status, result } = res.body
+                    Status.should.be.an('number')
+                    result.should.be.an('object').that.contains(                       
+                        {
+                        id: 1,
+                        firstName: 'first',
+                        lastName: 'last',
+                        city: 'city',
+                        street: 'street',
+                        emailAdress: 'name@server.nl',
+                        isActive: 1,
+                        password: 'secret',
+                        roles: 'editor,guest',
+                        phoneNumber: '-',
+                    })
                     done()
                 })
         })
