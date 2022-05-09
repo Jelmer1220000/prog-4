@@ -106,7 +106,7 @@ module.exports = {
         } else {
             res.status(400).json({
                 Status: 400,
-                Error: 'emailAdress contains a forbidden symbol!',
+                message: 'emailAdress contains a forbidden symbol!',
             })
         }
     },

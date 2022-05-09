@@ -90,7 +90,6 @@ describe('User Tests 201-206', () => {
                     city: 'Breda',
                     isActive: 1,
                     roles: '',
-                    //# is forbidden
                     emailAdress: 'name#$%@server.nl',
                     password: 'secret',
                     phoneNumber: '06-11223344',
