@@ -36,19 +36,19 @@ describe('User Tests 201-206', () => {
                 // Use the connection
                 connection.query(
                     CLEAR_ALL + INSERT_USER,
-                    function (error, results, fields) {
+                    function (message, results, fields) {
                         // When done with the connection, release it.
                         connection.release()
 
-                        // Handle error after the release.
-                        if (error) throw error
+                        // Handle message after the release.
+                        if (message) throw message
                         // Let op dat je done() pas aanroept als de query callback eindigt!
                         done()
                     }
                 )
             })
         })
-        it('TC-201-1 should return a valid error when required value is not present', (done) => {
+        it('TC-201-1 should return a valid message when required value is not present', (done) => {
             chai.request(server)
                 .post('/api/user')
                 .send({
@@ -59,21 +59,20 @@ describe('User Tests 201-206', () => {
                     isActive: 1,
                     emailAdress: 'Heroku.works@server.com',
                     password: 'secret',
-                    roles: '',
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('firstName is invalid!')
 
@@ -97,17 +96,17 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains(
                             'emailAdress contains a forbidden symbol!'
@@ -130,17 +129,17 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('password is invalid!')
                     done()
@@ -162,17 +161,17 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifError(err)
-                    res.should.have.status(400)
+                    assert.ifmessage(err)
+                    res.should.have.status(409)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains(
                             'An user with this Email adress already exists!'
@@ -192,12 +191,11 @@ describe('User Tests 201-206', () => {
                     isActive: 1,
                     emailAdress: 'new.user7@server.com',
                     password: 'secret',
-                    roles: '',
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifError(err)
-                    res.should.have.status(200)
+                    assert.ifmessage(err)
+                    res.should.have.status(201)
                     res.should.be.an('object')
 
                     res.body.should.be
@@ -223,12 +221,12 @@ describe('User Tests 201-206', () => {
                 // Use the connection
                 connection.query(
                     CLEAR_ALL + INSERT_USER,
-                    function (error, results, fields) {
+                    function (message, results, fields) {
                         // When done with the connection, release it.
                         connection.release()
 
-                        // Handle error after the release.
-                        if (error) throw error
+                        // Handle message after the release.
+                        if (message) throw message
                         // Let op dat je done() pas aanroept als de query callback eindigt!
                         done()
                     }
@@ -240,7 +238,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user?length=0')
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -296,7 +294,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user?length=2')
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -340,7 +338,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user?lastName=abel')
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -396,7 +394,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user?active=false')
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -452,7 +450,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user?active=true')
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -508,7 +506,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user?lastName=last')
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -546,12 +544,12 @@ describe('User Tests 201-206', () => {
                 // Use the connection
                 connection.query(
                     CLEAR_ALL + INSERT_USER,
-                    function (error, results, fields) {
+                    function (message, results, fields) {
                         // When done with the connection, release it.
                         connection.release()
 
-                        // Handle error after the release.
-                        if (error) throw error
+                        // Handle message after the release.
+                        if (message) throw message
                         // Let op dat je done() pas aanroept als de query callback eindigt!
                         done()
                     }
@@ -564,17 +562,17 @@ describe('User Tests 201-206', () => {
                 .get('/api/user/profile')
                 //User is not logged in!
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains(
                             'This Endpoint is currently Unavailable!'
@@ -588,17 +586,17 @@ describe('User Tests 201-206', () => {
                 .get('/api/user/profile')
                 //User is not logged in!
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains(
                             'This Endpoint is currently Unavailable!'
@@ -613,17 +611,17 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user/982134892')
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('There is no user with this id!')
                     done()
@@ -634,17 +632,17 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user/900123')
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('There is no user with this id!')
                     done()
@@ -655,7 +653,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user/1')
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -698,17 +696,17 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('firstName is invalid!')
                     done()
@@ -730,17 +728,17 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('city is invalid!')
                     done()
@@ -762,17 +760,17 @@ describe('User Tests 201-206', () => {
                     phoneNumber: 06 - 11223344,
                 })
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('phoneNumber is invalid!')
                     done()
@@ -794,17 +792,17 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('No user found with id')
                     done()
@@ -826,17 +824,17 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('No user found with id')
                     done()
@@ -858,7 +856,7 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -881,17 +879,17 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .delete('/api/user/1241244142')
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('No user found with id')
                     done()
@@ -902,17 +900,17 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .delete('/api/user/1241244142')
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('No user found with id')
                     done()
@@ -923,28 +921,28 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .delete('/api/user/1241244142')
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('No user found with id')
                     done()
                 })
         })
 
-        it("TC-206-1 User doesn't exist", (done) => {
+        it("TC-206-1 User succesfully deleted", (done) => {
             chai.request(server)
                 .delete('/api/user/1')
                 .end((err, res) => {
-                    assert.ifError(err)
+                    assert.ifmessage(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 

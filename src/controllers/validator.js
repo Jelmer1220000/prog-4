@@ -10,7 +10,6 @@ module.exports = {
                 lastName,
                 street,
                 city,
-                // isActive,
                 emailAdress,
                 password,
                 phoneNumber,
@@ -21,7 +20,6 @@ module.exports = {
             assert(typeof lastName === 'string', 'lastName is invalid!')
             assert(typeof street === 'string', 'street is invalid!')
             assert(typeof city === 'string', 'city is invalid!')
-            // assert(typeof isActive === 'integer', 'isActive is invalid!')
             assert(typeof emailAdress === 'string', 'emailAdress is invalid!')
             assert(typeof password === 'string', 'password is invalid!')
             assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
@@ -63,8 +61,8 @@ module.exports = {
             assert(typeof cookId === 'number', 'cookId is invalid!')
             next()
         } catch (err) {
-            res.status(400).json({
-                Status: 400,
+            res.status(409).json({
+                Status: 409,
                 Error: err.message,
             })
         }

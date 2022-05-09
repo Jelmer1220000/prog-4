@@ -80,7 +80,7 @@ module.exports = {
                     Error: err,
                 })
             let body = req.body
-            let query = `INSERT INTO user (firstName, lastName, isActive, emailAdress, password, phoneNumber, roles, street, city) VALUES ?`
+            let query = `INSERT INTO user (firstName, lastName, isActive, emailAdress, password, phoneNumber, street, city) VALUES ?`
             var values = [
                 [
                     body.firstName,
@@ -89,7 +89,6 @@ module.exports = {
                     body.emailAdress,
                     body.password,
                     body.phoneNumber,
-                    body.roles,
                     body.street,
                     body.city,
                 ],
@@ -105,8 +104,8 @@ module.exports = {
                         })
                     connection.release()
                     if (results.affectedRows > 0) {
-                        return res.status(200).json({
-                            Status: 200,
+                        return res.status(201).json({
+                            Status: 201,
                             result: 'Succesfully created user!',
                         })
                     } else {
