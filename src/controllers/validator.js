@@ -80,8 +80,8 @@ module.exports = {
         if (progress == true) {
             database.getConnection(function (err, connection) {
                 if (err)
-                    return res.status(409).json({
-                        Status: 409,
+                    return res.status(400).json({
+                        Status: 400,
                         message: err,
                     })
                 connection.query(
@@ -104,8 +104,8 @@ module.exports = {
                 )
             })
         } else {
-            res.status(400).json({
-                Status: 400,
+            res.status(409).json({
+                Status: 409,
                 message: 'emailAdress contains a forbidden symbol!',
             })
         }
