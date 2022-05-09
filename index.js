@@ -4,12 +4,12 @@ const userRoutes = require('./src/routes/user-routes')
 const mealRoutes = require('./src/routes/meal-routes')
 const port = process.env.PORT || 3000
 
-//Logging
-app.get('*', (req, res, next) => {
-    // console.log(`Method ${req.method} is aangeroepen`);
-    // console.log(`Op ${req.url}`)
-    next()
-})
+// //Logging
+// app.get('*', (req, res, next) => {
+//     // console.log(`Method ${req.method} is aangeroepen`);
+//     // console.log(`Op ${req.url}`)
+//     next()
+// })
 app.use(express.json())
 app.use('/api/user', userRoutes)
 //Api meal routes
@@ -24,14 +24,14 @@ app.get('/', (req, res) => {
     })
 })
 
-// app.all('*', (req, res) => {
-//     res.status(404).json({
-//         Message: `Welcome to my API`,
-//         Message2: `To get Started please enter one of the endpoints below! (with correct body if requested)`,
-//         Endpoints: [`GET /api/user`, `GET /api/user/{id}`, `GET /api/user/profile`, `POST /api/user`, `PUT /api/user/{id}`, `DELETE /api/user/{id}`],
-//         Parameters: ['All parameters are for GET /api/user', 'length=(amount of people)', 'active=(true or false)', 'lastName=(lastName of user to search)']
-//     })
-// })
+app.all('*', (req, res) => {
+    res.status(404).json({
+        Message: `Welcome to my API`,
+        Message2: `To get Started please enter one of the endpoints below! (with correct body if requested)`,
+        Endpoints: [`GET /api/user`, `GET /api/user/{id}`, `GET /api/user/profile`, `POST /api/user`, `PUT /api/user/{id}`, `DELETE /api/user/{id}`],
+        Parameters: ['All parameters are for GET /api/user', 'length=(amount of people)', 'active=(true or false)', 'lastName=(lastName of user to search)']
+    })
+})
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`)
