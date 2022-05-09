@@ -16,12 +16,8 @@ app.get('/', (req, res) => {
     res.status(200).json({
         Message: `Welcome to my API`,
         Message2: `To get Started please enter one of the endpoints below! (with correct body if requested)`,
-        Endpoint1: `GET /api/user`,
-        Endpoint2: `GET /api/user/{id}`,
-        Endpoint3: `GET /api/user/profile`,
-        Endpoint4: `POST /api/user`,
-        Endpoint5: `PUT /api/user/{id}`,
-        Endpoint6: `DELETE /api/user/{id}`,
+        Endpoints: [`GET /api/user`, `GET /api/user/{id}`, `GET /api/user/profile`, `POST /api/user`, `PUT /api/user/{id}`, `DELETE /api/user/{id}`],
+        Parameters: ['All parameters are for GET /api/user', 'length=(amount of people)', 'active=(true or false)', 'lastName=(lastName of user to search)']
     })
 })
 //Json Parser
@@ -34,13 +30,10 @@ app.use('/api', mealRoutes)
 //Opvang voor fouten
 app.all('*', (req, res) => {
     res.status(404).json({
-        Message: `No endpoint found with: ${req.url}`,
-        Endpoint1: `GET /api/user`,
-        Endpoint2: `GET /api/user/{id}`,
-        Endpoint3: `GET /api/user/profile`,
-        Endpoint4: `POST /api/user`,
-        Endpoint5: `PUT /api/user/{id}`,
-        Endpoint6: `DELETE /api/user/{id}`,
+        Message: `Welcome to my API`,
+        Message2: `To get Started please enter one of the endpoints below! (with correct body if requested)`,
+        Endpoints: [`GET /api/user`, `GET /api/user/{id}`, `GET /api/user/profile`, `POST /api/user`, `PUT /api/user/{id}`, `DELETE /api/user/{id}`],
+        Parameters: ['All parameters are for GET /api/user', 'length=(amount of people)', 'active=(true or false)', 'lastName=(lastName of user to search)']
     })
 })
 
