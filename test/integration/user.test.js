@@ -36,19 +36,19 @@ describe('User Tests 201-206', () => {
                 // Use the connection
                 connection.query(
                     CLEAR_ALL + INSERT_USER,
-                    function (message, results, fields) {
+                    function (Error, results, fields) {
                         // When done with the connection, release it.
                         connection.release()
 
-                        // Handle message after the release.
-                        if (message) throw message
+                        // Handle Error after the release.
+                        if (Error) throw Error
                         // Let op dat je done() pas aanroept als de query callback eindigt!
                         done()
                     }
                 )
             })
         })
-        it('TC-201-1 should return a valid message when required value is not present', (done) => {
+        it('TC-201-1 should return a valid Error when required value is not present', (done) => {
             chai.request(server)
                 .post('/api/user')
                 .send({
@@ -62,7 +62,7 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
@@ -96,7 +96,7 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
@@ -129,7 +129,7 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
@@ -161,7 +161,7 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(409)
                     res.should.be.an('object')
 
@@ -194,7 +194,7 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(201)
                     res.should.be.an('object')
 
@@ -221,12 +221,12 @@ describe('User Tests 201-206', () => {
                 // Use the connection
                 connection.query(
                     CLEAR_ALL + INSERT_USER,
-                    function (message, results, fields) {
+                    function (Error, results, fields) {
                         // When done with the connection, release it.
                         connection.release()
 
-                        // Handle message after the release.
-                        if (message) throw message
+                        // Handle Error after the release.
+                        if (Error) throw Error
                         // Let op dat je done() pas aanroept als de query callback eindigt!
                         done()
                     }
@@ -238,7 +238,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user?length=0')
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -294,7 +294,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user?length=2')
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -338,7 +338,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user?lastName=abel')
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -394,7 +394,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user?active=false')
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -450,7 +450,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user?active=true')
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -506,7 +506,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user?lastName=last')
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -544,12 +544,12 @@ describe('User Tests 201-206', () => {
                 // Use the connection
                 connection.query(
                     CLEAR_ALL + INSERT_USER,
-                    function (message, results, fields) {
+                    function (Error, results, fields) {
                         // When done with the connection, release it.
                         connection.release()
 
-                        // Handle message after the release.
-                        if (message) throw message
+                        // Handle Error after the release.
+                        if (Error) throw Error
                         // Let op dat je done() pas aanroept als de query callback eindigt!
                         done()
                     }
@@ -562,7 +562,7 @@ describe('User Tests 201-206', () => {
                 .get('/api/user/profile')
                 //User is not logged in!
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
@@ -586,7 +586,7 @@ describe('User Tests 201-206', () => {
                 .get('/api/user/profile')
                 //User is not logged in!
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
@@ -611,7 +611,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user/982134892')
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
@@ -632,7 +632,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user/900123')
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
@@ -653,7 +653,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .get('/api/user/1')
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -696,7 +696,7 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
@@ -728,7 +728,7 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
@@ -760,7 +760,7 @@ describe('User Tests 201-206', () => {
                     phoneNumber: 06 - 11223344,
                 })
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
@@ -792,7 +792,7 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
@@ -824,7 +824,7 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(400)
                     res.should.be.an('object')
 
@@ -856,7 +856,7 @@ describe('User Tests 201-206', () => {
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 
@@ -879,7 +879,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .delete('/api/user/1241244142')
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
@@ -900,7 +900,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .delete('/api/user/1241244142')
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
@@ -921,7 +921,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .delete('/api/user/1241244142')
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(404)
                     res.should.be.an('object')
 
@@ -942,7 +942,7 @@ describe('User Tests 201-206', () => {
             chai.request(server)
                 .delete('/api/user/1')
                 .end((err, res) => {
-                    assert.ifmessage(err)
+                    assert.ifError(err)
                     res.should.have.status(200)
                     res.should.be.an('object')
 

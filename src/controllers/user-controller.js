@@ -7,7 +7,7 @@ module.exports = {
             if (err)
                 return res.status(400).json({
                     Status: 400,
-                    Error: err,
+                    message: err,
                 })
                 let amount = 10000;
                 let lastName = '%';
@@ -38,7 +38,7 @@ module.exports = {
                     } else {
                         res.status(400).json({
                             Status: 400,
-                            Error: 'This endpoint is unavailable right now!',
+                            message: 'This endpoint is unavailable right now!',
                         })
                     }
                 }
@@ -64,7 +64,7 @@ module.exports = {
                     } else {
                         res.status(404).json({
                             Status: 404,
-                            Error: 'There is no user with this id!',
+                            message: 'There is no user with this id!',
                         })
                     }
                 }
@@ -77,7 +77,7 @@ module.exports = {
             if (err)
                 return res.status(400).json({
                     Status: 400,
-                    Error: err,
+                    message: err,
                 })
             let body = req.body
             let query = `INSERT INTO user (firstName, lastName, isActive, emailAdress, password, phoneNumber, street, city) VALUES ?`
@@ -100,7 +100,7 @@ module.exports = {
                     if (error)
                         return res.status(400).json({
                             Status: 400,
-                            Error: `Your body is Invalid: ${err.sqlMessage}`,
+                            message: `Your body is Invalid: ${err.sqlMessage}`,
                         })
                     connection.release()
                     if (results.affectedRows > 0) {
@@ -112,7 +112,7 @@ module.exports = {
                         //Never happens due to assert tests
                         res.status(400).json({
                             Status: 400,
-                            Error: 'Could not create user!',
+                            message: 'Could not create user!',
                             body: req.body,
                         })
                     }
@@ -126,7 +126,7 @@ module.exports = {
             if (err)
                 return res.status(400).json({
                     Status: 400,
-                    Error: err,
+                    message: err,
                 })
             let body = req.body
 
@@ -136,7 +136,7 @@ module.exports = {
                 if (error)
                     return res.status(400).json({
                         Status: 400,
-                        Error: `Your body is Invalid: ${error.sqlMessage}`,
+                        message: `Your body is Invalid: ${error.sqlMessage}`,
                     })
                 connection.release()
                 if (results.changedRows > 0) {
@@ -147,7 +147,7 @@ module.exports = {
                 } else {
                     res.status(400).json({
                         Status: 400,
-                        Error: `No user found with id: ${req.params.userId}`,
+                        message: `No user found with id: ${req.params.userId}`,
                     })
                 }
             })
@@ -159,7 +159,7 @@ module.exports = {
             if (err)
                 return res.status(400).json({
                     Status: 400,
-                    Error: err,
+                    message: err,
                 })
 
             let query = `DELETE FROM user WHERE id = ${req.params.userId}`
@@ -168,7 +168,7 @@ module.exports = {
                 if (error)
                     return res.status(400).json({
                         Status: 400,
-                        Error: error,
+                        message: error,
                     })
                 connection.release()
                 if (results.affectedRows > 0) {
@@ -179,7 +179,7 @@ module.exports = {
                 } else {
                     res.status(404).json({
                         Status: 404,
-                        Error: `No user found with id: ${req.params.userId}!`,
+                        message: `No user found with id: ${req.params.userId}!`,
                     })
                 }
             })
@@ -189,7 +189,7 @@ module.exports = {
     getProfile(req, res) {
         res.status(404).json({
             Status: 404,
-            Error: `This Endpoint is currently Unavailable!`,
+            message: `This Endpoint is currently Unavailable!`,
         })
     },
 }
