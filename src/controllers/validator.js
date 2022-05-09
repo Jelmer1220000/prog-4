@@ -61,8 +61,8 @@ module.exports = {
             assert(typeof cookId === 'number', 'cookId is invalid!')
             next()
         } catch (err) {
-            res.status(409).json({
-                Status: 409,
+            res.status(400).json({
+                Status: 400,
                 Error: err.message,
             })
         }
@@ -80,9 +80,9 @@ module.exports = {
         if (progress == true) {
             database.getConnection(function (err, connection) {
                 if (err)
-                    return res.status(400).json({
-                        Status: 400,
-                        Error: err,
+                    return res.status(409).json({
+                        Status: 409,
+                        message: err,
                     })
                 connection.query(
                     `SELECT * FROM user WHERE emailAdress = '${email}';`,
@@ -92,9 +92,9 @@ module.exports = {
                             if (results[0].id == req.params.userId) {
                                 next()
                             } else {
-                                res.status(400).json({
-                                    Status: 400,
-                                    Error: 'An user with this Email adress already exists!',
+                                res.status(409).json({
+                                    Status: 409,
+                                    message: 'An user with this Email adress already exists!',
                                 })
                             }
                         } else {
