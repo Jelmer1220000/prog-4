@@ -27,6 +27,7 @@ module.exports = {
                         }
                     }
                 }
+
             connection.query(`SELECT * FROM user WHERE lastName LIKE '${lastName}' && isActive LIKE '${isActive}' LIMIT ${amount};`, function (error, results, fields) {
                     connection.release()
                     if (error) return console.log(error)
@@ -53,6 +54,13 @@ module.exports = {
                     Status: 400,
                     Error: err,
                 })
+
+                if (!Number(req.params.userId)){
+                    return res.status(400).json({
+                        Status: 400,
+                        message: `No user found with id: ${req.params.userId}!`
+                    })
+                }
             connection.query(`SELECT * FROM user WHERE id = ${req.params.userId};`, function (error, results, fields) {
                 if (error) return console.log(error)
                     connection.release()
@@ -128,7 +136,12 @@ module.exports = {
                     message: err,
                 })
             let body = req.body
-
+            if (!Number(req.params.userId)){
+                return res.status(400).json({
+                    Status: 400,
+                    message: `No user found with id: ${req.params.userId}!`
+                })
+            }
             var query = `UPDATE user SET firstName = '${body.firstName}', lastName = '${body.lastName}', isActive = '${body.isActive}', emailAdress = '${body.emailAdress}', password = '${body.password}', phoneNumber = '${body.phoneNumber}', roles = '${body.roles}', street = '${body.street}', city = '${body.city}' WHERE id = ${req.params.userId}`
 
             connection.query(query, function (error, results, fields) {
@@ -160,6 +173,12 @@ module.exports = {
                     Status: 400,
                     message: err,
                 })
+                if (!Number(req.params.userId)){
+                    return res.status(400).json({
+                        Status: 400,
+                        message: `No user found with id: ${req.params.userId}!`
+                    })
+                }
 
             let query = `DELETE FROM user WHERE id = ${req.params.userId}`
 
