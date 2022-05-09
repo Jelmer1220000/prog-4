@@ -80,8 +80,8 @@ module.exports = {
                     message: err,
                 })
             let body = req.body
-            let query = `INSERT INTO user (firstName, lastName, isActive, emailAdress, password, phoneNumber, street, city) VALUES ?`
-            var values = [
+            let query = `INSERT INTO user (firstName, lastName, isActive, emailAdress, password, phoneNumber, street, city) VALUES (?)`
+            var values =
                 [
                     body.firstName,
                     body.lastName,
@@ -91,8 +91,7 @@ module.exports = {
                     body.phoneNumber,
                     body.street,
                     body.city,
-                ],
-            ]
+                ]
             connection.query(
                 query,
                 [values],

@@ -10,7 +10,7 @@ app.get('*', (req, res, next) => {
     // console.log(`Op ${req.url}`)
     next()
 })
-
+app.use(express.json())
 app.use('/api', userRoutes)
 //Api meal routes
 app.use('/api', mealRoutes)
@@ -25,7 +25,6 @@ app.get('/', (req, res) => {
     })
 })
 //Json Parser
-app.use(express.json())
 //Api user routes
 
 

@@ -42,7 +42,6 @@ module.exports = {
                 imageUrl,
                 maxAmountOfParticipants,
                 price,
-
                 // allergenes,
                 cookId
             } = req.body
