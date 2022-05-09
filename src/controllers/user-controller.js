@@ -9,10 +9,9 @@ module.exports = {
                     Status: 400,
                     Error: err,
                 })
-                let amount = 1000;
+                let amount = 10000;
                 let lastName = '%';
                 let isActive = '%';
-                console.log(req.query)
                 if (Object.keys(req.query).length != 0) {
                     if (req.query.lastName != null){
                         lastName = req.query.lastName;
@@ -179,8 +178,8 @@ module.exports = {
                         result: `Succesfully deleted user: ${req.params.userId}`,
                     })
                 } else {
-                    res.status(400).json({
-                        Status: 400,
+                    res.status(404).json({
+                        Status: 404,
                         Error: `No user found with id: ${req.params.userId}!`,
                     })
                 }
@@ -189,8 +188,8 @@ module.exports = {
     },
 
     getProfile(req, res) {
-        res.status(401).json({
-            Status: 401,
+        res.status(404).json({
+            Status: 404,
             Error: `This Endpoint is currently Unavailable!`,
         })
     },
