@@ -11,12 +11,11 @@ app.get('*', (req, res, next) => {
     next()
 })
 app.use(express.json())
-app.use('/api', userRoutes)
+app.use('/api/user', userRoutes)
 //Api meal routes
-app.use('/api', mealRoutes)
-//added git remote
-//Algemene opvang voor base Url
-app.get('', (req, res) => {
+app.use('/api/meal', mealRoutes)
+
+app.get('/', (req, res) => {
     res.status(200).json({
         Message: `Welcome to my API`,
         Message2: `To get Started please enter one of the endpoints below! (with correct body if requested)`,
@@ -24,11 +23,7 @@ app.get('', (req, res) => {
         Parameters: ['All parameters are for GET /api/user', 'length=(amount of people)', 'active=(true or false)', 'lastName=(lastName of user to search)']
     })
 })
-//Json Parser
-//Api user routes
 
-
-//Opvang voor fouten
 app.all('*', (req, res) => {
     res.status(404).json({
         Message: `Welcome to my API`,
