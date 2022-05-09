@@ -10,6 +10,10 @@ app.get('*', (req, res, next) => {
     // console.log(`Op ${req.url}`)
     next()
 })
+
+app.use('/api', userRoutes)
+//Api meal routes
+app.use('/api', mealRoutes)
 //added git remote
 //Algemene opvang voor base Url
 app.get('/', (req, res) => {
@@ -23,9 +27,7 @@ app.get('/', (req, res) => {
 //Json Parser
 app.use(express.json())
 //Api user routes
-app.use('/api', userRoutes)
-//Api meal routes
-app.use('/api', mealRoutes)
+
 
 //Opvang voor fouten
 app.all('*', (req, res) => {
