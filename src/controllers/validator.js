@@ -102,12 +102,12 @@ module.exports = {
         }
         forbidden.forEach((letter) => {
             if (email.includes(letter)) {
-                progress = false
+                 progress = false;
             }
         })
         if (progress != true) {
-            return res.status(409).json({
-                Status: 300,
+            return res.status(400).json({
+                Status: 400,
                 message: 'emailAdress contains a forbidden symbol!',
             })
         }
