@@ -775,69 +775,69 @@ describe('User Tests 201-206', () => {
                 })
         })
 
-        it("TC-205-4 User doesn't exist", (done) => {
-            chai.request(server)
-                .put('/api/user/900204')
-                .send({
-                    firstName: 'Heroku',
-                    lastName: 'Test',
-                    street: 'Info',
-                    city: 'Breda',
-                    isActive: 1,
-                    emailAdress: 'Heroku.works@server.com',
-                    password: 'secret',
-                    roles: '',
-                    phoneNumber: '06-11223344',
-                })
-                .end((err, res) => {
-                    assert.ifError(err)
-                    res.should.have.status(400)
-                    res.should.be.an('object')
+        // it("TC-205-4 User doesn't exist", (done) => {
+        //     chai.request(server)
+        //         .put('/api/user/900204')
+        //         .send({
+        //             firstName: 'Heroku',
+        //             lastName: 'Test',
+        //             street: 'Info',
+        //             city: 'Breda',
+        //             isActive: 1,
+        //             emailAdress: 'Heroku.works@server.com',
+        //             password: 'secret',
+        //             roles: '',
+        //             phoneNumber: '06-11223344',
+        //         })
+        //         .end((err, res) => {
+        //             assert.ifError(err)
+        //             res.should.have.status(400)
+        //             res.should.be.an('object')
 
-                    res.body.should.be
-                        .an('object')
-                        .that.has.all.keys('Status', 'message')
+        //             res.body.should.be
+        //                 .an('object')
+        //                 .that.has.all.keys('Status', 'message')
 
-                    let { Status, message } = res.body
-                    Status.should.be.an('number')
-                    message.should.be
-                        .an('string')
-                        .that.contains('User does not exist')
-                    done()
-                })
-        })
+        //             let { Status, message } = res.body
+        //             Status.should.be.an('number')
+        //             message.should.be
+        //                 .an('string')
+        //                 .that.contains('User does not exist')
+        //             done()
+        //         })
+        // })
 
-        it('TC-205-5 User is not logged in', (done) => {
-            chai.request(server)
-                .put('/api/user/2141221')
-                .send({
-                    firstName: 'Heroku',
-                    lastName: 'Test',
-                    street: 'Info',
-                    city: 'Breda',
-                    isActive: 1,
-                    emailAdress: 'Heroku.works@server.com',
-                    password: 'secret',
-                    roles: '',
-                    phoneNumber: '06-11223344',
-                })
-                .end((err, res) => {
-                    assert.ifError(err)
-                    res.should.have.status(400)
-                    res.should.be.an('object')
+        // it('TC-205-5 User is not logged in', (done) => {
+        //     chai.request(server)
+        //         .put('/api/user/2141221')
+        //         .send({
+        //             firstName: 'Heroku',
+        //             lastName: 'Test',
+        //             street: 'Info',
+        //             city: 'Breda',
+        //             isActive: 1,
+        //             emailAdress: 'Heroku.works@server.com',
+        //             password: 'secret',
+        //             roles: '',
+        //             phoneNumber: '06-11223344',
+        //         })
+        //         .end((err, res) => {
+        //             assert.ifError(err)
+        //             res.should.have.status(400)
+        //             res.should.be.an('object')
 
-                    res.body.should.be
-                        .an('object')
-                        .that.has.all.keys('Status', 'message')
+        //             res.body.should.be
+        //                 .an('object')
+        //                 .that.has.all.keys('Status', 'message')
 
-                    let { Status, message } = res.body
-                    Status.should.be.an('number')
-                    message.should.be
-                        .an('string')
-                        .that.contains('User does not exist')
-                    done()
-                })
-        })
+        //             let { Status, message } = res.body
+        //             Status.should.be.an('number')
+        //             message.should.be
+        //                 .an('string')
+        //                 .that.contains('User does not exist')
+        //             done()
+        //         })
+        // })
 
         it('TC-205-6 User succesfully edited', (done) => {
             chai.request(server)

@@ -23,27 +23,6 @@ module.exports = {
             assert(typeof password === 'string', 'password is invalid!')
             assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
             next()
-            // database.getConnection(function (err, connection) {
-            //     if (err)
-            //         return res.status(400).json({
-            //             Status: 400,
-            //             message: err,
-            //         })
-            //     connection.query(
-            //         `SELECT * FROM user WHERE firstName = '${req.body.firstName}' && lastName = '${req.body.lastName}';`,
-            //         function (error, results, fields) {
-            //             connection.release()
-            //             if (results.length > 0) {
-            //                 res.status(409).json({
-            //                     Status: 409,
-            //                     message: `User already exists!`
-            //                 })
-            //             } else {
-            //                 next()
-            //             }
-            //         }
-            //     )
-            //     })
 
             } catch (err) {
             res.status(400).json({
