@@ -119,7 +119,7 @@ module.exports = {
 
                         return res.status(201).json({
                             Status: 201,
-                            message: person
+                            result: person
                         })
                     } else {
                         //Never happens due to assert tests
