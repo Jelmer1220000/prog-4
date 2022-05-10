@@ -118,7 +118,7 @@ module.exports = {
                             if (results[0].id == req.params.userId) {
                                 next()
                             } else {
-                                return res.status(409).json({
+                                return res.status(500).json({
                                     Status: 409,
                                     message: 'An user with this Email adress already exists!',
                                 })
