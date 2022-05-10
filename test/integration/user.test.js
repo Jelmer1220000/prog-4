@@ -80,39 +80,39 @@ describe('User Tests 201-206', () => {
                 })
         })
 
-        // it('TC-201-2 emailAdress contains Invalid character', (done) => {
-        //     chai.request(server)
-        //         .post('/api/user')
-        //         .send({
-        //             firstName: 'firdaswddst',
-        //             lastName: 'last',
-        //             street: '',
-        //             city: 'Breda',
-        //             isActive: 1,
-        //             roles: '',
-        //             emailAdress: 'name#$%@server.nl',
-        //             password: 'secret',
-        //             phoneNumber: '06-11223344',
-        //         })
-        //         .end((err, res) => {
-        //             assert.ifError(err)
-        //             res.should.have.status(409)
-        //             res.should.be.an('object')
+        it('TC-201-2 emailAdress contains Invalid character', (done) => {
+            chai.request(server)
+                .post('/api/user')
+                .send({
+                    firstName: 'firdaswddst',
+                    lastName: 'last',
+                    street: '',
+                    city: 'Breda',
+                    isActive: 1,
+                    roles: '',
+                    emailAdress: 'name#$%@server.nl',
+                    password: 'secret',
+                    phoneNumber: '06-11223344',
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(409)
+                    res.should.be.an('object')
 
-        //             res.body.should.be
-        //                 .an('object')
-        //                 .that.has.all.keys('Status', 'message')
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'message')
 
-        //             let { Status, message } = res.body
-        //             Status.should.be.an('number')
-        //             message.should.be
-        //                 .an('string')
-        //                 .that.contains(
-        //                     'emailAdress contains a forbidden symbol!'
-        //                 )
-        //             done()
-        //         })
-        // })
+                    let { Status, message } = res.body
+                    Status.should.be.an('number')
+                    message.should.be
+                        .an('string')
+                        .that.contains(
+                            'emailAdress contains a forbidden symbol!'
+                        )
+                    done()
+                })
+        })
 
         it('TC-201-3 Password is Invalid', (done) => {
             chai.request(server)
@@ -179,36 +179,45 @@ describe('User Tests 201-206', () => {
                 })
         })
 
-        // it('TC-201-5 user succesfully created', (done) => {
-        //     chai.request(server)
-        //         .post('/api/user')
-        //         .send({
-        //             firstName: 'acceptable',
-        //             lastName: 'Test',
-        //             street: 'Info',
-        //             city: 'Breda',
-        //             isActive: 1,
-        //             emailAdress: 'new.user57@server.com',
-        //             password: 'secret',
-        //             phoneNumber: '06-11223344',
-        //         })
-        //         .end((err, res) => {
-        //             assert.ifError(err)
-        //             res.should.have.status(201)
-        //             res.should.be.an('object')
+        it('TC-201-5 user succesfully created', (done) => {
+            chai.request(server)
+                .post('/api/user')
+                .send({
+                    firstName: 'acceptable',
+                    lastName: 'Test',
+                    street: 'Info',
+                    city: 'Breda',
+                    isActive: 1,
+                    emailAdress: 'new.user57@server.com',
+                    password: 'secret',
+                    phoneNumber: '06-11223344',
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(201)
+                    res.should.be.an('object')
 
-        //             res.body.should.be
-        //                 .an('object')
-        //                 .that.has.all.keys('Status', 'message', 'result')
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'result')
 
-        //             let { Status, message, result } = res.body
-        //             Status.should.be.an('number')
-        //             message.should.be
-        //                 .an('string')
-        //                 .that.contains('Succesfully created user!')
-        //             done()
-        //         })
-        // })
+                    let { Status, result } = res.body
+                    Status.should.be.an('number')
+                    result.should.be.an('object').that.contains(                       
+                        {
+                        id: result.id,
+                        firstName: 'acceptable',
+                        lastName: 'Test',
+                        street: 'Info',
+                        city: 'Breda',
+                        isActive: 1,
+                        emailAdress: 'new.user57@server.com',
+                        password: 'secret',
+                        phoneNumber: '06-11223344',
+                    })
+                    done()
+                })
+        })
     })
 
     describe('UC202 View all users', () => {
@@ -679,165 +688,164 @@ describe('User Tests 201-206', () => {
         })
     })
     describe('UC205 Editing user', () => {
-        // it('TC-205-1 Required value is missing', (done) => {
-        //     chai.request(server)
-        //         .put('/api/user/1')
-        //         .send({
-        //             //Firstname missing!
-        //             lastName: 'Test',
-        //             street: 'Info',
-        //             city: 'Breda',
-        //             isActive: 1,
-        //             emailAdress: 'Heroku232.works@server.com',
-        //             password: 'secret',
-        //             roles: '',
-        //             phoneNumber: '06-11223344',
-        //         })
-        //         .end((err, res) => {
-        //             assert.ifError(err)
-        //             res.should.have.status(400)
-        //             res.should.be.an('object')
+        it('TC-205-1 Required value is missing', (done) => {
+            chai.request(server)
+                .put('/api/user/1')
+                .send({
+                    firstName: 'Heroku',
+                    lastName: 'Test',
+                    street: 'Info',
+                    city: 'Breda',
+                    isActive: 1,
+                    password: 'secret',
+                    roles: '',
+                    phoneNumber: '06-11223344',
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(400)
+                    res.should.be.an('object')
 
-        //             res.body.should.be
-        //                 .an('object')
-        //                 .that.has.all.keys('Status', 'message')
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'message')
 
-        //             let { Status, message } = res.body
-        //             Status.should.be.an('number')
-        //             message.should.be
-        //                 .an('string')
-        //                 .that.contains('firstName is invalid!')
-        //             done()
-        //         })
-        // })
+                    let { Status, message } = res.body
+                    Status.should.be.an('number')
+                    message.should.be
+                        .an('string')
+                        .that.contains('Email is invalid')
+                    done()
+                })
+        })
 
-        // it('TC-205-2 Invalid postal code', (done) => {
-        //     chai.request(server)
-        //         .put('/api/user/1')
-        //         .send({
-        //             firstName: 'heroku',
-        //             lastName: 'Test',
-        //             street: 'Info',
-        //             city: 4,
-        //             isActive: 1,
-        //             emailAdress: 'Heroku232.works@server.com',
-        //             password: 'secret',
-        //             roles: '',
-        //             phoneNumber: '06-11223344',
-        //         })
-        //         .end((err, res) => {
-        //             assert.ifError(err)
-        //             res.should.have.status(400)
-        //             res.should.be.an('object')
+        it('TC-205-2 Invalid postal code', (done) => {
+            chai.request(server)
+                .put('/api/user/1')
+                .send({
+                    firstName: 'Heroku',
+                    lastName: 'Test',
+                    street: 'Info',
+                    city: 'Breda',
+                    isActive: 1,
+                    emailAdress: 'Heroku.works@server.com',
+                    password: 'secret',
+                    roles: '',
+                    phoneNumber: 06 - 11223344,
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(400)
+                    res.should.be.an('object')
 
-        //             res.body.should.be
-        //                 .an('object')
-        //                 .that.has.all.keys('Status', 'message')
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'message')
 
-        //             let { Status, message } = res.body
-        //             Status.should.be.an('number')
-        //             message.should.be
-        //                 .an('string')
-        //                 .that.contains('city is invalid!')
-        //             done()
-        //         })
-        // })
+                    let { Status, message } = res.body
+                    Status.should.be.an('number')
+                    message.should.be
+                        .an('string')
+                        .that.contains('phoneNumber is invalid!')
+                    done()
+                })
+        })
 
-        // it('TC-205-3 Invalid phone number', (done) => {
-        //     chai.request(server)
-        //         .put('/api/user/1')
-        //         .send({
-        //             firstName: 'Heroku',
-        //             lastName: 'Test',
-        //             street: 'Info',
-        //             city: 'Breda',
-        //             isActive: 1,
-        //             emailAdress: 'Heroku.works@server.com',
-        //             password: 'secret',
-        //             roles: '',
-        //             phoneNumber: 06 - 11223344,
-        //         })
-        //         .end((err, res) => {
-        //             assert.ifError(err)
-        //             res.should.have.status(400)
-        //             res.should.be.an('object')
+        it('TC-205-3 Invalid phone number', (done) => {
+            chai.request(server)
+                .put('/api/user/1')
+                .send({
+                    firstName: 'Heroku',
+                    lastName: 'Test',
+                    street: 'Info',
+                    city: 'Breda',
+                    isActive: 1,
+                    emailAdress: 'Heroku.works@server.com',
+                    password: 'secret',
+                    roles: '',
+                    phoneNumber: 06 - 11223344,
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(400)
+                    res.should.be.an('object')
 
-        //             res.body.should.be
-        //                 .an('object')
-        //                 .that.has.all.keys('Status', 'message')
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'message')
 
-        //             let { Status, message } = res.body
-        //             Status.should.be.an('number')
-        //             message.should.be
-        //                 .an('string')
-        //                 .that.contains('phoneNumber is invalid!')
-        //             done()
-        //         })
-        // })
+                    let { Status, message } = res.body
+                    Status.should.be.an('number')
+                    message.should.be
+                        .an('string')
+                        .that.contains('phoneNumber is invalid!')
+                    done()
+                })
+        })
 
-        // it("TC-205-4 User doesn't exist", (done) => {
-        //     chai.request(server)
-        //         .put('/api/user/900204')
-        //         .send({
-        //             firstName: 'Heroku',
-        //             lastName: 'Test',
-        //             street: 'Info',
-        //             city: 'Breda',
-        //             isActive: 1,
-        //             emailAdress: 'Heroku.works@server.com',
-        //             password: 'secret',
-        //             roles: '',
-        //             phoneNumber: '06-11223344',
-        //         })
-        //         .end((err, res) => {
-        //             assert.ifError(err)
-        //             res.should.have.status(400)
-        //             res.should.be.an('object')
+        it("TC-205-4 User doesn't exist", (done) => {
+            chai.request(server)
+                .put('/api/user/900204')
+                .send({
+                    firstName: 'Heroku',
+                    lastName: 'Test',
+                    street: 'Info',
+                    city: 'Breda',
+                    isActive: 1,
+                    emailAdress: 'Heroku.works@server.com',
+                    password: 'secret',
+                    roles: '',
+                    phoneNumber: '06-11223344',
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(400)
+                    res.should.be.an('object')
 
-        //             res.body.should.be
-        //                 .an('object')
-        //                 .that.has.all.keys('Status', 'message')
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'message')
 
-        //             let { Status, message } = res.body
-        //             Status.should.be.an('number')
-        //             message.should.be
-        //                 .an('string')
-        //                 .that.contains('User does not exist')
-        //             done()
-        //         })
-        // })
+                    let { Status, message } = res.body
+                    Status.should.be.an('number')
+                    message.should.be
+                        .an('string')
+                        .that.contains('User does not exist')
+                    done()
+                })
+        })
 
-        // it('TC-205-5 User is not logged in', (done) => {
-        //     chai.request(server)
-        //         .put('/api/user/2141221')
-        //         .send({
-        //             firstName: 'Heroku',
-        //             lastName: 'Test',
-        //             street: 'Info',
-        //             city: 'Breda',
-        //             isActive: 1,
-        //             emailAdress: 'Heroku.works@server.com',
-        //             password: 'secret',
-        //             roles: '',
-        //             phoneNumber: '06-11223344',
-        //         })
-        //         .end((err, res) => {
-        //             assert.ifError(err)
-        //             res.should.have.status(400)
-        //             res.should.be.an('object')
+        it('TC-205-5 User is not logged in', (done) => {
+            chai.request(server)
+                .put('/api/user/2141221')
+                .send({
+                    firstName: 'Heroku',
+                    lastName: 'Test',
+                    street: 'Info',
+                    city: 'Breda',
+                    isActive: 1,
+                    emailAdress: 'Heroku.works@server.com',
+                    password: 'secret',
+                    roles: '',
+                    phoneNumber: '06-11223344',
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(400)
+                    res.should.be.an('object')
 
-        //             res.body.should.be
-        //                 .an('object')
-        //                 .that.has.all.keys('Status', 'message')
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'message')
 
-        //             let { Status, message } = res.body
-        //             Status.should.be.an('number')
-        //             message.should.be
-        //                 .an('string')
-        //                 .that.contains('User does not exist')
-        //             done()
-        //         })
-        // })
+                    let { Status, message } = res.body
+                    Status.should.be.an('number')
+                    message.should.be
+                        .an('string')
+                        .that.contains('User does not exist')
+                    done()
+                })
+        })
 
         it('TC-205-6 User succesfully edited', (done) => {
             chai.request(server)

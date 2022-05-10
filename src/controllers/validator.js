@@ -2,7 +2,7 @@ const assert = require('assert')
 const database = require('../database/databaseConnection')
 
 module.exports = {
-    validateUser(req, res, next) {
+    validateUserPost(req, res, next) {
         try {
             const {
                 firstName,
@@ -13,7 +13,6 @@ module.exports = {
                 password,
                 phoneNumber,
             } = req.body
-            console.log(req.body)
             //Check of elke value juiste formaat is
             assert(typeof firstName === 'string', 'firstName is invalid!')
             assert(typeof lastName === 'string', 'lastName is invalid!')
@@ -24,6 +23,29 @@ module.exports = {
             assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
             next()
 
+            } catch (err) {
+            res.status(400).json({
+                Status: 400,
+                message: err.message,
+            })
+        }
+    },
+
+    validateUserPut(req, res, next) {
+        try {
+            const {
+                firstName,
+                lastName,
+                street,
+                city,
+                emailAdress,
+                password,
+                phoneNumber,
+            } = req.body
+            //Check of elke value juiste formaat is
+            assert(typeof emailAdress === 'string', 'emailAdress is invalid!')
+            assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
+            next()
             } catch (err) {
             res.status(400).json({
                 Status: 400,
@@ -69,24 +91,24 @@ module.exports = {
     },
 
     validateEmail(req, res, next) {
-        // let forbidden = ['#', '$', '%', '^', '&', '*', '(', ')', '-', '=', '+']
-        // let progress = true;
+        let forbidden = ['#', '$', '%', '^', '&', '*', '(', ')', '-', '=', '+']
+        let progress = true;
         let email = req.body.emailAdress
-        // forbidden.forEach((letter) => {
-        //     if (email.includes(letter)) {
-        //         progress = false
-        //     }
-        // })
-        // if (progress != true) {
-        //     return res.status(409).json({
-        //         Status: 300,
-        //         message: 'emailAdress contains a forbidden symbol!',
-        //     })
-        // }
         if (email == null) {
             return res.status(400).json({
                 Status: 400,
                 message: `Email is invalid`
+            })
+        }
+        forbidden.forEach((letter) => {
+            if (email.includes(letter)) {
+                progress = false
+            }
+        })
+        if (progress != true) {
+            return res.status(409).json({
+                Status: 300,
+                message: 'emailAdress contains a forbidden symbol!',
             })
         }
             database.getConnection(function (err, connection) {

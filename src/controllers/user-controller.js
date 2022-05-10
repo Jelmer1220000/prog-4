@@ -104,7 +104,6 @@ module.exports = {
                 query,
                 [values],
                 function (error, results, fields) {
-                    console.log(results)
                     if (error)
                         return res.status(400).json({
                             Status: 400,
