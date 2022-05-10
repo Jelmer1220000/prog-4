@@ -134,14 +134,13 @@ module.exports = {
         })
     },
     //PUT
-    changeUser(req, res) {
+    changeUser(req, res, next) {
         database.getConnection(function (err, connection) {
             if (err)
                 return res.status(400).json({
                     Status: 400,
                     message: err,
                 })
-            let body = req.body
             if (!Number(req.params.id)){
                 return res.status(400).json({
                     Status: 400,
@@ -154,8 +153,8 @@ module.exports = {
                 querypart = querypart +' '+ key +' = ' + `'${userReq[key]}', `
             });
             querypart = querypart.slice(0, querypart.length - 2);
-            querypart = querypart + `WHERE id = ${req.params.id};`
-            console.log(querypart);
+            querypart = querypart + ` WHERE id = ${req.params.id};`
+
             connection.query(querypart, function (error, results, fields) {
                 if (error)
                     return res.status(400).json({
@@ -164,10 +163,7 @@ module.exports = {
                     })
                 connection.release()
                 if (results.changedRows > 0) {
-                    return res.status(200).json({
-                        Status: 200,
-                        result: `Succesfully updated user ${req.params.id}`,
-                    })
+                    next()
                 } else {
                     res.status(400).json({
                         Status: 400,
