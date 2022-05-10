@@ -113,8 +113,7 @@ module.exports = {
                     if (results.affectedRows > 0) {
                         return res.status(201).json({
                             Status: 201,
-                            message: 'Succesfully created user!',
-                            result: body
+                            message: body
                         })
                     } else {
                         //Never happens due to assert tests
