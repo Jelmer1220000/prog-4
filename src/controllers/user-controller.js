@@ -195,8 +195,8 @@ module.exports = {
                         result: `Succesfully deleted user: ${req.params.userId}`,
                     })
                 } else {
-                    res.status(404).json({
-                        Status: 404,
+                    res.status(400).json({
+                        Status: 400,
                         message: `No user found with id: ${req.params.userId}!`,
                     })
                 }

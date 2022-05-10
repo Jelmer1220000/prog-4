@@ -145,39 +145,39 @@ describe('User Tests 201-206', () => {
                 })
         })
 
-        // it('TC-201-4 user already exists', (done) => {
-        //     chai.request(server)
-        //         .post('/api/user')
-        //         .send({
-        //             firstName: 'first',
-        //             lastName: 'last',
-        //             street: 'street',
-        //             city: 'city',
-        //             isActive: 1,
-        //             //This email already exists
-        //             emailAdress: 'name@server.nl',
-        //             password: 'secret',
-        //             phoneNumber: '06-11223344',
-        //         })
-        //         .end((err, res) => {
-        //             assert.ifError(err)
-        //             res.should.have.status(409)
-        //             res.should.be.an('object')
+        it('TC-201-4 user already exists', (done) => {
+            chai.request(server)
+                .post('/api/user')
+                .send({
+                    firstName: 'first',
+                    lastName: 'last',
+                    street: 'street',
+                    city: 'city',
+                    isActive: 1,
+                    //This email already exists
+                    emailAdress: 'name@server.nl',
+                    password: 'secret',
+                    phoneNumber: '06-11223344',
+                })
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(409)
+                    res.should.be.an('object')
 
-        //             res.body.should.be
-        //                 .an('object')
-        //                 .that.has.all.keys('Status', 'message')
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'message')
 
-        //             let { Status, message } = res.body
-        //             Status.should.be.an('number')
-        //             message.should.be
-        //                 .an('string')
-        //                 .that.contains(
-        //                     'An user with this Email adress already exists!'
-        //                 )
-        //             done()
-        //         })
-        // })
+                    let { Status, message } = res.body
+                    Status.should.be.an('number')
+                    message.should.be
+                        .an('string')
+                        .that.contains(
+                            'An user with this Email adress already exists!'
+                        )
+                    done()
+                })
+        })
 
         it('TC-201-5 user succesfully created', (done) => {
             chai.request(server)
