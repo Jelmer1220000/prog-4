@@ -104,6 +104,7 @@ module.exports = {
                 query,
                 [values],
                 function (error, results, fields) {
+                    console.log(results)
                     if (error)
                         return res.status(400).json({
                             Status: 400,
@@ -111,9 +112,14 @@ module.exports = {
                         })
                     connection.release()
                     if (results.affectedRows > 0) {
+                        let id = results.insertId;
+                        let person = {
+                        'id': id, 
+                        ...body}
+
                         return res.status(201).json({
                             Status: 201,
-                            message: body
+                            message: person
                         })
                     } else {
                         //Never happens due to assert tests
