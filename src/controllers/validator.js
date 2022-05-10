@@ -90,20 +90,20 @@ module.exports = {
     },
 
     validateEmail(req, res, next) {
-        let forbidden = ['#', '$', '%', '^', '&', '*', '(', ')', '-', '=', '+']
-        let progress = true;
+        // let forbidden = ['#', '$', '%', '^', '&', '*', '(', ')', '-', '=', '+']
+        // let progress = true;
         let email = req.body.emailAdress
-        forbidden.forEach((letter) => {
-            if (email.includes(letter)) {
-                progress = false
-            }
-        })
-        if (progress != true) {
-            return res.status(409).json({
-                Status: 300,
-                message: 'emailAdress contains a forbidden symbol!',
-            })
-        }
+        // forbidden.forEach((letter) => {
+        //     if (email.includes(letter)) {
+        //         progress = false
+        //     }
+        // })
+        // if (progress != true) {
+        //     return res.status(409).json({
+        //         Status: 300,
+        //         message: 'emailAdress contains a forbidden symbol!',
+        //     })
+        // }
             database.getConnection(function (err, connection) {
                 if (err)
                     return res.status(400).json({
