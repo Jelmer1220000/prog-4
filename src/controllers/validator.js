@@ -83,6 +83,12 @@ module.exports = {
         //         message: 'emailAdress contains a forbidden symbol!',
         //     })
         // }
+        if (email == null) {
+            return res.status(400).json({
+                Status: 400,
+                message: `Email is invalid`
+            })
+        }
             database.getConnection(function (err, connection) {
                 if (err)
                     return res.status(400).json({
