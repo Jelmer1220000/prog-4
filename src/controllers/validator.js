@@ -1,5 +1,4 @@
 const assert = require('assert')
-const { type } = require('express/lib/response')
 const database = require('../database/databaseConnection')
 
 module.exports = {
@@ -23,8 +22,6 @@ module.exports = {
             assert(typeof emailAdress === 'string', 'emailAdress is invalid!')
             assert(typeof password === 'string', 'password is invalid!')
             assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
-            next()
-
 
             database.getConnection(function (err, connection) {
                 if (err)
@@ -33,11 +30,14 @@ module.exports = {
                         message: err,
                     })
                 connection.query(
-                    `SELECT * FROM user WHERE firstName = '${req.body.firstName}';`,
+                    `SELECT * FROM user WHERE firstName = '${req.body.firstName}' && lastName = '${req.body.lastName}';`,
                     function (error, results, fields) {
                         connection.release()
                         if (results.length > 0) {
-                            throw err;
+                            res.status(409).json({
+                                Status: 409,
+                                message: `User already exists!`
+                            })
                         } else {
                             next()
                         }
