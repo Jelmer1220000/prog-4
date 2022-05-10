@@ -55,13 +55,13 @@ module.exports = {
                     Error: err,
                 })
 
-                if (!Number(req.params.userId)){
+                if (!Number(req.params.id)){
                     return res.status(400).json({
                         Status: 400,
-                        message: `No user found with id: ${req.params.userId}!`
+                        message: `No user found with id: ${req.params.id}!`
                     })
                 }
-            connection.query(`SELECT * FROM user WHERE id = ${req.params.userId};`, function (error, results, fields) {
+            connection.query(`SELECT * FROM user WHERE id = ${req.params.id};`, function (error, results, fields) {
                 if (error) return console.log(error)
                     connection.release()
                     if (results.length > 0) {
@@ -113,7 +113,8 @@ module.exports = {
                     if (results.affectedRows > 0) {
                         return res.status(201).json({
                             Status: 201,
-                            result: 'Succesfully created user!',
+                            message: 'Succesfully created user!',
+                            result: body
                         })
                     } else {
                         //Never happens due to assert tests
@@ -136,13 +137,13 @@ module.exports = {
                     message: err,
                 })
             let body = req.body
-            if (!Number(req.params.userId)){
+            if (!Number(req.params.id)){
                 return res.status(400).json({
                     Status: 400,
-                    message: `No user found with id: ${req.params.userId}!`
+                    message: `No user found with id: ${req.params.id}!`
                 })
             }
-            var query = `UPDATE user SET firstName = '${body.firstName}', lastName = '${body.lastName}', isActive = '${body.isActive}', emailAdress = '${body.emailAdress}', password = '${body.password}', phoneNumber = '${body.phoneNumber}', roles = '${body.roles}', street = '${body.street}', city = '${body.city}' WHERE id = ${req.params.userId}`
+            var query = `UPDATE user SET firstName = '${body.firstName}', lastName = '${body.lastName}', isActive = '${body.isActive}', emailAdress = '${body.emailAdress}', password = '${body.password}', phoneNumber = '${body.phoneNumber}', roles = '${body.roles}', street = '${body.street}', city = '${body.city}' WHERE id = ${req.params.id}`
 
             connection.query(query, function (error, results, fields) {
                 if (error)
@@ -154,12 +155,12 @@ module.exports = {
                 if (results.changedRows > 0) {
                     return res.status(200).json({
                         Status: 200,
-                        result: `Succesfully updated user ${req.params.userId}`,
+                        result: `Succesfully updated user ${req.params.id}`,
                     })
                 } else {
                     res.status(400).json({
                         Status: 400,
-                        message: `No user found with id: ${req.params.userId}`,
+                        message: `No user found with id: ${req.params.id}`,
                     })
                 }
             })
@@ -173,14 +174,14 @@ module.exports = {
                     Status: 400,
                     message: err,
                 })
-                if (!Number(req.params.userId)){
+                if (!Number(req.params.id)){
                     return res.status(400).json({
                         Status: 400,
-                        message: `No user found with id: ${req.params.userId}!`
+                        message: `No user found with id: ${req.params.id}!`
                     })
                 }
 
-            let query = `DELETE FROM user WHERE id = ${req.params.userId}`
+            let query = `DELETE FROM user WHERE id = ${req.params.id}`
 
             connection.query(query, function (error, results, fields) {
                 if (error)
@@ -192,12 +193,12 @@ module.exports = {
                 if (results.affectedRows > 0) {
                     return res.status(200).json({
                         Status: 200,
-                        result: `Succesfully deleted user: ${req.params.userId}`,
+                        result: `Succesfully deleted user: ${req.params.id}`,
                     })
                 } else {
                     res.status(400).json({
                         Status: 400,
-                        message: `No user found with id: ${req.params.userId}!`,
+                        message: `No user found with id: ${req.params.id}!`,
                     })
                 }
             })
