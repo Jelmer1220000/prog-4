@@ -159,7 +159,7 @@ module.exports = {
                 } else {
                     res.status(400).json({
                         Status: 400,
-                        message: `No user found with id: ${req.params.id}`,
+                        message: `User does not exist`,
                     })
                 }
             })
@@ -197,7 +197,7 @@ module.exports = {
                 } else {
                     res.status(400).json({
                         Status: 400,
-                        message: `No user found with id: ${req.params.id}!`,
+                        message: `User does not exist`,
                     })
                 }
             })

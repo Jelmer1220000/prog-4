@@ -802,7 +802,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('No user found with id')
+                        .that.contains('User does not exist')
                     done()
                 })
         })
@@ -834,7 +834,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('No user found with id')
+                        .that.contains('User does not exist')
                     done()
                 })
         })
@@ -889,7 +889,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('No user found with id')
+                        .that.contains('User does not exist')
                     done()
                 })
         })
@@ -910,7 +910,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('No user found with id')
+                        .that.contains('User does not exist')
                     done()
                 })
         })
@@ -931,7 +931,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('No user found with id')
+                        .that.contains('User does not exist')
                     done()
                 })
         })
