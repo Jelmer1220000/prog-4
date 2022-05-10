@@ -26,24 +26,24 @@ module.exports = {
             next()
 
 
-            // database.getConnection(function (err, connection) {
-            //     if (err)
-            //         return res.status(400).json({
-            //             Status: 400,
-            //             message: err,
-            //         })
-            //     connection.query(
-            //         `SELECT * FROM user WHERE firstName = '${req.body.firstName}' && lastName = '${req.body.lastName}';`,
-            //         function (error, results, fields) {
-            //             connection.release()
-            //             if (results.length > 0) {
-            //                 throw err;
-            //             } else {
-            //                 next()
-            //             }
-            //         }
-            //     )
-            //     })
+            database.getConnection(function (err, connection) {
+                if (err)
+                    return res.status(400).json({
+                        Status: 400,
+                        message: err,
+                    })
+                connection.query(
+                    `SELECT * FROM user WHERE firstName = '${req.body.firstName}';`,
+                    function (error, results, fields) {
+                        connection.release()
+                        if (results.length > 0) {
+                            throw err;
+                        } else {
+                            next()
+                        }
+                    }
+                )
+                })
 
             } catch (err) {
             res.status(400).json({
