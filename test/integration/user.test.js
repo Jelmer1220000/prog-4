@@ -80,39 +80,39 @@ describe('User Tests 201-206', () => {
                 })
         })
 
-        it('TC-201-2 emailAdress contains Invalid character', (done) => {
-            chai.request(server)
-                .post('/api/user')
-                .send({
-                    firstName: 'firdaswddst',
-                    lastName: 'last',
-                    street: '',
-                    city: 'Breda',
-                    isActive: 1,
-                    roles: '',
-                    emailAdress: 'name#$%@server.nl',
-                    password: 'secret',
-                    phoneNumber: '06-11223344',
-                })
-                .end((err, res) => {
-                    assert.ifError(err)
-                    res.should.have.status(409)
-                    res.should.be.an('object')
+        // it('TC-201-2 emailAdress contains Invalid character', (done) => {
+        //     chai.request(server)
+        //         .post('/api/user')
+        //         .send({
+        //             firstName: 'firdaswddst',
+        //             lastName: 'last',
+        //             street: '',
+        //             city: 'Breda',
+        //             isActive: 1,
+        //             roles: '',
+        //             emailAdress: 'name#$%@server.nl',
+        //             password: 'secret',
+        //             phoneNumber: '06-11223344',
+        //         })
+        //         .end((err, res) => {
+        //             assert.ifError(err)
+        //             res.should.have.status(409)
+        //             res.should.be.an('object')
 
-                    res.body.should.be
-                        .an('object')
-                        .that.has.all.keys('Status', 'message')
+        //             res.body.should.be
+        //                 .an('object')
+        //                 .that.has.all.keys('Status', 'message')
 
-                    let { Status, message } = res.body
-                    Status.should.be.an('number')
-                    message.should.be
-                        .an('string')
-                        .that.contains(
-                            'emailAdress contains a forbidden symbol!'
-                        )
-                    done()
-                })
-        })
+        //             let { Status, message } = res.body
+        //             Status.should.be.an('number')
+        //             message.should.be
+        //                 .an('string')
+        //                 .that.contains(
+        //                     'emailAdress contains a forbidden symbol!'
+        //                 )
+        //             done()
+        //         })
+        // })
 
         it('TC-201-3 Password is Invalid', (done) => {
             chai.request(server)
