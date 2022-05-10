@@ -104,6 +104,7 @@ module.exports = {
                 query,
                 [values],
                 function (error, results, fields) {
+                    console.log(results)
                     if (error)
                         return res.status(400).json({
                             Status: 400,
@@ -136,14 +137,14 @@ module.exports = {
     changeUser(req, res) {
         database.getConnection(function (err, connection) {
             if (err)
-                return res.status(402).json({
-                    Status: 402,
+                return res.status(400).json({
+                    Status: 400,
                     message: err,
                 })
             let body = req.body
             if (!Number(req.params.id)){
-                return res.status(408).json({
-                    Status: 408,
+                return res.status(400).json({
+                    Status: 400,
                     message: `No user found with id: ${req.params.id}!`
                 })
             }
@@ -151,8 +152,8 @@ module.exports = {
 
             connection.query(query, function (error, results, fields) {
                 if (error)
-                    return res.status(403).json({
-                        Status: 403,
+                    return res.status(400).json({
+                        Status: 400,
                         message: `Your body is Invalid: ${error.sqlMessage}`,
                     })
                 connection.release()
@@ -162,8 +163,8 @@ module.exports = {
                         result: `Succesfully updated user ${req.params.id}`,
                     })
                 } else {
-                    res.status(405).json({
-                        Status: 405,
+                    res.status(400).json({
+                        Status: 400,
                         message: `User does not exist`,
                     })
                 }

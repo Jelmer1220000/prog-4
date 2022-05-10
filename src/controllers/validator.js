@@ -13,7 +13,7 @@ module.exports = {
                 password,
                 phoneNumber,
             } = req.body
-
+            console.log(req.body)
             //Check of elke value juiste formaat is
             assert(typeof firstName === 'string', 'firstName is invalid!')
             assert(typeof lastName === 'string', 'lastName is invalid!')
