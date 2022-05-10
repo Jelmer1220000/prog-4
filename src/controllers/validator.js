@@ -100,7 +100,7 @@ module.exports = {
         })
         if (progress != true) {
             return res.status(409).json({
-                Status: 409,
+                Status: 300,
                 message: 'emailAdress contains a forbidden symbol!',
             })
         }
