@@ -90,13 +90,13 @@ describe('User Tests 201-206', () => {
                     city: 'Breda',
                     isActive: 1,
                     roles: '',
-                    emailAdress: 'name#$%@server.nl',
+                    emailAdress: 'name#$#%@server.nl',
                     password: 'secret',
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
                     assert.ifError(err)
-                    res.should.have.status(409)
+                    res.should.have.status(400)
                     res.should.be.an('object')
 
                     res.body.should.be
