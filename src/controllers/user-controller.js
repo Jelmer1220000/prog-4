@@ -152,8 +152,8 @@ module.exports = {
 
             connection.query(query, function (error, results, fields) {
                 if (error)
-                    return res.status(400).json({
-                        Status: 400,
+                    return res.status(403).json({
+                        Status: 403,
                         message: `Your body is Invalid: ${error.sqlMessage}`,
                     })
                 connection.release()
@@ -198,7 +198,7 @@ module.exports = {
                 if (results.affectedRows > 0) {
                     return res.status(200).json({
                         Status: 200,
-                        result: `Succesfully deleted user: ${req.params.id}`,
+                        message: `Succesfully deleted user: ${req.params.id}`,
                     })
                 } else {
                     res.status(400).json({

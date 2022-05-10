@@ -946,11 +946,11 @@ describe('User Tests 201-206', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'result')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, result } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    result.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('Succesfully deleted user')
                     done()
