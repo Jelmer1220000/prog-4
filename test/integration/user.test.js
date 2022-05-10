@@ -864,9 +864,19 @@ describe('User Tests 201-206', () => {
 
                     let { Status, result } = res.body
                     Status.should.be.an('number')
-                    result.should.be
-                        .an('string')
-                        .that.contains('Succesfully updated user')
+                    result.should.be.an('object').that.contains(                       
+                        {
+                        id: 1,
+                        firstName: 'first',
+                        lastName: 'last',
+                        city: 'city',
+                        street: 'street',
+                        emailAdress: 'name@server.nl',
+                        isActive: 1,
+                        password: 'secret',
+                        roles: 'editor,guest',
+                        phoneNumber: '-',
+                    })
                     done()
                 })
         })
