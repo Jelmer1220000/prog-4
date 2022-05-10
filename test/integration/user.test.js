@@ -867,15 +867,15 @@ describe('User Tests 201-206', () => {
                     result.should.be.an('object').that.contains(                       
                         {
                         id: 1,
-                        firstName: 'first',
-                        lastName: 'last',
-                        city: 'city',
-                        street: 'street',
-                        emailAdress: 'name@server.nl',
+                        firstName: 'Heroku',
+                        lastName: 'Test',
+                        street: 'Info',
+                        city: 'Breda',
                         isActive: 1,
+                        emailAdress: 'Heroku3432.works@server.com',
                         password: 'secret',
-                        roles: 'editor,guest',
-                        phoneNumber: '-',
+                        roles: '',
+                        phoneNumber: '06-11223344',
                     })
                     done()
                 })
