@@ -148,9 +148,15 @@ module.exports = {
                     message: `No user found with id: ${req.params.id}!`
                 })
             }
-            var query = `UPDATE user SET firstName = '${body.firstName}', lastName = '${body.lastName}', isActive = '${body.isActive}', emailAdress = '${body.emailAdress}', password = '${body.password}', phoneNumber = '${body.phoneNumber}', roles = '${body.roles}', street = '${body.street}', city = '${body.city}' WHERE id = ${req.params.id}`
-
-            connection.query(query, function (error, results, fields) {
+            let querypart = `UPDATE user SET`; 
+            let userReq = req.body;
+            Object.keys(userReq).map(function (key) {
+                querypart = querypart +' '+ key +' = ' + `'${userReq[key]}', `
+            });
+            querypart = querypart.slice(0, querypart.length - 2);
+            querypart = querypart + `WHERE id = ${req.params.id};`
+            console.log(querypart);
+            connection.query(querypart, function (error, results, fields) {
                 if (error)
                     return res.status(400).json({
                         Status: 400,
