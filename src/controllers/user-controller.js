@@ -81,8 +81,7 @@ module.exports = {
                 query,
                 [values],
                 function (error, results, fields) {
-                    if (error)
-                        return status.databaseError(req, res, error)
+                    if (error) return status.databaseError(req, res, error)
                     connection.release()
                     if (results.affectedRows > 0) {
                         let id = results.insertId
@@ -108,16 +107,8 @@ module.exports = {
                 console.log(1, req.body)
                 return status.userNotFound(req, res, 400)
             }
-            let querypart = `UPDATE user SET`
-            let userReq = req.body
-            Object.keys(userReq).map(function (key) {
-                querypart = querypart + ' ' + key + ' = ' + `'${userReq[key]}', `
-            })
-            querypart = querypart.slice(0, querypart.length - 2)
-            querypart = querypart.replace('true', '1');
-            querypart = querypart.replace('false', '0');
-            querypart = querypart + ` WHERE id = ${req.params.id};`
-            connection.query(querypart, function (error, results, fields) {
+            
+            connection.query('UPDATE `user` SET ? WHERE `id` = ?', [req.body, req.params.id], function (error, results, fields) {
                 if (error) console.log(error)
                 if (error) return status.databaseError(req, res, err)
                 connection.release()
