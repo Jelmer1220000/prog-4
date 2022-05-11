@@ -13,7 +13,6 @@ module.exports = {
                 password,
                 phoneNumber,
             } = req.body
-            console.log(req.body)
             //Check of elke value juiste formaat is
             assert(typeof firstName === 'string', 'firstName is invalid!')
             assert(typeof lastName === 'string', 'lastName is invalid!')
@@ -43,6 +42,7 @@ module.exports = {
                 password,
                 phoneNumber,
             } = req.body
+            console.log(req.body)
             //Check of elke value juiste formaat is
             assert(typeof emailAdress === 'string', 'emailAdress is invalid!')
             assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
@@ -101,6 +101,7 @@ module.exports = {
                 message: `Email is invalid`
             })
         }
+        console.log(email)
         forbidden.forEach((letter) => {
             if (email.includes(letter)) {
                  progress = false;
