@@ -101,7 +101,7 @@ module.exports = {
     //PUT
     changeUser(req, res, next) {
         database.getConnection(function (err, connection) {
-            if (err) return status.databaseError(req, res, err.message)
+            if (err) return status.databaseError(req, res, err)
             if (!Number(req.params.id)) {
                 return status.userNotFound(req, res, 400)
             }
