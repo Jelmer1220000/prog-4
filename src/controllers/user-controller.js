@@ -63,7 +63,7 @@ module.exports = {
     //POST
     createUser(req, res) {
         database.getConnection(function (err, connection) {
-            if (err) return status.databaseError(req, res, err.message)
+            if (err) return status.databaseError(req, res, err)
             let body = req.body
             let query = `INSERT INTO user (firstName, lastName, isActive, emailAdress, password, phoneNumber, street, city) VALUES (?)`
             var values = [
@@ -81,7 +81,7 @@ module.exports = {
                 [values],
                 function (error, results, fields) {
                     if (error)
-                        return status.databaseError(req, res, error.message)
+                        return status.databaseError(req, res, error)
                     connection.release()
                     if (results.affectedRows > 0) {
                         let id = results.insertId
@@ -101,6 +101,7 @@ module.exports = {
     //PUT
     changeUser(req, res, next) {
         database.getConnection(function (err, connection) {
+            if (err) console.log(err)
             if (err) return status.databaseError(req, res, err)
             if (!Number(req.params.id)) {
                 return status.userNotFound(req, res, 400)
