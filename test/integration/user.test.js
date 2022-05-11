@@ -68,11 +68,11 @@ describe('User Tests 201-206', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('firstName is invalid!')
 
@@ -134,11 +134,11 @@ describe('User Tests 201-206', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('password is invalid!')
                     done()
@@ -740,11 +740,11 @@ describe('User Tests 201-206', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('phoneNumber is invalid!')
                     done()

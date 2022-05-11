@@ -72,7 +72,7 @@ module.exports = {
     invalidBody(req, res, error) {
         res.status(400).json({
             Status: 400,
-            Error: error
+            message: error
         })
     }
 

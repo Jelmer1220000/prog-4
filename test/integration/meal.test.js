@@ -69,11 +69,11 @@ describe('Meal tests 301-305', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('Name is invalid!')
 
@@ -102,11 +102,11 @@ describe('Meal tests 301-305', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'Error')
+                        .that.has.all.keys('Status', 'message')
 
-                    let { Status, Error } = res.body
+                    let { Status, message } = res.body
                     Status.should.be.an('number')
-                    Error.should.be
+                    message.should.be
                         .an('string')
                         .that.contains('Description is invalid!')
                     done()
