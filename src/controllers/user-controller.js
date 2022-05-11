@@ -45,7 +45,6 @@ module.exports = {
             if (err) console.log(err, req.body)
             if (err) return status.databaseError(req, res, err)
             if (!Number(req.params.id)) {
-                console.log(3, req.body)
                 return status.userNotFound(req, res, 404)
             }
             connection.query(
@@ -56,7 +55,6 @@ module.exports = {
                     if (results.length > 0) {
                         return status.returnOne(req, res, results[0], 200)
                     } else {
-                        console.log(4, req.body)
                         return status.userNotFound(req, res, 404)
                     }
                 }
@@ -119,16 +117,13 @@ module.exports = {
             querypart = querypart.replace('true', '1');
             querypart = querypart.replace('false', '0');
             querypart = querypart + ` WHERE id = ${req.params.id};`
-            console.log(querypart)
             connection.query(querypart, function (error, results, fields) {
                 if (error) console.log(error)
                 if (error) return status.databaseError(req, res, err)
                 connection.release()
                 if (results.changedRows > 0) {
-                    console.log(req.body)
                     next()
                 } else {
-                    console.log(2, req.body)
                     return status.userNotFound(req, res, 400)
                 }
             })
