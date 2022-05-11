@@ -250,44 +250,7 @@ describe('User Tests 201-206', () => {
 
                     let { Status, results } = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('array').to.not.eql([
-                        {
-                            id: 1,
-                            firstName: 'first',
-                            lastName: 'last',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                        {
-                            id: 2,
-                            firstName: 'second',
-                            lastName: 'last2',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name2@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                        {
-                            id: 3,
-                            firstName: 'third',
-                            lastName: 'last3',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name3@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                    ])
+                    results.should.be.an('array').that.is.empty;
                     done()
                 })
         })
@@ -306,32 +269,7 @@ describe('User Tests 201-206', () => {
 
                     let { Status, results } = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('array').to.eql([
-                        {
-                            id: 1,
-                            firstName: 'first',
-                            lastName: 'last',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                        {
-                            id: 2,
-                            firstName: 'second',
-                            lastName: 'last2',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name2@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                    ])
+                    results.should.be.an('array').that.has.length(2);
                     done()
                 })
         })
@@ -350,44 +288,7 @@ describe('User Tests 201-206', () => {
 
                     let { Status, results } = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('array').to.not.eql([
-                        {
-                            id: 1,
-                            firstName: 'first',
-                            lastName: 'last',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                        {
-                            id: 2,
-                            firstName: 'second',
-                            lastName: 'last2',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name2@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                        {
-                            id: 3,
-                            firstName: 'third',
-                            lastName: 'last3',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name3@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                    ])
+                    results.should.be.an('array').that.is.empty;
                     done()
                 })
         })
@@ -406,44 +307,7 @@ describe('User Tests 201-206', () => {
 
                     let { Status, results } = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('array').to.not.eql([
-                        {
-                            id: 1,
-                            firstName: 'first',
-                            lastName: 'last',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                        {
-                            id: 2,
-                            firstName: 'second',
-                            lastName: 'last2',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name2@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                        {
-                            id: 3,
-                            firstName: 'third',
-                            lastName: 'last3',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name3@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                    ])
+                    results.should.be.an('array').that.is.empty;
                     done()
                 })
         })
@@ -462,44 +326,7 @@ describe('User Tests 201-206', () => {
 
                     let { Status, results } = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('array').to.eql([
-                        {
-                            id: 1,
-                            firstName: 'first',
-                            lastName: 'last',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                        {
-                            id: 2,
-                            firstName: 'second',
-                            lastName: 'last2',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name2@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                        {
-                            id: 3,
-                            firstName: 'third',
-                            lastName: 'last3',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name3@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                    ])
+                    results.should.be.an('array').that.has.length(3)
                     done()
                 })
         })

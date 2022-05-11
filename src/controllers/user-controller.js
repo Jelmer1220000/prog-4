@@ -114,7 +114,7 @@ module.exports = {
             querypart = querypart.slice(0, querypart.length - 2)
             querypart = querypart + ` WHERE id = ${req.params.id};`
             connection.query(querypart, function (error, results, fields) {
-                if (error) return status.databaseError(req, res, err.message)
+                if (error) return status.databaseError(req, res, err)
                 connection.release()
                 if (results.changedRows > 0) {
                     next()
