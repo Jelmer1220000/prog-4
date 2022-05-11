@@ -120,6 +120,7 @@ module.exports = {
             querypart = querypart + ` WHERE id = ${req.params.id};`
             console.log(querypart)
             connection.query(querypart, function (error, results, fields) {
+                if (error) console.log(error)
                 if (error) return status.databaseError(req, res, err)
                 connection.release()
                 if (results.changedRows > 0) {
