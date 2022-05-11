@@ -124,6 +124,7 @@ module.exports = {
                     function (error, results, fields) {
                         connection.release()
                         if (results.length > 0) {
+                            console.log(results)
                             if (results[0].id == req.params.userId) {
                                 next()
                             } else {
