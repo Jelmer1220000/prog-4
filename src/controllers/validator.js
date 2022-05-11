@@ -23,9 +23,8 @@ module.exports = {
             assert(typeof password === 'string', 'password is invalid!')
             assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
             next()
-
-            } catch (err) {
-               return status.invalidBody(req, res, err.message)
+        } catch (err) {
+            return status.invalidBody(req, res, err.message)
         }
     },
 
@@ -44,8 +43,8 @@ module.exports = {
             assert(typeof emailAdress === 'string', 'emailAdress is invalid!')
             assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
             next()
-            } catch (err) {
-               return status.invalidBody(req, res, err.message)
+        } catch (err) {
+            return status.invalidBody(req, res, err.message)
         }
     },
 
@@ -60,7 +59,7 @@ module.exports = {
                 maxAmountOfParticipants,
                 price,
                 // allergenes,
-                cookId
+                cookId,
             } = req.body
 
             //Check values van meal!
@@ -84,36 +83,32 @@ module.exports = {
 
     validateEmail(req, res, next) {
         let forbidden = ['#', '$', '%', '^', '&', '*', '(', ')', '-', '=', '+']
-        let progress = true;
+        let progress = true
         let email = req.body.emailAdress
         if (email == null) {
             return status.emailInvalid(req, res)
         }
         forbidden.forEach((letter) => {
             if (email.includes(letter)) {
-                 progress = false;
+                progress = false
             }
         })
         if (progress != true) {
             return status.emailInvalid(req, res)
         }
-            database.getConnection(function (err, connection) {
-                if (err) status.databaseError(req, res, err.message)
-                connection.query(
-                    `SELECT * FROM user WHERE emailAdress = '${email}';`,
-                    function (error, results, fields) {
-                        connection.release()
-                        if (results.length > 0) {
-                            if (results[0].id == req.params.userId) {
-                                next()
-                            } else {
-                               return status.emailExists(req, res)
-                            }
-                        } else {
+        database.getConnection(function (err, connection) {
+            if (err) status.databaseError(req, res, err.message)
+            connection.query(
+                `SELECT * FROM user WHERE emailAdress = '${email}';`,
+                function (error, results, fields) {
+                    connection.release()
+                    if (results.length == 0 || (results[0].id == req.params.id)) {
                             next()
+                        } else {
+                            return status.emailExists(req, res)
                         }
-                    }
-                )
-            })
-        },
-    }
+                }
+            )
+        })
+    },
+}

@@ -7,7 +7,7 @@ router.get('', mealcontroller.getAllMeals)
 router.get('/:mealId', mealcontroller.getMealById)
 router.get('/:mealId/participate', mealcontroller.joinMeal)
 
-router.put('/:mealId', validator.validateMeal, mealcontroller.changeMeal)
+router.put('/:mealId', validator.validateMeal, mealcontroller.changeMeal, mealcontroller.getMealById)
 
 router.post('', validator.validateMeal, mealcontroller.createMeal)
 

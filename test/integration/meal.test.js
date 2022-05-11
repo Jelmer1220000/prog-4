@@ -12,7 +12,7 @@ chai.use(chaiHttp)
 const CLEAR_ALL =
     'DELETE IGNORE FROM `meal`; DELETE IGNORE FROM `meal_participants_user`; DELETE IGNORE FROM `user`;'
 
-    const INSERT_USER =
+const INSERT_USER =
     'INSERT INTO `user` (`id`, `firstName`, `lastName`, `emailAdress`, `password`, `street`, `city` ) VALUES' +
     '(1, "first", "last", "name@server.nl", "secret", "street", "city");'
 
@@ -124,7 +124,7 @@ describe('Meal tests 301-305', () => {
                     dateTime: '2022-04-26:18:00',
                     maxAmountOfParticipants: 8,
                     price: 5.55,
-                    cookId: 1
+                    cookId: 1,
                 })
                 .end((err, res) => {
                     assert.ifError(err)
@@ -137,17 +137,16 @@ describe('Meal tests 301-305', () => {
 
                     let { Status, result } = res.body
                     Status.should.be.an('number')
-                    result.should.be
-                        .an('object').that.contains({
-                            id: 3,
-                            name: 'Lasagne',
-                            description: 'Overheerlijke Lasagne',
-                            imageUrl: 'https://www.google.nl',
-                            dateTime: '2022-04-26:18:00',
-                            maxAmountOfParticipants: 8,
-                            price: 5.55,
-                            cookId: 1
-                        })
+                    result.should.be.an('object').that.contains({
+                        id: 3,
+                        name: 'Lasagne',
+                        description: 'Overheerlijke Lasagne',
+                        imageUrl: 'https://www.google.nl',
+                        dateTime: '2022-04-26:18:00',
+                        maxAmountOfParticipants: 8,
+                        price: 5.55,
+                        cookId: 1,
+                    })
                     done()
                 })
         })

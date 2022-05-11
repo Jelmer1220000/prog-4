@@ -107,9 +107,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains(
-                            'Email is invalid'
-                        )
+                        .that.contains('Email is invalid')
                     done()
                 })
         })
@@ -172,9 +170,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains(
-                            'Email already exists!'
-                        )
+                        .that.contains('Email already exists!')
                     done()
                 })
         })
@@ -203,8 +199,7 @@ describe('User Tests 201-206', () => {
 
                     let { Status, result } = res.body
                     Status.should.be.an('number')
-                    result.should.be.an('object').that.contains(                       
-                        {
+                    result.should.be.an('object').that.contains({
                         id: result.id,
                         firstName: 'acceptable',
                         lastName: 'Test',
@@ -630,7 +625,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('User does not exist!')
+                        .that.contains('User does not exist')
                     done()
                 })
         })
@@ -651,12 +646,12 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('User does not exist!')
+                        .that.contains('User does not exist')
                     done()
                 })
         })
 
-        it("TC-204-3 Retrieve user by ID, Id does exist", (done) => {
+        it('TC-204-3 Retrieve user by ID, Id does exist', (done) => {
             chai.request(server)
                 .get('/api/user/1')
                 .end((err, res) => {
@@ -670,8 +665,7 @@ describe('User Tests 201-206', () => {
 
                     let { Status, result } = res.body
                     Status.should.be.an('number')
-                    result.should.be.an('object').that.contains(                       
-                        {
+                    result.should.be.an('object').that.contains({
                         id: 1,
                         firstName: 'first',
                         lastName: 'last',
@@ -840,8 +834,7 @@ describe('User Tests 201-206', () => {
 
                     let { Status, result } = res.body
                     Status.should.be.an('number')
-                    result.should.be.an('object').that.contains(                       
-                        {
+                    result.should.be.an('object').that.contains({
                         id: 1,
                         firstName: 'Heroku',
                         lastName: 'Test',
@@ -922,7 +915,7 @@ describe('User Tests 201-206', () => {
                 })
         })
 
-        it("TC-206-4 User succesfully deleted", (done) => {
+        it('TC-206-4 User succesfully deleted', (done) => {
             chai.request(server)
                 .delete('/api/user/1')
                 .end((err, res) => {

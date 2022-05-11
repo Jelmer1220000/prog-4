@@ -2,49 +2,49 @@ module.exports = {
     returnList(req, res, result, code) {
         res.status(code).json({
             Status: code,
-            results: result
+            results: result,
         })
     },
 
     returnOne(req, res, result, code) {
         res.status(code).json({
             Status: code,
-            result: result
+            result: result,
         })
     },
 
     userNotFound(req, res, code) {
-       res.status(code).json({
+        res.status(code).json({
             Status: code,
-            message: `User does not exist!`
+            message: `User does not exist`,
         })
     },
 
     mealNotFound(req, res, code) {
         res.status(code).json({
-             Status: code,
-             message: `Meal does not exist!`
-         })
-     },
+            Status: code,
+            message: `Meal does not exist`,
+        })
+    },
 
     returnDelete(req, res) {
         res.status(200).json({
             Status: 200,
-            message: `Succesfully deleted: ${req.params.id}`
+            message: `Succesfully deleted: ${req.params.id}`,
         })
     },
 
     databaseError(req, res, result) {
         res.status(400).json({
             Status: 400,
-            message: result
+            message: result,
         })
     },
 
     createFail(req, res) {
         res.status(400).json({
             Status: 400,
-            message: `User could not be created!`
+            message: `User could not be created!`,
         })
     },
 
@@ -58,23 +58,21 @@ module.exports = {
     emailInvalid(req, res) {
         res.status(400).json({
             Status: 400,
-            message: `Email is invalid`
+            message: `Email is invalid`,
         })
     },
 
     emailExists(req, res) {
         res.status(409).json({
             Status: 409,
-            message: `Email already exists!`
+            message: `Email already exists!`,
         })
     },
 
     invalidBody(req, res, error) {
         res.status(400).json({
             Status: 400,
-            message: error
+            message: error,
         })
-    }
-
-
+    },
 }

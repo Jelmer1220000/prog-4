@@ -4,8 +4,7 @@ module.exports = {
     getAllMeals(req, res) {
         let fullMeals = []
         database.getConnection(function (err, connection) {
-            if (err)
-            status.databaseError(req, res, err.message)
+            if (err) status.databaseError(req, res, err.message)
             connection.query(
                 'SELECT * FROM meal;',
                 function (error, meals, fields) {
@@ -47,8 +46,7 @@ module.exports = {
     //GET
     getMealById(req, res) {
         database.getConnection(function (err, connection) {
-            if (err)
-           return status.databaseError(req, res, err.message)
+            if (err) return status.databaseError(req, res, err.message)
             connection.query(
                 `SELECT * FROM meal WHERE meal.id = ${req.params.mealId};`,
                 function (error, meal, fields) {
@@ -66,7 +64,12 @@ module.exports = {
                                 } else {
                                     fullMeal = { ...meal[0] }
                                 }
-                                return status.returnList(req, res, fullMeal, 200)
+                                return status.returnList(
+                                    req,
+                                    res,
+                                    fullMeal,
+                                    200
+                                )
                             }
                         )
                     } else {
@@ -79,10 +82,10 @@ module.exports = {
     //POST
     createMeal(req, res) {
         database.getConnection(function (err, connection) {
-            if (err)
-            return status.databaseError(req, res, err.message)
+            if (err) return status.databaseError(req, res, err.message)
             let body = req.body
-           let query = 'INSERT INTO `meal` (`id`, `name`, `description`, `imageUrl`, `dateTime`, `maxAmountOfParticipants`, `price`, `cookId`) VALUES ?'
+            let query =
+                'INSERT INTO `meal` (`id`, `name`, `description`, `imageUrl`, `dateTime`, `maxAmountOfParticipants`, `price`, `cookId`) VALUES ?'
             var values = [
                 [
                     body.id,
@@ -92,7 +95,7 @@ module.exports = {
                     body.dateTime,
                     body.maxAmountOfParticipants,
                     body.price,
-                    body.cookId
+                    body.cookId,
                 ],
             ]
             connection.query(
@@ -105,7 +108,7 @@ module.exports = {
                     connection.release()
                     if (results.affectedRows > 0) {
                         return status.returnOne(req, res, req.body, 201)
-                    } 
+                    }
                 }
             )
         })
@@ -120,7 +123,7 @@ module.exports = {
 
             connection.query(query, function (error, results, fields) {
                 if (error)
-                return status.databaseError(req, res, error.sqlMessage)
+                    return status.databaseError(req, res, error.sqlMessage)
                 connection.release()
                 if (results.changedRows > 0) {
                     next()
@@ -138,7 +141,8 @@ module.exports = {
             let query = `DELETE FROM meal WHERE id = ${req.params.mealId}`
 
             connection.query(query, function (error, results, fields) {
-                if (error) return status.databaseError(req, res, error.sqlMessage)
+                if (error)
+                    return status.databaseError(req, res, error.sqlMessage)
                 connection.release()
                 if (results.affectedRows > 0) {
                     return status.returnDelete(req, res)
