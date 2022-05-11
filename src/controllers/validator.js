@@ -1,5 +1,6 @@
 const assert = require('assert')
 const database = require('../database/databaseConnection')
+const status = require('../controllers/status')
 
 module.exports = {
     validateUserPost(req, res, next) {
@@ -24,10 +25,7 @@ module.exports = {
             next()
 
             } catch (err) {
-            res.status(400).json({
-                Status: 400,
-                message: err.message,
-            })
+               return status.invalidBody(req, res, err.message)
         }
     },
 
@@ -42,16 +40,12 @@ module.exports = {
                 password,
                 phoneNumber,
             } = req.body
-            console.log(req.body)
             //Check of elke value juiste formaat is
             assert(typeof emailAdress === 'string', 'emailAdress is invalid!')
             assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
             next()
             } catch (err) {
-            res.status(400).json({
-                Status: 400,
-                message: err.message,
-            })
+               return status.invalidBody(req, res, err.message)
         }
     },
 
@@ -84,10 +78,7 @@ module.exports = {
             assert(typeof cookId === 'number', 'cookId is invalid!')
             next()
         } catch (err) {
-            res.status(400).json({
-                Status: 400,
-                Error: err.message,
-            })
+            return status.invalidBody(req, res, err.message)
         }
     },
 
@@ -96,42 +87,27 @@ module.exports = {
         let progress = true;
         let email = req.body.emailAdress
         if (email == null) {
-            return res.status(400).json({
-                Status: 400,
-                message: `Email is invalid`
-            })
+            return status.emailInvalid(req, res)
         }
-        console.log(email)
         forbidden.forEach((letter) => {
             if (email.includes(letter)) {
                  progress = false;
             }
         })
         if (progress != true) {
-            return res.status(400).json({
-                Status: 400,
-                message: 'emailAdress contains a forbidden symbol!',
-            })
+            return status.emailInvalid(req, res)
         }
             database.getConnection(function (err, connection) {
-                if (err)
-                    return res.status(400).json({
-                        Status: 400,
-                        message: err,
-                    })
+                if (err) status.databaseError(req, res, err.message)
                 connection.query(
                     `SELECT * FROM user WHERE emailAdress = '${email}';`,
                     function (error, results, fields) {
                         connection.release()
                         if (results.length > 0) {
-                            console.log(results)
                             if (results[0].id == req.params.userId) {
                                 next()
                             } else {
-                                return res.status(409).json({
-                                    Status: 409,
-                                    message: 'An user with this Email adress already exists!',
-                                })
+                               return status.emailExists(req, res)
                             }
                         } else {
                             next()

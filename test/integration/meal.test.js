@@ -128,7 +128,7 @@ describe('Meal tests 301-305', () => {
                 })
                 .end((err, res) => {
                     assert.ifError(err)
-                    res.should.have.status(200)
+                    res.should.have.status(201)
                     res.should.be.an('object')
 
                     res.body.should.be
@@ -138,8 +138,16 @@ describe('Meal tests 301-305', () => {
                     let { Status, result } = res.body
                     Status.should.be.an('number')
                     result.should.be
-                        .an('string')
-                        .that.contains('Succesfully created meal!')
+                        .an('object').that.contains({
+                            id: 3,
+                            name: 'Lasagne',
+                            description: 'Overheerlijke Lasagne',
+                            imageUrl: 'https://www.google.nl',
+                            dateTime: '2022-04-26:18:00',
+                            maxAmountOfParticipants: 8,
+                            price: 5.55,
+                            cookId: 1
+                        })
                     done()
                 })
         })

@@ -68,11 +68,11 @@ describe('User Tests 201-206', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'message')
+                        .that.has.all.keys('Status', 'Error')
 
-                    let { Status, message } = res.body
+                    let { Status, Error } = res.body
                     Status.should.be.an('number')
-                    message.should.be
+                    Error.should.be
                         .an('string')
                         .that.contains('firstName is invalid!')
 
@@ -108,7 +108,7 @@ describe('User Tests 201-206', () => {
                     message.should.be
                         .an('string')
                         .that.contains(
-                            'emailAdress contains a forbidden symbol!'
+                            'Email is invalid'
                         )
                     done()
                 })
@@ -134,11 +134,11 @@ describe('User Tests 201-206', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'message')
+                        .that.has.all.keys('Status', 'Error')
 
-                    let { Status, message } = res.body
+                    let { Status, Error } = res.body
                     Status.should.be.an('number')
-                    message.should.be
+                    Error.should.be
                         .an('string')
                         .that.contains('password is invalid!')
                     done()
@@ -173,7 +173,7 @@ describe('User Tests 201-206', () => {
                     message.should.be
                         .an('string')
                         .that.contains(
-                            'An user with this Email adress already exists!'
+                            'Email already exists!'
                         )
                     done()
                 })
@@ -630,7 +630,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('There is no user with this id!')
+                        .that.contains('User does not exist!')
                     done()
                 })
         })
@@ -651,7 +651,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('There is no user with this id!')
+                        .that.contains('User does not exist!')
                     done()
                 })
         })
@@ -719,38 +719,6 @@ describe('User Tests 201-206', () => {
                 })
         })
 
-        it('TC-205-2 Invalid postal code', (done) => {
-            chai.request(server)
-                .put('/api/user/1')
-                .send({
-                    firstName: 'Heroku',
-                    lastName: 'Test',
-                    street: 'Info',
-                    city: 'Breda',
-                    isActive: 1,
-                    emailAdress: 'Heroku.works@server.com',
-                    password: 'secret',
-                    roles: '',
-                    phoneNumber: 06 - 11223344,
-                })
-                .end((err, res) => {
-                    assert.ifError(err)
-                    res.should.have.status(400)
-                    res.should.be.an('object')
-
-                    res.body.should.be
-                        .an('object')
-                        .that.has.all.keys('Status', 'message')
-
-                    let { Status, message } = res.body
-                    Status.should.be.an('number')
-                    message.should.be
-                        .an('string')
-                        .that.contains('phoneNumber is invalid!')
-                    done()
-                })
-        })
-
         it('TC-205-3 Invalid phone number', (done) => {
             chai.request(server)
                 .put('/api/user/1')
@@ -772,11 +740,11 @@ describe('User Tests 201-206', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'message')
+                        .that.has.all.keys('Status', 'Error')
 
-                    let { Status, message } = res.body
+                    let { Status, Error } = res.body
                     Status.should.be.an('number')
-                    message.should.be
+                    Error.should.be
                         .an('string')
                         .that.contains('phoneNumber is invalid!')
                     done()
@@ -970,7 +938,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('Succesfully deleted user')
+                        .that.contains('Succesfully deleted')
                     done()
                 })
         })

@@ -1,14 +1,11 @@
 const name = 'User controller: '
 const database = require('../database/databaseConnection')
+const status = require('./status')
 module.exports = {
     //GET
     getAllUsers(req, res) {
         database.getConnection(function (err, connection) {
-            if (err)
-                return res.status(400).json({
-                    Status: 400,
-                    message: err,
-                })
+            if (err) return status.databaseError(req, res, err)
                 let amount = 10000;
                 let lastName = '%';
                 let isActive = '%';
@@ -32,15 +29,9 @@ module.exports = {
                     connection.release()
                     if (error) return console.log(error)
                     if (results) {
-                        return res.status(200).json({
-                            Status: 200,
-                            results: results,
-                        })
+                        return status.returnList(req, res, results, 200)
                     } else {
-                        res.status(400).json({
-                            Status: 400,
-                            message: 'This endpoint is unavailable right now!',
-                        })
+                        return status.userNotFound(req, res, 400)
                     }
                 }
             )
@@ -50,30 +41,17 @@ module.exports = {
     getUserById(req, res) {
         database.getConnection(function (err, connection) {
             if (err)
-                return res.status(400).json({
-                    Status: 400,
-                    Error: err,
-                })
-
+                return status.databaseError(req, res, err)
                 if (!Number(req.params.id)){
-                    return res.status(400).json({
-                        Status: 400,
-                        message: `No user found with id: ${req.params.id}!`
-                    })
+                    return status.userNotFound(req, res, 404);
                 }
             connection.query(`SELECT * FROM user WHERE id = ${req.params.id};`, function (error, results, fields) {
                 if (error) return console.log(error)
                     connection.release()
                     if (results.length > 0) {
-                        return res.status(200).json({
-                            Status: 200,
-                            result: results[0],
-                        })
+                        return status.returnOne(req, res, results[0], 200)
                     } else {
-                        res.status(404).json({
-                            Status: 404,
-                            message: 'There is no user with this id!',
-                        })
+                        return status.userNotFound(req, res, 404)
                     }
                 }
             )
@@ -83,10 +61,7 @@ module.exports = {
     createUser(req, res) {
         database.getConnection(function (err, connection) {
             if (err)
-                return res.status(400).json({
-                    Status: 400,
-                    message: err,
-                })
+            return status.databaseError(req, res, err.message)
             let body = req.body
             let query = `INSERT INTO user (firstName, lastName, isActive, emailAdress, password, phoneNumber, street, city) VALUES (?)`
             var values =
@@ -105,10 +80,7 @@ module.exports = {
                 [values],
                 function (error, results, fields) {
                     if (error)
-                        return res.status(400).json({
-                            Status: 400,
-                            message: `Your body is Invalid: ${err.sqlMessage}`,
-                        })
+                    return status.databaseError(req, res, error.message)
                     connection.release()
                     if (results.affectedRows > 0) {
                         let id = results.insertId;
@@ -116,18 +88,10 @@ module.exports = {
                         'id': id, 
                         ...body}
 
-                        return res.status(201).json({
-                            Status: 201,
-                            result: person
-                        })
+                        return status.returnOne(req, res, person, 201)
                     } else {
-                        //Never happens due to assert tests
-                        res.status(400).json({
-                            Status: 400,
-                            message: 'Could not create user!',
-                            body: req.body,
-                        })
-                    }
+                        return status.createFail(req, res)
+                    } 
                 }
             )
         })
@@ -136,15 +100,9 @@ module.exports = {
     changeUser(req, res, next) {
         database.getConnection(function (err, connection) {
             if (err)
-                return res.status(400).json({
-                    Status: 400,
-                    message: err,
-                })
+                return status.databaseError(req, res, err.message)
             if (!Number(req.params.id)){
-                return res.status(400).json({
-                    Status: 400,
-                    message: `No user found with id: ${req.params.id}!`
-                })
+                return status.userNotFound(req, res, 400)
             }
             let querypart = `UPDATE user SET`; 
             let userReq = req.body;
@@ -153,21 +111,14 @@ module.exports = {
             });
             querypart = querypart.slice(0, querypart.length - 2);
             querypart = querypart + ` WHERE id = ${req.params.id};`
-            console.log(querypart)
             connection.query(querypart, function (error, results, fields) {
                 if (error)
-                    return res.status(400).json({
-                        Status: 400,
-                        message: `Your body is Invalid: ${error.sqlMessage}`,
-                    })
+                return status.databaseError(req, res, err.message)
                 connection.release()
                 if (results.changedRows > 0) {
                     next()
                 } else {
-                    res.status(400).json({
-                        Status: 400,
-                        message: `User does not exist`,
-                    })
+                    return status.userNotFound(req, res, 400)
                 }
             })
         })
@@ -176,45 +127,26 @@ module.exports = {
     deleteUser(req, res) {
         database.getConnection(function (err, connection) {
             if (err)
-                return res.status(400).json({
-                    Status: 400,
-                    message: err,
-                })
+                return status.databaseError(req, res, err.message)
                 if (!Number(req.params.id)){
-                    return res.status(400).json({
-                        Status: 400,
-                        message: `No user found with id: ${req.params.id}!`
-                    })
+                    return status.userNotFound(req, res, 400)
                 }
-
             let query = `DELETE FROM user WHERE id = ${req.params.id}`
 
             connection.query(query, function (error, results, fields) {
                 if (error)
-                    return res.status(400).json({
-                        Status: 400,
-                        message: error,
-                    })
+                return status.databaseError(req, res, results)
                 connection.release()
                 if (results.affectedRows > 0) {
-                    return res.status(200).json({
-                        Status: 200,
-                        message: `Succesfully deleted user: ${req.params.id}`,
-                    })
+                    return status.returnDelete(req, res)
                 } else {
-                    res.status(400).json({
-                        Status: 400,
-                        message: `User does not exist`,
-                    })
+                    return status.userNotFound(req, res, 400)
                 }
             })
         })
     },
 
     getProfile(req, res) {
-        res.status(404).json({
-            Status: 404,
-            message: `This Endpoint is currently Unavailable!`,
-        })
+        return status.noEndpoint(req, res)
     },
 }
