@@ -113,10 +113,11 @@ module.exports = {
             let querypart = `UPDATE user SET`
             let userReq = req.body
             Object.keys(userReq).map(function (key) {
-                querypart =
-                    querypart + ' ' + key + ' = ' + `'${userReq[key]}', `
+                querypart = querypart + ' ' + key + ' = ' + `'${userReq[key]}', `
             })
             querypart = querypart.slice(0, querypart.length - 2)
+            querypart = querypart.replace('true', '1');
+            querypart = querypart.replace('false', '0');
             querypart = querypart + ` WHERE id = ${req.params.id};`
             console.log(querypart)
             connection.query(querypart, function (error, results, fields) {
