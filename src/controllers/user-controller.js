@@ -42,6 +42,7 @@ module.exports = {
     //GET
     getUserById(req, res) {
         database.getConnection(function (err, connection) {
+            if (err) console.log(err, req.body)
             if (err) return status.databaseError(req, res, err)
             if (!Number(req.params.id)) {
                 console.log(3, req.body)
@@ -122,6 +123,7 @@ module.exports = {
                 if (error) return status.databaseError(req, res, err)
                 connection.release()
                 if (results.changedRows > 0) {
+                    console.log(req.body)
                     next()
                 } else {
                     console.log(2, req.body)
