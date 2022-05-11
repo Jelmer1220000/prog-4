@@ -14,7 +14,7 @@ router.get('/:id', userController.getUserById)
 router.put(
     '/:id',
     validator.validateEmail,
-    validator.validateUserPut,
+    validator.validateUserPost,
     userController.changeUser,
     userController.getUserById
 )
