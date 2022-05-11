@@ -86,7 +86,7 @@ module.exports = {
         let progress = true
         let email = req.body.emailAdress
         if (email == null) {
-            console.log(5)
+            console.log(5, req.body)
             return status.emailInvalid(req, res)
         }
         forbidden.forEach((letter) => {

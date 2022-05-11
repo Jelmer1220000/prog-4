@@ -44,7 +44,7 @@ module.exports = {
         database.getConnection(function (err, connection) {
             if (err) return status.databaseError(req, res, err)
             if (!Number(req.params.id)) {
-                console.log(3)
+                console.log(3, req.body)
                 return status.userNotFound(req, res, 404)
             }
             connection.query(
@@ -55,7 +55,7 @@ module.exports = {
                     if (results.length > 0) {
                         return status.returnOne(req, res, results[0], 200)
                     } else {
-                        console.log(4)
+                        console.log(4, req.body)
                         return status.userNotFound(req, res, 404)
                     }
                 }
@@ -106,7 +106,7 @@ module.exports = {
             if (err) console.log(err)
             if (err) return status.databaseError(req, res, err)
             if (!Number(req.params.id)) {
-                console.log(1)
+                console.log(1, req.body)
                 return status.userNotFound(req, res, 400)
             }
             let querypart = `UPDATE user SET`
@@ -123,7 +123,7 @@ module.exports = {
                 if (results.changedRows > 0) {
                     next()
                 } else {
-                    console.log(2)
+                    console.log(2, req.body)
                     return status.userNotFound(req, res, 400)
                 }
             })
