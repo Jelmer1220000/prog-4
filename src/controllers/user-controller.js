@@ -153,7 +153,7 @@ module.exports = {
             });
             querypart = querypart.slice(0, querypart.length - 2);
             querypart = querypart + ` WHERE id = ${req.params.id};`
-
+            console.log(querypart)
             connection.query(querypart, function (error, results, fields) {
                 if (error)
                     return res.status(400).json({
