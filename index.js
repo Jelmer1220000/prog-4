@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const userRoutes = require('./src/routes/user-routes')
 const mealRoutes = require('./src/routes/meal-routes')
+const loginRoutes = require('./src/routes/login-routes')
 const port = process.env.PORT || 3000
 
 
@@ -10,6 +11,8 @@ app.use(express.json())
 app.use('/api/user', userRoutes)
 //Api meal routes
 app.use('/api/meal', mealRoutes)
+
+app.use('/api/auth', loginRoutes)
 
 app.get('/', (req, res) => {
     res.status(200).json({

@@ -1,11 +1,12 @@
 const name = 'User controller: '
-const database = require('../database/databaseConnection')
-const status = require('./status')
+const database = require('../../config/database/databaseConnection')
+const status = require('../../config/status/userStatus')
+const dbstatus = require('../../config/status/databaseStatus')
 module.exports = {
     //GET
     getAllUsers(req, res) {
         database.getConnection(function (err, connection) {
-            if (err) return status.databaseError(req, res, err)
+            if (err) return dbstatus.databaseError(req, res, err)
             let amount = 10000
             let lastName = '%'
             let isActive = '%'
@@ -29,7 +30,7 @@ module.exports = {
                 `SELECT * FROM user WHERE lastName LIKE '${lastName}' && isActive LIKE '${isActive}' LIMIT ${amount};`,
                 function (error, results, fields) {
                     connection.release()
-                    if (error) return console.log(error)
+                    if (error) return dbstatus.databaseError(req, res, error)
                     if (results) {
                         return status.returnList(req, res, results, 200)
                     } else {
@@ -42,15 +43,14 @@ module.exports = {
     //GET
     getUserById(req, res) {
         database.getConnection(function (err, connection) {
-            if (err) console.log(err, req.body)
-            if (err) return status.databaseError(req, res, err)
+            if (err) return dbstatus.databaseError(req, res, err)
             if (!Number(req.params.id)) {
                 return status.userNotFound(req, res, 404)
             }
             connection.query(
                 `SELECT * FROM user WHERE id = ${req.params.id};`,
                 function (error, results, fields) {
-                    if (error) return console.log(error)
+                    if (error) return dbstatus.databaseError(req, res, error)
                     connection.release()
                     if (results.length > 0) {
                         return status.returnOne(req, res, results[0], 200)
@@ -64,7 +64,7 @@ module.exports = {
     //POST
     createUser(req, res) {
         database.getConnection(function (err, connection) {
-            if (err) return status.databaseError(req, res, err)
+            if (err) return dbstatus.databaseError(req, res, err)
             let body = req.body
             let query = `INSERT INTO user (firstName, lastName, isActive, emailAdress, password, phoneNumber, street, city) VALUES (?)`
             var values = [
@@ -81,7 +81,7 @@ module.exports = {
                 query,
                 [values],
                 function (error, results, fields) {
-                    if (error) return status.databaseError(req, res, error)
+                    if (error) return dbstatus.databaseError(req, res, error)
                     connection.release()
                     if (results.affectedRows > 0) {
                         let id = results.insertId
@@ -101,16 +101,21 @@ module.exports = {
     //PUT
     changeUser(req, res, next) {
         database.getConnection(function (err, connection) {
-            if (err) console.log(err)
-            if (err) return status.databaseError(req, res, err)
+            if (err) return dbstatus.databaseError(req, res, err)
             if (!Number(req.params.id)) {
-                console.log(1, req.body)
                 return status.userNotFound(req, res, 400)
             }
             
-            connection.query('UPDATE `user` SET ? WHERE `id` = ?', [req.body, req.params.id], function (error, results, fields) {
-                if (error) console.log(error)
-                if (error) return status.databaseError(req, res, err)
+            connection.query(
+                `SELECT * FROM user WHERE id = ${req.params.id};`,
+                function (error, users, fields) {
+                    if (error)
+                        return dbstatus.databaseError(req, res, error)
+                    if (users.length > 0 && users[0].id != req.userId)
+                        return status.notOwner(req, res)
+                    else {
+            connection.query('UPDATE `user` SET ? WHERE `id` = ?', [req.body, req.userId], function (error, results, fields) {
+                if (error) return dbstatus.databaseError(req, res, err)
                 connection.release()
                 if (results.changedRows > 0) {
                     next()
@@ -118,19 +123,23 @@ module.exports = {
                     return status.userNotFound(req, res, 400)
                 }
             })
+        }
         })
+    })
     },
     //DELETE
     deleteUser(req, res) {
         database.getConnection(function (err, connection) {
-            if (err) return status.databaseError(req, res, err)
+            if (err) return dbstatus.databaseError(req, res, err)
             if (!Number(req.params.id)) {
                 return status.userNotFound(req, res, 400)
             }
+            if (req.params.id != req.userId && req.params.id < 100000 ) return status.notOwner(req, res)
+
             let query = `DELETE FROM user WHERE id = ${req.params.id}`
 
             connection.query(query, function (error, results, fields) {
-                if (error) return status.databaseError(req, res, results)
+                if (error) return dbstatus.databaseError(req, res, results)
                 connection.release()
                 if (results.affectedRows > 0) {
                     return status.returnDelete(req, res)
@@ -142,6 +151,16 @@ module.exports = {
     },
 
     getProfile(req, res) {
-        return status.noEndpoint(req, res)
+       database.getConnection((err, connection) => {
+        if (err) dbstatus.databaseError(req, res, err) 
+        connection.query(`SELECT * FROM user WHERE id = ${req.userId};`, (error, results, fields) => {
+            if (error) return dbstatus.databaseError(req, res, error)
+            if (results.length > 0) {
+                return status.returnOne(req, res, results[0], 200)
+            } else {
+               return status.userNotFound(req, res, 400)
+            }
+        })
+       })
     },
 }

@@ -4,7 +4,7 @@ const chai = require('chai')
 const chaiHttp = require('chai-http')
 const server = require('../../index')
 const assert = require('assert')
-const database = require('../../src/database/databaseConnection')
+const database = require('../../config/database/databaseConnection')
 
 chai.should()
 chai.use(chaiHttp)
@@ -26,6 +26,8 @@ const INSERT_MEALS =
     'INSERT INTO `meal` (`id`, `name`, `description`, `imageUrl`, `dateTime`, `maxAmountOfParticipants`, `price`, `cookId`) VALUES' +
     "(1, 'Meal A', 'description', 'image url', NOW(), 5, 6.50, 1)," +
     "(2, 'Meal B', 'description', 'image url', NOW(), 5, 6.50, 1);"
+
+let token;
 
 describe('User Tests 201-206', () => {
     describe('UC201 Register as new user', () => {
@@ -384,15 +386,28 @@ describe('User Tests 201-206', () => {
                     }
                 )
             })
+        });
+        beforeEach((done) => {
+            chai.request(server).post('/api/auth/login').send({
+                emailAdress: 'name@server.nl',
+                password: 'secret'
+            }).end((err, res) => {
+                if (err) console.log(err)
+                token = res.body.result.token;
+                res.should.have.status(200)
+                done()
+            })
         })
 
         it('TC-203-1 invalid token', (done) => {
             chai.request(server)
                 .get('/api/user/profile')
+                .set('authorization', 'Bearer ' + token.substring(7, 10))
+                
                 //User is not logged in!
                 .end((err, res) => {
                     assert.ifError(err)
-                    res.should.have.status(404)
+                    res.should.have.status(401)
                     res.should.be.an('object')
 
                     res.body.should.be
@@ -404,7 +419,7 @@ describe('User Tests 201-206', () => {
                     message.should.be
                         .an('string')
                         .that.contains(
-                            'This Endpoint is currently Unavailable!'
+                            'Not authorized'
                         )
                     done()
                 })
@@ -413,22 +428,25 @@ describe('User Tests 201-206', () => {
         it('TC-203-2 Valide token, user exists', (done) => {
             chai.request(server)
                 .get('/api/user/profile')
+                .set('authorization', 'Bearer ' + token)
                 //User is not logged in!
                 .end((err, res) => {
                     assert.ifError(err)
-                    res.should.have.status(404)
+                    res.should.have.status(200)
                     res.should.be.an('object')
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'message')
+                        .that.has.all.keys('Status', 'result')
 
-                    let { Status, message } = res.body
+                    let { Status, result } = res.body
                     Status.should.be.an('number')
-                    message.should.be
-                        .an('string')
+                    result.should.be
+                        .an('object')
                         .that.contains(
-                            'This Endpoint is currently Unavailable!'
+                            {
+                                id: 1
+                            }
                         )
                     done()
                 })
@@ -509,9 +527,43 @@ describe('User Tests 201-206', () => {
         })
     })
     describe('UC205 Editing user', () => {
+        beforeEach((done) => {
+            // maak de testdatabase leeg zodat we onze testen kunnen uitvoeren.
+            database.getConnection(function (err, connection) {
+                if (err) throw err // not connected!
+
+                // Use the connection
+                connection.query(
+                    CLEAR_ALL + INSERT_USER,
+                    function (Error, results, fields) {
+                        // When done with the connection, release it.
+                        connection.release()
+
+                        // Handle Error after the release.
+                        if (Error) throw Error
+                        // Let op dat je done() pas aanroept als de query callback eindigt!
+                        done()
+                    }
+                )
+            })
+        });
+        beforeEach((done) => {
+            chai.request(server).post('/api/auth/login').send({
+                emailAdress: 'name@server.nl',
+                password: 'secret'
+            }).end((err, res) => {
+                if (err) console.log(err)
+                token = res.body.result.token;
+                res.should.have.status(200)
+                done()
+            })
+        })
+
+
         it('TC-205-1 Required value is missing', (done) => {
             chai.request(server)
                 .put('/api/user/1')
+                .set('authorization', 'Bearer ' + token)
                 .send({
                     firstName: 'Heroku',
                     lastName: 'Test',
@@ -543,6 +595,7 @@ describe('User Tests 201-206', () => {
         it('TC-205-3 Invalid phone number', (done) => {
             chai.request(server)
                 .put('/api/user/1')
+                .set('authorization', 'Bearer ' + token)
                 .send({
                     firstName: 'Heroku',
                     lastName: 'Test',
@@ -575,6 +628,7 @@ describe('User Tests 201-206', () => {
         it("TC-205-4 User doesn't exist", (done) => {
             chai.request(server)
                 .put('/api/user/900204')
+                .set('authorization', 'Bearer ' + token)
                 .send({
                     firstName: 'Heroku',
                     lastName: 'Test',
@@ -588,7 +642,7 @@ describe('User Tests 201-206', () => {
                 })
                 .end((err, res) => {
                     assert.ifError(err)
-                    res.should.have.status(400)
+                    res.should.have.status(404)
                     res.should.be.an('object')
 
                     res.body.should.be
@@ -620,7 +674,7 @@ describe('User Tests 201-206', () => {
                 })
                 .end((err, res) => {
                     assert.ifError(err)
-                    res.should.have.status(400)
+                    res.should.have.status(401)
                     res.should.be.an('object')
 
                     res.body.should.be
@@ -631,7 +685,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('User does not exist')
+                        .that.contains('Authorization header missing!')
                     done()
                 })
         })
@@ -639,6 +693,7 @@ describe('User Tests 201-206', () => {
         it('TC-205-6 User succesfully edited', (done) => {
             chai.request(server)
                 .put('/api/user/1')
+                .set('authorization', 'Bearer ' + token)
                 .send({
                     firstName: 'Heroku',
                     lastName: 'Test',
@@ -679,9 +734,42 @@ describe('User Tests 201-206', () => {
     })
 
     describe('UC206 Deleting user', () => {
+        beforeEach((done) => {
+            // maak de testdatabase leeg zodat we onze testen kunnen uitvoeren.
+            database.getConnection(function (err, connection) {
+                if (err) throw err // not connected!
+
+                // Use the connection
+                connection.query(
+                    CLEAR_ALL + INSERT_USER,
+                    function (Error, results, fields) {
+                        // When done with the connection, release it.
+                        connection.release()
+
+                        // Handle Error after the release.
+                        if (Error) throw Error
+                        // Let op dat je done() pas aanroept als de query callback eindigt!
+                        done()
+                    }
+                )
+            })
+        });
+        beforeEach((done) => {
+            chai.request(server).post('/api/auth/login').send({
+                emailAdress: 'name@server.nl',
+                password: 'secret'
+            }).end((err, res) => {
+                if (err) console.log(err)
+                token = res.body.result.token;
+                res.should.have.status(200)
+                done()
+            })
+        })
+
         it("TC-206-1 User doesn't exist", (done) => {
             chai.request(server)
                 .delete('/api/user/1241244142')
+                .set('authorization', 'Bearer ' + token)
                 .end((err, res) => {
                     assert.ifError(err)
                     res.should.have.status(400)
@@ -705,7 +793,7 @@ describe('User Tests 201-206', () => {
                 .delete('/api/user/1241244142')
                 .end((err, res) => {
                     assert.ifError(err)
-                    res.should.have.status(400)
+                    res.should.have.status(401)
                     res.should.be.an('object')
 
                     res.body.should.be
@@ -716,17 +804,18 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('User does not exist')
+                        .that.contains('Authorization header missing!')
                     done()
                 })
         })
 
         it("TC-206-3 User isn't the Owner", (done) => {
             chai.request(server)
-                .delete('/api/user/1241244142')
+                .delete('/api/user/2')
+                .set('authorization', 'Bearer ' + token)
                 .end((err, res) => {
                     assert.ifError(err)
-                    res.should.have.status(400)
+                    res.should.have.status(403)
                     res.should.be.an('object')
 
                     res.body.should.be
@@ -737,7 +826,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('User does not exist')
+                        .that.contains('User is not the owner')
                     done()
                 })
         })
@@ -745,6 +834,7 @@ describe('User Tests 201-206', () => {
         it('TC-206-4 User succesfully deleted', (done) => {
             chai.request(server)
                 .delete('/api/user/1')
+                .set('authorization', 'Bearer ' + token)
                 .end((err, res) => {
                     assert.ifError(err)
                     res.should.have.status(200)

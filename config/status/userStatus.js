@@ -14,16 +14,17 @@ module.exports = {
     },
 
     userNotFound(req, res, code) {
+        console.log('user not found failed')
         res.status(code).json({
             Status: code,
             message: `User does not exist`,
         })
     },
 
-    mealNotFound(req, res, code) {
-        res.status(code).json({
-            Status: code,
-            message: `Meal does not exist`,
+    notOwner(req, res) {
+        res.status(403).json({
+            Status: 403,
+            message: `User is not the owner`,
         })
     },
 
@@ -34,14 +35,8 @@ module.exports = {
         })
     },
 
-    databaseError(req, res, result) {
-        res.status(400).json({
-            Status: 400,
-            message: result,
-        })
-    },
-
     createFail(req, res) {
+        console.log('create failed')
         res.status(400).json({
             Status: 400,
             message: `User could not be created!`,

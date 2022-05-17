@@ -1,6 +1,7 @@
 const express = require('express')
 const userController = require('../controllers/user-controller')
 const validator = require('../controllers/validator')
+const auth = require('../controllers/auth-controller')
 const router = express.Router()
 
 // var jsonParser = bodyParser.json()
@@ -8,11 +9,12 @@ const router = express.Router()
 // User routes
 
 router.get('', userController.getAllUsers)
-router.get('/profile', userController.getProfile)
+router.get('/profile', auth.validateToken, userController.getProfile)
 router.get('/:id', userController.getUserById)
 
 router.put(
     '/:id',
+    auth.validateToken,
     validator.validateEmail,
     validator.validateUserPut,
     userController.changeUser,
@@ -26,6 +28,6 @@ router.post(
     userController.createUser
 )
 
-router.delete('/:id', userController.deleteUser)
+router.delete('/:id', auth.validateToken, userController.deleteUser)
 
 module.exports = router

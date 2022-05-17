@@ -1,10 +1,12 @@
-const database = require('../database/databaseConnection')
-const status = require('./status')
+const database = require('../../config/database/databaseConnection')
+const status = require('../../config/status/mealStatus')
+const databaseStatus = require('../../config/status/databaseStatus')
+
 module.exports = {
     getAllMeals(req, res) {
         let fullMeals = []
         database.getConnection(function (err, connection) {
-            if (err) status.databaseError(req, res, err.message)
+            if (err) return databaseStatus.databaseError(req, res, err.message)
             connection.query(
                 'SELECT * FROM meal;',
                 function (error, meals, fields) {
@@ -12,32 +14,53 @@ module.exports = {
                     let run = 0
                     if (meals.length > 0) {
                         meals.forEach((meal) => {
-                            let query = `SELECT user.id, firstName, lastName, emailAdress, password, phoneNumber, roles, street, city FROM user RIGHT JOIN meal_participants_user ON user.id = meal_participants_user.userId RIGHT JOIN meal ON meal_participants_user.mealId = meal.id WHERE meal.id = ${meal.id}`
                             connection.query(
-                                query,
-                                function (error, users, fields) {
-                                    let mealInfo
-                                    if (users[0].id != null) {
-                                        mealInfo = {
-                                            ...meal,
-                                            participants: users,
-                                        }
-                                    } else {
-                                        mealInfo = { ...meal }
-                                    }
-                                    fullMeals.push(mealInfo)
-                                    run++
-                                    if (run == length) {
-                                        res.status(200).json({
-                                            Status: 200,
-                                            Results: fullMeals,
-                                        })
+                                `SELECT * FROM user WHERE id = ${meal.cookId};`,
+                                function (error, results, fields) {
+                                    if (error)
+                                        return databaseStatus.databaseError(
+                                            req,
+                                            res,
+                                            error
+                                        )
+                                    connection.release()
+                                    if (results.length > 0) {
+                                        let cook = results[0]
+
+                                        connection.query(
+                                            `SELECT user.id, firstName, lastName, emailAdress, password, phoneNumber, roles, street, city FROM user RIGHT JOIN meal_participants_user ON user.id = meal_participants_user.userId RIGHT JOIN meal ON meal_participants_user.mealId = meal.id WHERE meal.id = ${meal.id}`,
+                                            function (error, users, fields) {
+                                                let mealInfo
+                                                if (users[0].id != null) {
+                                                    mealInfo = {
+                                                        ...meal,
+                                                        cook: cook,
+                                                        participants: users,
+                                                    }
+                                                } else {
+                                                    mealInfo = {
+                                                        ...meal,
+                                                        cook: cook,
+                                                    }
+                                                }
+                                                fullMeals.push(mealInfo)
+                                                run++
+                                                if (run == length) {
+                                                    return status.returnList(
+                                                        req,
+                                                        res,
+                                                        fullMeals,
+                                                        200
+                                                    )
+                                                }
+                                            }
+                                        )
                                     }
                                 }
                             )
                         })
                     } else {
-                        status.noEndpoint(req, res)
+                        return status.noEndpoint(req, res)
                     }
                 }
             )
@@ -46,12 +69,12 @@ module.exports = {
     //GET
     getMealById(req, res) {
         database.getConnection(function (err, connection) {
-            if (err) return status.databaseError(req, res, err.message)
+            if (err) return databaseStatus.databaseError(req, res, err.message)
             connection.query(
-                `SELECT * FROM meal WHERE meal.id = ${req.params.mealId};`,
+                `SELECT * FROM meal WHERE id = ${req.params.mealId};`,
                 function (error, meal, fields) {
                     if (meal.length > 0) {
-                        let query = `SELECT user.id, firstName, lastName, emailAdress, password, phoneNumber, roles, street, city FROM user RIGHT JOIN meal_participants_user ON user.id = meal_participants_user.userId RIGHT JOIN meal ON meal_participants_user.mealId = meal.id WHERE meal.id = ${req.params.mealId}`
+                        let query = `SELECT user.id, firstName, lastName, emailAdress, phoneNumber, roles, street, city FROM user RIGHT JOIN meal_participants_user ON user.id = meal_participants_user.userId RIGHT JOIN meal ON meal_participants_user.mealId = meal.id WHERE meal.id = ${req.params.mealId}`
                         connection.query(
                             query,
                             function (error, users, fields) {
@@ -64,16 +87,12 @@ module.exports = {
                                 } else {
                                     fullMeal = { ...meal[0] }
                                 }
-                                return status.returnList(
-                                    req,
-                                    res,
-                                    fullMeal,
-                                    200
-                                )
+                                this.fullMeals = fullMeal
+                                return status.returnOne(req, res, fullMeal, 200)
                             }
                         )
                     } else {
-                        return status.noEndpoint(req, res)
+                        return status.mealNotFound(req, res, 404)
                     }
                 }
             )
@@ -82,7 +101,7 @@ module.exports = {
     //POST
     createMeal(req, res) {
         database.getConnection(function (err, connection) {
-            if (err) return status.databaseError(req, res, err.message)
+            if (err) return databaseStatus.databaseError(req, res, err.message)
             let body = req.body
             let query =
                 'INSERT INTO `meal` (`id`, `name`, `description`, `imageUrl`, `dateTime`, `maxAmountOfParticipants`, `price`, `cookId`) VALUES ?'
@@ -95,7 +114,7 @@ module.exports = {
                     body.dateTime,
                     body.maxAmountOfParticipants,
                     body.price,
-                    body.cookId,
+                    req.userId,
                 ],
             ]
             connection.query(
@@ -103,11 +122,17 @@ module.exports = {
                 [values],
                 function (error, results, fields) {
                     if (error) {
-                        return status.databaseError(req, res, error)
+                        return databaseStatus.databaseError(req, res, error)
                     }
                     connection.release()
                     if (results.affectedRows > 0) {
-                        return status.returnOne(req, res, req.body, 201)
+                        let meal = {
+                            id: results.insertId,
+                            ...req.body,
+                        }
+                        return status.returnOne(req, res, meal, 201)
+                    } else {
+                        return status.createFail(req, res)
                     }
                 }
             )
@@ -116,41 +141,185 @@ module.exports = {
     //PUT
     changeMeal(req, res, next) {
         database.getConnection(function (err, connection) {
-            if (err) return status.databaseError(req, res, err)
-            let body = req.body
+            if (err) return databaseStatus.databaseError(req, res, err)
 
-            var query = `UPDATE meal SET name = '${body.name}', description = '${body.description}', isActive = '${body.isActive}', isVegan = '${body.isVegan}', isToTakeHome = '${body.isToTakeHome}', dateTime = '${body.dateTime}', imageUrl = '${body.imageUrl}', allergenes = '${body.allergenes}', maxAmountOfParticipants = '${body.maxAmountOfParticipants}', price = '${body.price}' WHERE id = ${req.params.mealId}`
-
-            connection.query(query, function (error, results, fields) {
-                if (error)
-                    return status.databaseError(req, res, error.sqlMessage)
-                connection.release()
-                if (results.changedRows > 0) {
-                    next()
-                } else {
-                    return status.mealNotFound(req, res, 400)
+            connection.query(
+                `SELECT * FROM meal WHERE id = ${req.params.mealId};`,
+                function (error, meal, fields) {
+                    if (error)
+                        return databaseStatus.databaseError(req, res, error)
+                    if (meal.length > 0 && meal[0].cookId != req.userId)
+                        return status.notOwner(req, res)
+                    else {
+                        if (!Number(req.params.mealId))
+                            return status.mealNotFound(req, res, 400)
+                        connection.query(
+                            'UPDATE `meal` SET ? WHERE `id` = ?',
+                            [req.body, req.params.mealId],
+                            function (error, results, fields) {
+                                if (error)
+                                    return databaseStatus.databaseError(
+                                        req,
+                                        res,
+                                        error
+                                    )
+                                connection.release()
+                                if (results.changedRows > 0) {
+                                    next()
+                                } else {
+                                    return status.mealNotFound(req, res, 404)
+                                }
+                            }
+                        )
+                    }
                 }
-            })
+            )
         })
     },
     //DELETE
     deleteMeal(req, res) {
         database.getConnection(function (err, connection) {
-            if (err) return status.databaseError(req, res, err)
+            if (err) return databaseStatus.databaseError(req, res, err)
 
-            let query = `DELETE FROM meal WHERE id = ${req.params.mealId}`
+            connection.query(
+                `SELECT * FROM meal WHERE id = ${req.params.mealId};`,
+                function (error, meal, fields) {
+                    if (error)
+                        return databaseStatus.databaseError(req, res, error)
+                    if (meal.length > 0) {
+                        if (meal[0].cookId != req.userId)
+                            return status.notOwner(req, res)
+                        if (!Number(req.params.mealId))
+                            return status.mealNotFound(req, res, 400)
 
-            connection.query(query, function (error, results, fields) {
-                if (error)
-                    return status.databaseError(req, res, error.sqlMessage)
-                connection.release()
-                if (results.affectedRows > 0) {
-                    return status.returnDelete(req, res)
-                } else {
-                    return status.mealNotFound(req, res, 400)
+                        connection.query(
+                            `DELETE FROM meal WHERE id = ${req.params.mealId}`,
+                            function (error, result, fields) {
+                                if (error)
+                                    return databaseStatus.databaseError(
+                                        req,
+                                        res,
+                                        error.sqlMessage
+                                    )
+                                connection.release()
+                                if (result.affectedRows > 0) {
+                                    return status.returnDelete(req, res)
+                                } else {
+                                    return status.mealNotFound(req, res, 400)
+                                }
+                            }
+                        )
+                    } else {
+                        return status.mealNotFound(req, res, 400)
+                    }
                 }
-            })
+            )
         })
     },
-    joinMeal(req, res) {},
+
+    partcipate(req, res) {
+        database.getConnection(function (err, connection) {
+            if (err) return databaseStatus.databaseError(req, res, err)
+            connection.query(
+                `SELECT * FROM meal_participants_user WHERE mealId = ${req.params.mealId};`,
+                function (error, rows, fields) {
+                    if (error)
+                        return databaseStatus.databaseError(req, res, error)
+                    if (rows.length == 0) return status.mealNotFound(req, res, 404)
+                    let participating = false
+                    rows.forEach((row) => {
+                        if (row.userId == req.userId) {
+                            participating = true
+                        }
+                    })
+                    if (participating == true) {
+                        //Remove user
+                        connection.query(
+                            `DELETE FROM meal_participants_user WHERE userId = ${req.userId}`,
+                            function (error, result, fields) {
+                                if (error)
+                                    return databaseStatus.databaseError(
+                                        req,
+                                        res,
+                                        error
+                                    )
+                                if (result.affectedRows > 0) {
+                                    connection.query(
+                                        `SELECT mealId, count(userId) AS users FROM meal_participants_user WHERE mealId = ${req.params.mealId}`,
+                                        function (error, results, fields) {
+                                            if (error)
+                                                return databaseStatus.databaseError(
+                                                    req,
+                                                    res,
+                                                    error
+                                                )
+                                            if (results.length > 0) {
+                                                console.log(results)
+                                                let result = {
+                                                    currentlyParticipating: false,
+                                                    currentAmountOfParticipants:
+                                                        results[0].users,
+                                                }
+                                                return status.returnParticipate(
+                                                    req,
+                                                    res,
+                                                    result
+                                                )
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+                        )
+                    } else {
+                        let query =
+                        'INSERT INTO `meal_participants_user` (`mealId`, `userId`) VALUES ?'
+                    var values = [
+                        [
+                            req.params.mealId,
+                            req.userId,
+                        ],
+                    ]
+                        connection.query(
+                            query,
+                            [values],
+                            function (error, result, fields) {
+                                if (error)
+                                    return databaseStatus.databaseError(
+                                        req,
+                                        res,
+                                        error
+                                    )
+                                if (result.affectedRows > 0) {
+                                    connection.query(
+                                        `SELECT mealId, count(userId) AS users FROM meal_participants_user WHERE mealId = ${req.params.mealId}`,
+                                        function (error, results, fields) {
+                                            if (error)
+                                                return databaseStatus.databaseError(
+                                                    req,
+                                                    res,
+                                                    error
+                                                )
+                                            if (results.length > 0) {
+                                                let result = {
+                                                    currentlyParticipating: false,
+                                                    currentAmountOfParticipants:
+                                                        results[0].users,
+                                                }
+                                                return status.returnParticipate(
+                                                    req,
+                                                    res,
+                                                    result
+                                                )
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+                        )
+                    }
+                }
+            )
+        })
+    },
 }

@@ -1,6 +1,6 @@
 const assert = require('assert')
-const database = require('../database/databaseConnection')
-const status = require('../controllers/status')
+const database = require('../../config/database/databaseConnection')
+const status = require('../../config/status/userStatus')
 
 module.exports = {
     validateUserPost(req, res, next) {
@@ -31,12 +31,7 @@ module.exports = {
     validateUserPut(req, res, next) {
         try {
             const {
-                firstName,
-                lastName,
-                street,
-                city,
                 emailAdress,
-                password,
                 phoneNumber,
             } = req.body
             //Check of elke value juiste formaat is
@@ -53,28 +48,19 @@ module.exports = {
             const {
                 name,
                 description,
-                // isToTakeHome,
                 dateTime,
                 imageUrl,
                 maxAmountOfParticipants,
                 price,
-                // allergenes,
-                cookId,
             } = req.body
-
+            req.body.cookId = req.userId
             //Check values van meal!
             assert(typeof name === 'string', 'Name is invalid!')
             assert(typeof description === 'string', 'Description is invalid!')
-            // assert(typeof isToTakeHome === 'boolean','isToTakeHome is invalid!')
             assert(typeof dateTime === 'string', 'dateTime is invalid!')
             assert(typeof imageUrl === 'string', 'imageUrl is invalid!')
-            // assert(Array.isArray(allergenes), 'allergenes is invalid!')
-            assert(
-                typeof maxAmountOfParticipants === 'number',
-                'maxAmountOfParticipants is invalid!'
-            )
+            assert(typeof maxAmountOfParticipants === 'number', 'maxAmountOfParticipants is invalid!')
             assert(typeof price === 'number', 'price is invalid!')
-            assert(typeof cookId === 'number', 'cookId is invalid!')
             next()
         } catch (err) {
             return status.invalidBody(req, res, err.message)
@@ -97,7 +83,7 @@ module.exports = {
             return status.emailInvalid(req, res)
         }
         database.getConnection(function (err, connection) {
-            if (err) status.databaseError(req, res, err.message)
+            if (err) return status.databaseError(req, res, err.message)
             connection.query(
                 `SELECT * FROM user WHERE emailAdress = '${email}';`,
                 function (error, results, fields) {
