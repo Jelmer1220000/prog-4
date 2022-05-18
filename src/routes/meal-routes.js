@@ -2,10 +2,11 @@ const express = require('express')
 const validator = require('../controllers/validator')
 const mealcontroller = require('../controllers/meal-controller')
 const auth = require('../controllers/auth-controller')
+const authController = require('../controllers/auth-controller')
 const router = express.Router()
 
 router.get('', mealcontroller.getAllMeals)
-router.get('/:mealId', mealcontroller.getMealById)
+router.get('/:mealId', authController.validateToken, mealcontroller.getMealById)
 
 router.put('/:mealId', auth.validateToken, validator.validateMeal, mealcontroller.changeMeal, mealcontroller.getMealById)
 

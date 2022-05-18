@@ -309,7 +309,7 @@ describe('Meal tests 301-305', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('')
+                        .that.contains(`Meal does not exist`)
                     done()
                 })
         })

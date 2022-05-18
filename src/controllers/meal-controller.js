@@ -220,11 +220,12 @@ module.exports = {
     partcipate(req, res) {
         database.getConnection(function (err, connection) {
             if (err) return databaseStatus.databaseError(req, res, err)
+            console.log("test: 1")
             connection.query(
                 `SELECT * FROM meal_participants_user WHERE mealId = ${req.params.mealId};`,
                 function (error, rows, fields) {
-                    if (error)
-                        return databaseStatus.databaseError(req, res, error)
+                    console.log(rows)
+                    if (error) return databaseStatus.databaseError(req, res, error)
                     if (rows.length == 0) return status.mealNotFound(req, res, 404)
                     let participating = false
                     rows.forEach((row) => {
@@ -232,57 +233,25 @@ module.exports = {
                             participating = true
                         }
                     })
+                    console.log("test: 3")
+                    let query = '';
+                    let isparticipating = false;
                     if (participating == true) {
-                        //Remove user
-                        connection.query(
-                            `DELETE FROM meal_participants_user WHERE userId = ${req.userId}`,
-                            function (error, result, fields) {
-                                if (error)
-                                    return databaseStatus.databaseError(
-                                        req,
-                                        res,
-                                        error
-                                    )
-                                if (result.affectedRows > 0) {
-                                    connection.query(
-                                        `SELECT mealId, count(userId) AS users FROM meal_participants_user WHERE mealId = ${req.params.mealId}`,
-                                        function (error, results, fields) {
-                                            if (error)
-                                                return databaseStatus.databaseError(
-                                                    req,
-                                                    res,
-                                                    error
-                                                )
-                                            if (results.length > 0) {
-                                                console.log(results)
-                                                let result = {
-                                                    currentlyParticipating: false,
-                                                    currentAmountOfParticipants:
-                                                        results[0].users,
-                                                }
-                                                return status.returnParticipate(
-                                                    req,
-                                                    res,
-                                                    result
-                                                )
-                                            }
-                                        }
-                                    )
-                                }
-                            }
-                        )
+                        query = `DELETE FROM meal_participants_user WHERE userId = ${req.userId}`;
                     } else {
-                        let query =
-                        'INSERT INTO `meal_participants_user` (`mealId`, `userId`) VALUES ?'
+                        isparticipating = true;
+                        query =
+                        `INSERT INTO meal_participants_user (mealId, userId) VALUES (${req.params.mealId}, ${req.userId})`
                     var values = [
                         [
                             req.params.mealId,
                             req.userId,
                         ],
                     ]
+                }      
+                console.log("test: 4")
                         connection.query(
                             query,
-                            [values],
                             function (error, result, fields) {
                                 if (error)
                                     return databaseStatus.databaseError(
@@ -291,6 +260,7 @@ module.exports = {
                                         error
                                     )
                                 if (result.affectedRows > 0) {
+                                    console.log("test: 5")
                                     connection.query(
                                         `SELECT mealId, count(userId) AS users FROM meal_participants_user WHERE mealId = ${req.params.mealId}`,
                                         function (error, results, fields) {
@@ -301,8 +271,9 @@ module.exports = {
                                                     error
                                                 )
                                             if (results.length > 0) {
+                                                console.log("test: 6")
                                                 let result = {
-                                                    currentlyParticipating: false,
+                                                    currentlyParticipating: isparticipating,
                                                     currentAmountOfParticipants:
                                                         results[0].users,
                                                 }
@@ -311,15 +282,17 @@ module.exports = {
                                                     res,
                                                     result
                                                 )
+                                            } else {
+                                                console.log("test: 7")
+                                                return status.noEndpoint(req, res)
                                             }
-                                        }
-                                    )
+                            })
+                                } else {
+                                    console.log("test: 8")
+                                    return status.noEndpoint(req, res)
                                 }
-                            }
-                        )
-                    }
-                }
-            )
+                    })
         })
+    })
     },
 }

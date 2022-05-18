@@ -10,7 +10,7 @@ const router = express.Router()
 
 router.get('', userController.getAllUsers)
 router.get('/profile', auth.validateToken, userController.getProfile)
-router.get('/:id', userController.getUserById)
+router.get('/:id', auth.validateToken, userController.getUserById)
 
 router.put(
     '/:id',

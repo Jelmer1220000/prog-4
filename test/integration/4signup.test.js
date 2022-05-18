@@ -41,23 +41,20 @@ describe('Participate tests 401 - 402', () => {
 
                 // Use the connection
                 connection.query(
-                    CLEAR_ALL + INSERT_USER + INSERT_MEALS ,
+                    CLEAR_ALL + INSERT_USER + INSERT_MEALS,
                     function (Error, results, fields) {
                         connection.release()
                         if (Error) console.log(Error)
-                        done()
+                        chai.request(server).post('/api/auth/login').send({
+                            emailAdress: 'name@server.nl',
+                            password: 'secret'
+                        }).end((err, res) => {
+                            if (err) console.log(err)
+                            token = res.body.result.token;
+                            res.should.have.status(200)
+                            done()
+                        })
                     })
-            })
-        });
-        beforeEach((done) => {
-            chai.request(server).post('/api/auth/login').send({
-                emailAdress: 'name@server.nl',
-                password: 'secret'
-            }).end((err, res) => {
-                if (err) console.log(err)
-                token = res.body.result.token;
-                res.should.have.status(200)
-                done()
             })
         })
 
@@ -123,7 +120,7 @@ describe('Participate tests 401 - 402', () => {
         //             result.should.be
         //                 .an('object')
         //                 .that.contains({
-        //                     currentlyParticipating: false,
+        //                     currentlyParticipating: true,
         //                     currentAmountOfParticipants: result.currentAmountOfParticipants
         //                 })
         //             done()
@@ -143,19 +140,16 @@ describe('Participate tests 401 - 402', () => {
                     function (Error, results, fields) {
                         connection.release()
                         if (Error) console.log(Error)
-                        done()
+                        chai.request(server).post('/api/auth/login').send({
+                            emailAdress: 'name@server.nl',
+                            password: 'secret'
+                        }).end((err, res) => {
+                            if (err) console.log(err)
+                            token = res.body.result.token;
+                            res.should.have.status(200)
+                            done()
+                        })
                     })
-            })
-        });
-        beforeEach((done) => {
-            chai.request(server).post('/api/auth/login').send({
-                emailAdress: 'name@server.nl',
-                password: 'secret'
-            }).end((err, res) => {
-                if (err) console.log(err)
-                token = res.body.result.token;
-                res.should.have.status(200)
-                done()
             })
         })
 
@@ -202,11 +196,12 @@ describe('Participate tests 401 - 402', () => {
                 })
         })
 
-        // it('TC-402-3 succesfully Unregistered', (done) => {
+        // it('TC-401-3 succesfully unregistered', (done) => {
         //     chai.request(server)
         //         .get('/api/meal/1/participate')
         //         .set('authorization', 'Bearer ' + token)
         //         .end((err, res) => {
+        //             done()
         //             assert.ifError(err)
         //             res.should.have.status(200)
         //             res.should.be.an('object')

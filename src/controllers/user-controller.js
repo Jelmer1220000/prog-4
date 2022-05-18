@@ -8,17 +8,17 @@ module.exports = {
         database.getConnection(function (err, connection) {
             if (err) return dbstatus.databaseError(req, res, err)
             let amount = 10000
-            let lastName = '%'
+            let firstName = '%'
             let isActive = '%'
             if (Object.keys(req.query).length != 0) {
-                if (req.query.lastName != null) {
-                    lastName = req.query.lastName
+                if (req.query.firstName != null) {
+                    firstName = req.query.firstName
                 }
                 if (req.query.length != null) {
                     amount = req.query.length
                 }
-                if (req.query.active != null) {
-                    if (req.query.active == 'true') {
+                if (req.query.isActive != null) {
+                    if (req.query.isActive == 'true') {
                         isActive = '1'
                     } else {
                         isActive = '0'
@@ -27,7 +27,7 @@ module.exports = {
             }
 
             connection.query(
-                `SELECT * FROM user WHERE lastName LIKE '${lastName}' && isActive LIKE '${isActive}' LIMIT ${amount};`,
+                `SELECT * FROM user WHERE firstName LIKE '${firstName}' && isActive LIKE '${isActive}' LIMIT ${amount};`,
                 function (error, results, fields) {
                     connection.release()
                     if (error) return dbstatus.databaseError(req, res, error)

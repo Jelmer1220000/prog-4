@@ -278,7 +278,7 @@ describe('User Tests 201-206', () => {
 
         it("TC-202-3 Retrieve users that don't exist", (done) => {
             chai.request(server)
-                .get('/api/user?lastName=abel')
+                .get('/api/user?firstName=hkjh')
                 .end((err, res) => {
                     assert.ifError(err)
                     res.should.have.status(200)
@@ -297,7 +297,7 @@ describe('User Tests 201-206', () => {
 
         it('TC-202-4 Retrieve users with active = false (0 users)', (done) => {
             chai.request(server)
-                .get('/api/user?active=false')
+                .get('/api/user?isActive=false')
                 .end((err, res) => {
                     assert.ifError(err)
                     res.should.have.status(200)
@@ -316,7 +316,7 @@ describe('User Tests 201-206', () => {
 
         it('TC-202-5 Retrieve users with active = true', (done) => {
             chai.request(server)
-                .get('/api/user?active=true')
+                .get('/api/user?isActive=true')
                 .end((err, res) => {
                     assert.ifError(err)
                     res.should.have.status(200)
@@ -335,7 +335,7 @@ describe('User Tests 201-206', () => {
 
         it('TC-202-6 Retrieve users on lastName = last (1 user)', (done) => {
             chai.request(server)
-                .get('/api/user?lastName=last')
+                .get('/api/user?firstName=first')
                 .end((err, res) => {
                     assert.ifError(err)
                     res.should.have.status(200)
@@ -347,20 +347,7 @@ describe('User Tests 201-206', () => {
 
                     let { Status, results } = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('array').to.eql([
-                        {
-                            id: 1,
-                            firstName: 'first',
-                            lastName: 'last',
-                            city: 'city',
-                            street: 'street',
-                            emailAdress: 'name@server.nl',
-                            isActive: 1,
-                            password: 'secret',
-                            roles: 'editor,guest',
-                            phoneNumber: '-',
-                        },
-                    ])
+                    results.should.be.an('array').that.has.length(1);
                     done()
                 })
         })
@@ -454,12 +441,25 @@ describe('User Tests 201-206', () => {
     })
 
     describe('UC204 Request user Details', () => {
+        beforeEach((done) => {
+            chai.request(server).post('/api/auth/login').send({
+                emailAdress: 'name@server.nl',
+                password: 'secret'
+            }).end((err, res) => {
+                if (err) console.log(err)
+                token = res.body.result.token;
+                res.should.have.status(200)
+                done()
+            })
+        })
+
         it('TC-204-1 Invalid Token, user not Logged in', (done) => {
             chai.request(server)
-                .get('/api/user/982134892')
+                .get('/api/user/1')
+                .set('authorization', 'Bearer ' + token.substring(1, 15))
                 .end((err, res) => {
                     assert.ifError(err)
-                    res.should.have.status(404)
+                    res.should.have.status(401)
                     res.should.be.an('object')
 
                     res.body.should.be
@@ -470,7 +470,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('User does not exist')
+                        .that.contains('Not authorized')
                     done()
                 })
         })
@@ -478,6 +478,7 @@ describe('User Tests 201-206', () => {
         it("TC-204-2 Retrieve user by ID, Id doesn't exist", (done) => {
             chai.request(server)
                 .get('/api/user/900123')
+                .set('authorization', 'Bearer ' + token)
                 .end((err, res) => {
                     assert.ifError(err)
                     res.should.have.status(404)
@@ -499,6 +500,7 @@ describe('User Tests 201-206', () => {
         it('TC-204-3 Retrieve user by ID, Id does exist', (done) => {
             chai.request(server)
                 .get('/api/user/1')
+                .set('authorization', 'Bearer ' + token)
                 .end((err, res) => {
                     assert.ifError(err)
                     res.should.have.status(200)
