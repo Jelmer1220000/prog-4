@@ -151,6 +151,9 @@ module.exports = {
                     if (meal.length > 0 && meal[0].cookId != req.userId)
                         return status.notOwner(req, res)
                     else {
+                        if (!req.body.allergenes == null) {
+                            req.body.allergenes = [req.body.allergenes]
+                        }
                         if (!Number(req.params.mealId))
                             return status.mealNotFound(req, res, 400)
                         connection.query(

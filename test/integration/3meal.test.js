@@ -396,11 +396,11 @@ describe('Meal tests 301-305', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'results')
+                        .that.has.all.keys('Status', 'result')
 
-                    let { Status, results } = res.body
+                    let { Status, result } = res.body
                     Status.should.be.an('number')
-                    results.should.be
+                    result.should.be
                         .an('array').that.has.length(2);
                     done()
                 })

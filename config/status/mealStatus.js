@@ -2,7 +2,7 @@ module.exports = {
     returnList(req, res, result, code) {
         res.status(code).json({
             Status: code,
-            results: result,
+            result: result,
         })
     },
 

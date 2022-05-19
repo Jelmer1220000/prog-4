@@ -105,27 +105,32 @@ module.exports = {
             if (!Number(req.params.id)) {
                 return status.userNotFound(req, res, 400)
             }
-            
+
             connection.query(
                 `SELECT * FROM user WHERE id = ${req.params.id};`,
                 function (error, users, fields) {
-                    if (error)
-                        return dbstatus.databaseError(req, res, error)
+                    if (error) return dbstatus.databaseError(req, res, error)
                     if (users.length > 0 && users[0].id != req.userId)
                         return status.notOwner(req, res)
                     else {
-            connection.query('UPDATE `user` SET ? WHERE `id` = ?', [req.body, req.userId], function (error, results, fields) {
-                if (error) return dbstatus.databaseError(req, res, err)
-                connection.release()
-                if (results.changedRows > 0) {
-                    next()
-                } else {
-                    return status.userNotFound(req, res, 400)
+                        connection.query(
+                            'UPDATE `user` SET ? WHERE `id` = ?',
+                            [req.body, req.userId],
+                            function (error, results, fields) {
+                                if (error)
+                                    return dbstatus.databaseError(req, res, err)
+                                connection.release()
+                                if (results.changedRows > 0) {
+                                    next()
+                                } else {
+                                    return status.userNotFound(req, res, 400)
+                                }
+                            }
+                        )
+                    }
                 }
-            })
-        }
+            )
         })
-    })
     },
     //DELETE
     deleteUser(req, res) {
@@ -134,7 +139,8 @@ module.exports = {
             if (!Number(req.params.id)) {
                 return status.userNotFound(req, res, 400)
             }
-            if (req.params.id != req.userId && req.params.id < 100000 ) return status.notOwner(req, res)
+            if (req.params.id != req.userId && req.params.id < 100000)
+                return status.notOwner(req, res)
 
             let query = `DELETE FROM user WHERE id = ${req.params.id}`
 
@@ -151,16 +157,19 @@ module.exports = {
     },
 
     getProfile(req, res) {
-       database.getConnection((err, connection) => {
-        if (err) dbstatus.databaseError(req, res, err) 
-        connection.query(`SELECT * FROM user WHERE id = ${req.userId};`, (error, results, fields) => {
-            if (error) return dbstatus.databaseError(req, res, error)
-            if (results.length > 0) {
-                return status.returnOne(req, res, results[0], 200)
-            } else {
-               return status.userNotFound(req, res, 400)
-            }
+        database.getConnection((err, connection) => {
+            if (err) dbstatus.databaseError(req, res, err)
+            connection.query(
+                `SELECT * FROM user WHERE id = ${req.userId};`,
+                (error, results, fields) => {
+                    if (error) return dbstatus.databaseError(req, res, error)
+                    if (results.length > 0) {
+                        return status.returnOne(req, res, results[0], 200)
+                    } else {
+                        return status.userNotFound(req, res, 400)
+                    }
+                }
+            )
         })
-       })
     },
 }

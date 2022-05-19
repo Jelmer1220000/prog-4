@@ -102,30 +102,30 @@ describe('Participate tests 401 - 402', () => {
                 })
         })
 
-        // it('TC-401-3 succesfully registered', (done) => {
-        //     chai.request(server)
-        //         .get('/api/meal/1/participate')
-        //         .set('authorization', 'Bearer ' + token)
-        //         .end((err, res) => {
-        //             assert.ifError(err)
-        //             res.should.have.status(200)
-        //             res.should.be.an('object')
+        it.skip('TC-401-3 succesfully registered', (done) => {
+            chai.request(server)
+                .get('/api/meal/1/participate')
+                .set('authorization', 'Bearer ' + token)
+                .end((err, res) => {
+                    assert.ifError(err)
+                    res.should.have.status(200)
+                    res.should.be.an('object')
 
-        //             res.body.should.be
-        //                 .an('object')
-        //                 .that.has.all.keys('Status', 'result')
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'result')
 
-        //             let { Status, result } = res.body
-        //             Status.should.be.an('number')
-        //             result.should.be
-        //                 .an('object')
-        //                 .that.contains({
-        //                     currentlyParticipating: true,
-        //                     currentAmountOfParticipants: result.currentAmountOfParticipants
-        //                 })
-        //             done()
-        //         })
-        // })
+                    let { Status, result } = res.body
+                    Status.should.be.an('number')
+                    result.should.be
+                        .an('object')
+                        .that.contains({
+                            currentlyParticipating: true,
+                            currentAmountOfParticipants: result.currentAmountOfParticipants
+                        })
+                    done()
+                })
+        })
     })
 
     describe('UC402 Unregister from meal', () => {
@@ -196,30 +196,30 @@ describe('Participate tests 401 - 402', () => {
                 })
         })
 
-        // it('TC-401-3 succesfully unregistered', (done) => {
-        //     chai.request(server)
-        //         .get('/api/meal/1/participate')
-        //         .set('authorization', 'Bearer ' + token)
-        //         .end((err, res) => {
-        //             done()
-        //             assert.ifError(err)
-        //             res.should.have.status(200)
-        //             res.should.be.an('object')
+        it.skip('TC-401-3 succesfully unregistered', (done) => {
+            chai.request(server)
+                .get('/api/meal/1/participate')
+                .set('authorization', 'Bearer ' + token)
+                .end((err, res) => {
+                    done()
+                    assert.ifError(err)
+                    res.should.have.status(200)
+                    res.should.be.an('object')
 
-        //             res.body.should.be
-        //                 .an('object')
-        //                 .that.has.all.keys('Status', 'result')
+                    res.body.should.be
+                        .an('object')
+                        .that.has.all.keys('Status', 'result')
 
-        //             let { Status, result } = res.body
-        //             Status.should.be.an('number')
-        //             result.should.be
-        //                 .an('object')
-        //                 .that.contains({
-        //                     currentlyParticipating: false,
-        //                     currentAmountOfParticipants: result.currentAmountOfParticipants
-        //                 })
-        //             done()
-        //         })
-        // })
+                    let { Status, result } = res.body
+                    Status.should.be.an('number')
+                    result.should.be
+                        .an('object')
+                        .that.contains({
+                            currentlyParticipating: false,
+                            currentAmountOfParticipants: result.currentAmountOfParticipants
+                        })
+                    done()
+                })
+        })
     })
 })

@@ -71,7 +71,7 @@ module.exports = {
         let forbidden = ['#', '$', '%', '^', '&', '*', '(', ')', '-', '=', '+']
         let progress = true
         let email = req.body.emailAdress
-        if (email == null) {
+        if (email == null || !email.includes('@')) {
             return status.emailInvalid(req, res)
         }
         forbidden.forEach((letter) => {
