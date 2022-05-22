@@ -176,7 +176,8 @@ module.exports = {
     clearDB(req, res) {
         database.getConnection(function (err, connection) {
             let query = `DELETE FROM user WHERE firstName LIKE 'Ristretto'`
-            connection.query(query, function (error, results, fields) {
+            let query2 = `DELETE FROM meal WHERE id > 10`
+            connection.query(query2 + query, function (error, results, fields) {
                 if (error) return dbstatus.databaseError(req, res, error)
                 connection.release()
                 if (results.affectedRows > 0) {
