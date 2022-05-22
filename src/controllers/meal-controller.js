@@ -147,7 +147,8 @@ module.exports = {
                             req.body.allergenes.forEach((aller) => {
                                 genes = `${genes} ${aller},`
                             })
-                            req.body.allergenes = genes + ")";
+                            req.body.allergenes = genes.substring(0, genes.length - 1) + ")";
+                            //done with GLUTEN
                         }
                         if (!Number(req.params.mealId))
                             return status.mealNotFound(req, res, 400)
