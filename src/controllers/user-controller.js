@@ -110,7 +110,8 @@ module.exports = {
                 `SELECT * FROM user WHERE id = ${req.params.id};`,
                 function (error, users, fields) {
                     if (error) return dbstatus.databaseError(req, res, error)
-                    if (users.length > 0 && users[0].id != req.userId)
+                    if (users.length == 0) return status.userNotFound(req, res, 400)
+                    if (users[0].id != req.userId)
                         return status.notOwner(req, res)
                     else {
                         connection.query(
