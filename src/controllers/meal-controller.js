@@ -141,7 +141,7 @@ module.exports = {
     changeMeal(req, res, next) {
         database.getConnection(function (err, connection) {
             if (err) return databaseStatus.databaseError(req, res, err)
-
+            req.body.dateTime = req.body.dateTime.replace("T", " ").substring(0, 19)
                         if (req.body.allergenes != null) {
                             var genes = 'allergenes = ';
                             req.body.allergenes.forEach((aller) => {

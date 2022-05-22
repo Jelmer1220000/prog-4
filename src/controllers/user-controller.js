@@ -32,6 +32,13 @@ module.exports = {
                     connection.release()
                     if (error) return dbstatus.databaseError(req, res, error)
                     if (results) {
+                        results.forEach((person) => {
+                            if (person.isActive == 1) {
+                                person.isActive = true;
+                            } else {
+                                person.isActive = false;
+                            }
+                        })
                         return status.returnList(req, res, results, 200)
                     } else {
                         return status.userNotFound(req, res, 400)
