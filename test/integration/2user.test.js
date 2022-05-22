@@ -82,7 +82,7 @@ describe('User Tests 201-206', () => {
                 })
         })
 
-        it('TC-201-2 emailAdress contains Invalid character', (done) => {
+        it('TC-201-2 Invalid Email', (done) => {
             chai.request(server)
                 .post('/api/user')
                 .send({
@@ -333,7 +333,7 @@ describe('User Tests 201-206', () => {
                 })
         })
 
-        it('TC-202-6 Retrieve users on lastName = last (1 user)', (done) => {
+        it('TC-202-6 Retrieve users on firstName = first (1 user)', (done) => {
             chai.request(server)
                 .get('/api/user?firstName=first')
                 .end((err, res) => {
@@ -562,7 +562,7 @@ describe('User Tests 201-206', () => {
         })
 
 
-        it('TC-205-1 Required value is missing', (done) => {
+        it('TC-205-1 Required value Email is missing', (done) => {
             chai.request(server)
                 .put('/api/user/1')
                 .set('authorization', 'Bearer ' + token)
@@ -644,7 +644,7 @@ describe('User Tests 201-206', () => {
                 })
                 .end((err, res) => {
                     assert.ifError(err)
-                    res.should.have.status(404)
+                    res.should.have.status(400)
                     res.should.be.an('object')
 
                     res.body.should.be
