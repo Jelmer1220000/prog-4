@@ -112,7 +112,7 @@ module.exports = {
                     body.name,
                     body.description,
                     body.imageUrl,
-                    body.dateTime,
+                    Date.now(),
                     body.maxAmountOfParticipants,
                     body.price,
                     req.userId,
@@ -122,9 +122,7 @@ module.exports = {
                 query,
                 [values],
                 function (error, results, fields) {
-                    if (error) {
-                        return databaseStatus.databaseError(req, res, error)
-                    }
+                    if (error) return databaseStatus.databaseError(req, res, error)
                     connection.release()
                     if (results.affectedRows > 0) {
                         let meal = {
@@ -147,8 +145,7 @@ module.exports = {
             connection.query(
                 `SELECT * FROM meal WHERE id = ${req.params.mealId};`,
                 function (error, meal, fields) {
-                    if (error)
-                        return databaseStatus.databaseError(req, res, error)
+                    if (error) return databaseStatus.databaseError(req, res, error)
                     if (meal.length > 0 && meal[0].cookId != req.userId)
                         return status.notOwner(req, res)
                     else {
@@ -224,11 +221,9 @@ module.exports = {
     partcipate(req, res) {
         database.getConnection(function (err, connection) {
             if (err) return databaseStatus.databaseError(req, res, err)
-            console.log("test: 1")
             connection.query(
                 `SELECT * FROM meal_participants_user WHERE mealId = ${req.params.mealId};`,
                 function (error, rows, fields) {
-                    console.log(rows)
                     if (error) return databaseStatus.databaseError(req, res, error)
                     if (rows.length == 0) return status.mealNotFound(req, res, 404)
                     let participating = false
@@ -264,18 +259,15 @@ module.exports = {
                                         error
                                     )
                                 if (result.affectedRows > 0) {
-                                    console.log("test: 5")
                                     connection.query(
                                         `SELECT mealId, count(userId) AS users FROM meal_participants_user WHERE mealId = ${req.params.mealId}`,
                                         function (error, results, fields) {
-                                            if (error)
-                                                return databaseStatus.databaseError(
+                                            if (error) return databaseStatus.databaseError(
                                                     req,
                                                     res,
                                                     error
                                                 )
                                             if (results.length > 0) {
-                                                console.log("test: 6")
                                                 let result = {
                                                     currentlyParticipating: isparticipating,
                                                     currentAmountOfParticipants:
@@ -287,12 +279,10 @@ module.exports = {
                                                     result
                                                 )
                                             } else {
-                                                console.log("test: 7")
                                                 return status.noEndpoint(req, res)
                                             }
                             })
                                 } else {
-                                    console.log("test: 8")
                                     return status.noEndpoint(req, res)
                                 }
                     })
