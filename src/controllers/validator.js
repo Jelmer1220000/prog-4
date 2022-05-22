@@ -138,7 +138,6 @@ module.exports = {
             if (!Number(req.params.id)) {
                 return Ustatus.userNotFound(req, res, 400)
             }
-
             connection.query(
                 `SELECT * FROM user WHERE id = ${req.params.id};`,
                 function (error, users, fields) {

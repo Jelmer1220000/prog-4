@@ -143,13 +143,11 @@ module.exports = {
             if (err) return databaseStatus.databaseError(req, res, err)
             req.body.dateTime = req.body.dateTime.replace("T", " ").substring(0, 19)
                         if (req.body.allergenes != null) {
-                            let text = '`allergenes` = ';
                             let genes = ''
                             req.body.allergenes.forEach((aller) => {
-                                genes = genes + `${aller}, `
+                                genes = `${genes} + ${aller}, `
                             })
-                            text = text + genes;
-                            req.body.allergenes = text;
+                            req.body.allergenes = genes;
                         }
                         if (!Number(req.params.mealId))
                             return status.mealNotFound(req, res, 400)
