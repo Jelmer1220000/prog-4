@@ -4,7 +4,6 @@ const jwtSecretKey = require('../../config/config').jwtSecretKey
 const database = require('../../config/database/databaseConnection')
 const databaseStatus = require('../../config/status/databaseStatus')
 const authS = require('../../config/status/authStatus')
-const { userInfo } = require('os')
 
 module.exports = {
     login(req, res, next) {

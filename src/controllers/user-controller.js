@@ -180,7 +180,7 @@ module.exports = {
             connection.query(query2 + query, function (error, results, fields) {
                 if (error) return dbstatus.databaseError(req, res, error)
                 connection.release()
-                if (results.affectedRows > 0) {
+                if (results) {
                   return res.status(200).json({
                         Status: 200,
                         message: `Succesfully deleted: Ristretto`,
