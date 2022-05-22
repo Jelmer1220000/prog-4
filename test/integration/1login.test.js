@@ -96,7 +96,7 @@ describe('Uc 101 Login', () => {
                 Status.should.be.an('number')
                 message.should.be
                     .an('string')
-                    .that.contains('Email Invalid')
+                    .that.contains('Email is invalid')
 
                 done()
             })

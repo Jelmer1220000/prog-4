@@ -15,6 +15,7 @@ router.get('/:id', auth.validateToken, userController.getUserById)
 router.put(
     '/:id',
     auth.validateToken,
+    validator.validateEmailFormat,
     validator.validateEmail,
     validator.validateUserPut,
     validator.validateOwnerUser,
@@ -25,6 +26,7 @@ router.put(
 router.post(
     '',
     validator.validatePassword,
+    validator.validateEmailFormat,
     validator.validateEmail,
     validator.validateUserPost,
     userController.createUser

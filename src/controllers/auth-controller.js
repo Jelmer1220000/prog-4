@@ -4,6 +4,7 @@ const jwtSecretKey = require('../../config/config').jwtSecretKey
 const database = require('../../config/database/databaseConnection')
 const databaseStatus = require('../../config/status/databaseStatus')
 const authS = require('../../config/status/authStatus')
+const { userInfo } = require('os')
 
 module.exports = {
     login(req, res, next) {
@@ -45,10 +46,16 @@ module.exports = {
                             jwtSecretKey,
                             { expiresIn: '12d' },
                             function (err, token) {
+                                let active = true;
+                                if (userinfo.isActive != true) {
+                                    active = false;
+                                }
+                                userinfo.isActive = active;
                                 let person = {
                                     ...userinfo,
                                     token,
                                 }
+
                                 //Login called
                                 console.log(person)
                                 return authS.userLogin(req, res, person)

@@ -80,8 +80,6 @@ module.exports = {
 
     validateEmail(req, res, next) {
         let email = req.body.emailAdress
-        let regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
-        if (!regex.test(email)) return Ustatus.emailInvalid(req, res)
 
         database.getConnection(function (err, connection) {
             if (err) return Ustatus.databaseError(req, res, err.message)
@@ -97,6 +95,13 @@ module.exports = {
                 }
             )
         })
+    },
+
+    validateEmailFormat(req, res, next) {
+        let email = req.body.emailAdress
+        let regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+        if (regex.test(email)) next();
+        else Ustatus.emailInvalid(req, res)
     },
 
     validateOwnerMeal(req, res, next) {
