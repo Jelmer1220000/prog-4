@@ -146,7 +146,7 @@ module.exports = {
                             let text = '`allergenes` = ';
                             let genes = ''
                             req.body.allergenes.forEach((aller) => {
-                                genes = genes + `'${aller}, '`
+                                genes = genes + `${aller}, `
                             })
                             text = text + genes;
                             req.body.allergenes = text;
