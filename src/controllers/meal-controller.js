@@ -104,6 +104,7 @@ module.exports = {
         database.getConnection(function (err, connection) {
             if (err) return databaseStatus.databaseError(req, res, err.message)
             let body = req.body
+            let time = body.dateTime.replace("T", " ").substring(0, 19)
             let query =
                 'INSERT INTO `meal` (`name`, `description`, `imageUrl`, `dateTime`, `maxAmountOfParticipants`, `price`, `cookId`) VALUES ?'
             var values = [
@@ -111,7 +112,7 @@ module.exports = {
                     body.name,
                     body.description,
                     body.imageUrl,
-                    Date.now(),
+                    time,
                     body.maxAmountOfParticipants,
                     body.price,
                     req.userId,
