@@ -145,7 +145,7 @@ module.exports = {
                         if (req.body.allergenes != null) {
                             let genes = ''
                             req.body.allergenes.forEach((aller) => {
-                                genes = `${genes} + ${aller}, `
+                                genes = `${genes}, ${aller}`
                             })
                             req.body.allergenes = genes;
                         }
