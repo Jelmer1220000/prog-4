@@ -143,9 +143,9 @@ module.exports = {
             if (err) return databaseStatus.databaseError(req, res, err)
             req.body.dateTime = req.body.dateTime.replace("T", " ").substring(0, 19)
                         if (req.body.allergenes != null) {
-                            var genes = 'allergenes = ';
+                            var genes = '`allergenes` = ';
                             req.body.allergenes.forEach((aller) => {
-                                genes = genes + `${aller}, `
+                                genes = genes + `'${aller}, '`
                             })
                             req.body.allergenes = genes;
                         }
