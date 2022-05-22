@@ -7,7 +7,6 @@ const authS = require('../../config/status/authStatus')
 
 module.exports = {
     login(req, res, next) {
-
         let forbidden = ['#', '$', '%', '^', '&', '*', '(', ')', '-', '=', '+']
         let progress = true
         let email = req.body.emailAdress

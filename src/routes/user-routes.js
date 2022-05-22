@@ -23,6 +23,7 @@ router.put(
 
 router.post(
     '',
+    validator.validatePassword,
     validator.validateEmail,
     validator.validateUserPost,
     userController.createUser

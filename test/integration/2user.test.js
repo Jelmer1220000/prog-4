@@ -14,9 +14,9 @@ const CLEAR_ALL =
 //Im done with this fucking database testing crap through github
 const INSERT_USER =
     'INSERT INTO `user` (`id`, `firstName`, `lastName`, `emailAdress`, `password`, `street`, `city` ) VALUES' +
-    '(1, "first", "last", "name@server.nl", "secret", "street", "city"),' +
-    '(2, "second", "last2", "name2@server.nl", "secret", "street", "city"),' +
-    '(3, "third", "last3", "name3@server.nl", "secret", "street", "city");'
+    '(1, "first", "last", "name@server.nl", "Secret!9321", "street", "city"),' +
+    '(2, "second", "last2", "name2@server.nl", "Secret!9321", "street", "city"),' +
+    '(3, "third", "last3", "name3@server.nl", "Secret!9321", "street", "city");'
 
 /**
  * Query om twee meals toe te voegen. Let op de UserId, die moet matchen
@@ -60,7 +60,7 @@ describe('User Tests 201-206', () => {
                     city: 'Breda',
                     isActive: 1,
                     emailAdress: 'Heroku.works@server.com',
-                    password: 'secret',
+                    password: 'Secret!9321',
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
@@ -93,7 +93,7 @@ describe('User Tests 201-206', () => {
                     isActive: 1,
                     roles: '',
                     emailAdress: 'name#$#%@server.nl',
-                    password: 'secret',
+                    password: 'Secret!9321',
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
@@ -124,7 +124,7 @@ describe('User Tests 201-206', () => {
                     city: 'city',
                     isActive: 1,
                     emailAdress: 'name34@server.nl',
-                    password: 665,
+                    password: 'test',
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
@@ -140,7 +140,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('password is invalid!')
+                        .that.contains('Password is Invalid')
                     done()
                 })
         })
@@ -156,7 +156,7 @@ describe('User Tests 201-206', () => {
                     isActive: 1,
                     //This email already exists
                     emailAdress: 'name@server.nl',
-                    password: 'secret',
+                    password: 'Secret!9321',
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
@@ -187,7 +187,7 @@ describe('User Tests 201-206', () => {
                     city: 'Breda',
                     isActive: 1,
                     emailAdress: 'new.user57@server.com',
-                    password: 'secret',
+                    password: 'Secret!9321',
                     phoneNumber: '06-11223344',
                 })
                 .end((err, res) => {
@@ -209,7 +209,7 @@ describe('User Tests 201-206', () => {
                         city: 'Breda',
                         isActive: 1,
                         emailAdress: 'new.user57@server.com',
-                        password: 'secret',
+                        password: 'Secret!9321',
                         phoneNumber: '06-11223344',
                     })
                     done()
@@ -377,7 +377,7 @@ describe('User Tests 201-206', () => {
         beforeEach((done) => {
             chai.request(server).post('/api/auth/login').send({
                 emailAdress: 'name@server.nl',
-                password: 'secret'
+                password: 'Secret!9321'
             }).end((err, res) => {
                 if (err) console.log(err)
                 token = res.body.result.token;
@@ -444,7 +444,7 @@ describe('User Tests 201-206', () => {
         beforeEach((done) => {
             chai.request(server).post('/api/auth/login').send({
                 emailAdress: 'name@server.nl',
-                password: 'secret'
+                password: 'Secret!9321'
             }).end((err, res) => {
                 if (err) console.log(err)
                 token = res.body.result.token;
@@ -520,7 +520,7 @@ describe('User Tests 201-206', () => {
                         street: 'street',
                         emailAdress: 'name@server.nl',
                         isActive: 1,
-                        password: 'secret',
+                        password: 'Secret!9321',
                         roles: 'editor,guest',
                         phoneNumber: '-',
                     })
@@ -552,7 +552,7 @@ describe('User Tests 201-206', () => {
         beforeEach((done) => {
             chai.request(server).post('/api/auth/login').send({
                 emailAdress: 'name@server.nl',
-                password: 'secret'
+                password: 'Secret!9321'
             }).end((err, res) => {
                 if (err) console.log(err)
                 token = res.body.result.token;
@@ -572,7 +572,7 @@ describe('User Tests 201-206', () => {
                     street: 'Info',
                     city: 'Breda',
                     isActive: 1,
-                    password: 'secret',
+                    password: 'Secret!9321',
                     roles: '',
                     phoneNumber: '06-11223344',
                 })
@@ -605,7 +605,7 @@ describe('User Tests 201-206', () => {
                     city: 'Breda',
                     isActive: 1,
                     emailAdress: 'Heroku.works@server.com',
-                    password: 'secret',
+                    password: 'Secret!9321',
                     roles: '',
                     phoneNumber: 06 - 11223344,
                 })
@@ -638,7 +638,7 @@ describe('User Tests 201-206', () => {
                     city: 'Breda',
                     isActive: 1,
                     emailAdress: 'Heroku.works@server.com',
-                    password: 'secret',
+                    password: 'Secret!9321',
                     roles: '',
                     phoneNumber: '06-11223344',
                 })
@@ -670,7 +670,7 @@ describe('User Tests 201-206', () => {
                     city: 'Breda',
                     isActive: 1,
                     emailAdress: 'Heroku.works@server.com',
-                    password: 'secret',
+                    password: 'Secret!9321',
                     roles: '',
                     phoneNumber: '06-11223344',
                 })
@@ -703,7 +703,7 @@ describe('User Tests 201-206', () => {
                     city: 'Breda',
                     isActive: 1,
                     emailAdress: 'Heroku3432.works@server.com',
-                    password: 'secret',
+                    password: 'Secret!9321',
                     roles: '',
                     phoneNumber: '06-11223344',
                 })
@@ -726,7 +726,7 @@ describe('User Tests 201-206', () => {
                         city: 'Breda',
                         isActive: 1,
                         emailAdress: 'Heroku3432.works@server.com',
-                        password: 'secret',
+                        password: 'Secret!9321',
                         roles: '',
                         phoneNumber: '06-11223344',
                     })
@@ -759,7 +759,7 @@ describe('User Tests 201-206', () => {
         beforeEach((done) => {
             chai.request(server).post('/api/auth/login').send({
                 emailAdress: 'name@server.nl',
-                password: 'secret'
+                password: 'Secret!9321'
             }).end((err, res) => {
                 if (err) console.log(err)
                 token = res.body.result.token;

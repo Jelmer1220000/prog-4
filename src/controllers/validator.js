@@ -65,6 +65,17 @@ module.exports = {
         }
     },
 
+    validatePassword(req, res, next) {
+        var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[!@#$%^&*])))(?=.{8,})");
+        let password = req.body.password
+
+        if (mediumRegex.test(password)) {
+            next();
+        } else {
+            return status.invalidPassword(req, res);
+        }
+    },
+
     validateEmail(req, res, next) {
         let forbidden = ['#', '$', '%', '^', '&', '*', '(', ')', '-', '=', '+']
         let progress = true

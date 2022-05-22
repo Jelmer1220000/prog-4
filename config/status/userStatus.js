@@ -21,6 +21,13 @@ module.exports = {
         })
     },
 
+    invalidPassword(req, res) {
+        res.status(400).json({
+            Status: 400,
+            message: 'Password is Invalid'
+        })
+    },
+
     notOwner(req, res) {
         res.status(403).json({
             Status: 403,

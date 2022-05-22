@@ -14,9 +14,9 @@ const CLEAR_ALL =
 
     const INSERT_USER =
     'INSERT INTO `user` (`id`, `firstName`, `lastName`, `emailAdress`, `password`, `street`, `city` ) VALUES' +
-    '(1, "first", "last", "name@server.nl", "secret", "street", "city"),' +
-    '(2, "second", "last2", "name2@server.nl", "secret", "street", "city"),' +
-    '(3, "third", "last3", "name3@server.nl", "secret", "street", "city");'
+    '(1, "first", "last", "name@server.nl", "Secret!9321", "street", "city"),' +
+    '(2, "second", "last2", "name2@server.nl", "Secret!9321", "street", "city"),' +
+    '(3, "third", "last3", "name3@server.nl", "Secret!9321", "street", "city");'
 
 /**
  * Query om twee meals toe te voegen. Let op de UserId, die moet matchen
@@ -47,7 +47,7 @@ describe('Participate tests 401 - 402', () => {
                         if (Error) console.log(Error)
                         chai.request(server).post('/api/auth/login').send({
                             emailAdress: 'name@server.nl',
-                            password: 'secret'
+                            password: 'Secret!9321'
                         }).end((err, res) => {
                             if (err) console.log(err)
                             token = res.body.result.token;
@@ -142,7 +142,7 @@ describe('Participate tests 401 - 402', () => {
                         if (Error) console.log(Error)
                         chai.request(server).post('/api/auth/login').send({
                             emailAdress: 'name@server.nl',
-                            password: 'secret'
+                            password: 'Secret!9321'
                         }).end((err, res) => {
                             if (err) console.log(err)
                             token = res.body.result.token;

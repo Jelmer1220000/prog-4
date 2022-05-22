@@ -14,9 +14,9 @@ const CLEAR_ALL =
 //Im done with this fucking database testing crap through github
 const INSERT_USER =
     'INSERT INTO `user` (`id`, `firstName`, `lastName`, `emailAdress`, `password`, `street`, `city` ) VALUES' +
-    '(1, "first", "last", "name@server.nl", "secret", "street", "city"),' +
-    '(2, "second", "last2", "name2@server.nl", "secret", "street", "city"),' +
-    '(3, "third", "last3", "name3@server.nl", "secret", "street", "city");'
+    '(1, "first", "last", "name@server.nl", "Secret!9321", "street", "city"),' +
+    '(2, "second", "last2", "name2@server.nl", "Secret!9321", "street", "city"),' +
+    '(3, "third", "last3", "name3@server.nl", "Secret!9321", "street", "city");'
 
 /**
  * Query om twee meals toe te voegen. Let op de UserId, die moet matchen
@@ -70,7 +70,7 @@ describe('Uc 101 Login', () => {
                 Status.should.be.an('number')
                 message.should.be
                     .an('string')
-                    .that.contains('password must be a string')
+                    .that.contains('Password is Invalid')
 
                 done()
             })
@@ -81,7 +81,7 @@ describe('Uc 101 Login', () => {
             .post('/api/auth/login')
             .send({
                 emailAdress: 'name#$^&@sver.nl',
-                password: 'secret',
+                password: 'Secret!9321',
             })
             .end((err, res) => {
                 assert.ifError(err)
@@ -96,7 +96,7 @@ describe('Uc 101 Login', () => {
                 Status.should.be.an('number')
                 message.should.be
                     .an('string')
-                    .that.contains('Email Invalid!')
+                    .that.contains('Email Invalid')
 
                 done()
             })
@@ -107,7 +107,7 @@ describe('Uc 101 Login', () => {
             .post('/api/auth/login')
             .send({
                 emailAdress: 'name@server.nl',
-                password: 'secret12431231',
+                password: 'secret',
             })
             .end((err, res) => {
                 assert.ifError(err)
@@ -122,7 +122,7 @@ describe('Uc 101 Login', () => {
                 Status.should.be.an('number')
                 message.should.be
                     .an('string')
-                    .that.contains('Password or Email invalid')
+                    .that.contains('Password is Invalid')
 
                 done()
             })
@@ -133,7 +133,7 @@ describe('Uc 101 Login', () => {
             .post('/api/auth/login')
             .send({
                 emailAdress: 'na@rver.nl',
-                password: 'secret',
+                password: 'Secret!9321',
             })
             .end((err, res) => {
                 assert.ifError(err)
@@ -159,7 +159,7 @@ describe('Uc 101 Login', () => {
             .post('/api/auth/login')
             .send({
                 emailAdress: 'name@server.nl',
-                password: 'secret',
+                password: 'Secret!9321',
             })
             .end((err, res) => {
                 assert.ifError(err)
