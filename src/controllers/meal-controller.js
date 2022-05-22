@@ -104,9 +104,7 @@ module.exports = {
         database.getConnection(function (err, connection) {
             if (err) return databaseStatus.databaseError(req, res, err.message)
             let body = req.body
-            //WHERE DO THESE NUMBERS COME FROM
             let time = body.dateTime.replace("T", " ").substring(0, 19)
-            console.log(time)
             let query =
                 'INSERT INTO `meal` (`name`, `description`, `imageUrl`, `dateTime`, `maxAmountOfParticipants`, `price`, `cookId`) VALUES ?'
             var values = [
@@ -144,13 +142,6 @@ module.exports = {
         database.getConnection(function (err, connection) {
             if (err) return databaseStatus.databaseError(req, res, err)
 
-            connection.query(
-                `SELECT * FROM meal WHERE id = ${req.params.mealId};`,
-                function (error, meal, fields) {
-                    if (error) return databaseStatus.databaseError(req, res, error)
-                    if (meal.length > 0 && meal[0].cookId != req.userId)
-                        return status.notOwner(req, res)
-                    else {
                         if (!req.body.allergenes == null) {
                             req.body.allergenes = [req.body.allergenes]
                         }
@@ -174,27 +165,13 @@ module.exports = {
                                 }
                             }
                         )
-                    }
-                }
-            )
-        })
+                    })
     },
     //DELETE
     deleteMeal(req, res) {
         database.getConnection(function (err, connection) {
             if (err) return databaseStatus.databaseError(req, res, err)
-
-            connection.query(
-                `SELECT * FROM meal WHERE id = ${req.params.mealId};`,
-                function (error, meal, fields) {
-                    if (error)
-                        return databaseStatus.databaseError(req, res, error)
-                    if (meal.length > 0) {
-                        if (meal[0].cookId != req.userId)
-                            return status.notOwner(req, res)
-                        if (!Number(req.params.mealId))
-                            return status.mealNotFound(req, res, 400)
-
+ 
                         connection.query(
                             `DELETE FROM meal WHERE id = ${req.params.mealId}`,
                             function (error, result, fields) {
@@ -212,12 +189,7 @@ module.exports = {
                                 }
                             }
                         )
-                    } else {
-                        return status.mealNotFound(req, res, 404)
-                    }
-                }
-            )
-        })
+                })
     },
 
     partcipate(req, res) {

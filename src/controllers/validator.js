@@ -1,6 +1,8 @@
 const assert = require('assert')
 const database = require('../../config/database/databaseConnection')
-const status = require('../../config/status/userStatus')
+const dbstatus = require('../../config/status/databaseStatus')
+const Ustatus = require('../../config/status/userStatus')
+const Mstatus = require('../../config/status/mealStatus')
 
 module.exports = {
     validateUserPost(req, res, next) {
@@ -24,7 +26,7 @@ module.exports = {
             assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
             next()
         } catch (err) {
-            return status.invalidBody(req, res, err.message)
+            return Ustatus.invalidBody(req, res, err.message)
         }
     },
 
@@ -39,7 +41,7 @@ module.exports = {
             assert(typeof phoneNumber == 'string', 'phoneNumber is invalid!')
             next()
         } catch (err) {
-            return status.invalidBody(req, res, err.message)
+            return Ustatus.invalidBody(req, res, err.message)
         }
     },
 
@@ -61,7 +63,7 @@ module.exports = {
             assert(typeof price === 'number', 'price is invalid!')
             next()
         } catch (err) {
-            return status.invalidBody(req, res, err.message)
+            return Ustatus.invalidBody(req, res, err.message)
         }
     },
 
@@ -72,7 +74,7 @@ module.exports = {
         if (mediumRegex.test(password)) {
             next();
         } else {
-            return status.invalidPassword(req, res);
+            return Ustatus.invalidPassword(req, res);
         }
     },
 
@@ -81,7 +83,7 @@ module.exports = {
         let progress = true
         let email = req.body.emailAdress
         if (email == null || !email.includes('@')) {
-            return status.emailInvalid(req, res)
+            return Ustatus.emailInvalid(req, res)
         }
         forbidden.forEach((letter) => {
             if (email.includes(letter)) {
@@ -89,10 +91,10 @@ module.exports = {
             }
         })
         if (progress != true) {
-            return status.emailInvalid(req, res)
+            return Ustatus.emailInvalid(req, res)
         }
         database.getConnection(function (err, connection) {
-            if (err) return status.databaseError(req, res, err.message)
+            if (err) return Ustatus.databaseError(req, res, err.message)
             connection.query(
                 `SELECT * FROM user WHERE emailAdress = '${email}';`,
                 function (error, results, fields) {
@@ -100,10 +102,53 @@ module.exports = {
                     if (results.length == 0 || (results[0].id == req.params.id)) {
                             next()
                         } else {
-                            return status.emailExists(req, res)
+                            return Ustatus.emailExists(req, res)
                         }
                 }
             )
         })
     },
+
+    validateOwnerMeal(req, res, next) {
+        database.getConnection(function (err, connection) {
+            if (err) return dbstatus.databaseError(req, res, err)
+
+            if (!Number(req.params.mealId))
+            return Mstatus.mealNotFound(req, res, 400)
+
+            connection.query(
+                `SELECT * FROM meal WHERE id = ${req.params.mealId};`,
+                function (error, meal, fields) {
+                    connection.release();
+                    if (error) return dbstatus.databaseError(req, res, error)
+                    if (meal.length > 0 && meal[0].cookId != req.userId)
+                        return Mstatus.notOwner(req, res)
+                    else {
+                        next();
+                    }
+                })
+            })
+    },
+
+    validateOwnerUser(req, res, next) {
+        database.getConnection(function (err, connection) {
+            if (err) return dbstatus.databaseError(req, res, err)
+            if (!Number(req.params.id)) {
+                return Ustatus.userNotFound(req, res, 400)
+            }
+
+            connection.query(
+                `SELECT * FROM user WHERE id = ${req.params.id};`,
+                function (error, users, fields) {
+                    if (error) return dbstatus.databaseError(req, res, error)
+                    if (users.length == 0) return Ustatus.userNotFound(req, res, 400)
+                    if (users[0].id != req.userId)
+                        return Ustatus.notOwner(req, res)
+                    else {
+                        next();
+                    }
+                })
+            });
+    }
+
 }

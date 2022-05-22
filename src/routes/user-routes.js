@@ -17,6 +17,7 @@ router.put(
     auth.validateToken,
     validator.validateEmail,
     validator.validateUserPut,
+    validator.validateOwnerUser,
     userController.changeUser,
     userController.getUserById
 )
@@ -29,6 +30,6 @@ router.post(
     userController.createUser
 )
 
-router.delete('/:id', auth.validateToken, userController.deleteUser)
+router.delete('/:id', auth.validateToken, validator.validateOwnerUser, userController.deleteUser)
 
 module.exports = router

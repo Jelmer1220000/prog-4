@@ -8,11 +8,11 @@ const router = express.Router()
 router.get('', mealcontroller.getAllMeals)
 router.get('/:mealId', authController.validateToken, mealcontroller.getMealById)
 
-router.put('/:mealId', auth.validateToken, validator.validateMeal, mealcontroller.changeMeal, mealcontroller.getMealById)
+router.put('/:mealId', auth.validateToken, validator.validateMeal, validator.validateOwnerMeal, mealcontroller.changeMeal, mealcontroller.getMealById)
 
 router.post('', auth.validateToken, validator.validateMeal, mealcontroller.createMeal)
 
-router.delete('/:mealId', auth.validateToken, mealcontroller.deleteMeal)
+router.delete('/:mealId', auth.validateToken, validator.validateOwnerMeal, mealcontroller.deleteMeal)
 
 router.get('/:mealId/participate', auth.validateToken, mealcontroller.partcipate)
 

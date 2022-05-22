@@ -38,7 +38,7 @@ describe('User Tests 201-206', () => {
                 // Use the connection
                 connection.query(
                     CLEAR_ALL + INSERT_USER,
-                    function (Error, results, fields) {
+                    function (Error, result, fields) {
                         // When done with the connection, release it.
                         connection.release()
 
@@ -225,7 +225,7 @@ describe('User Tests 201-206', () => {
                 // Use the connection
                 connection.query(
                     CLEAR_ALL + INSERT_USER,
-                    function (Error, results, fields) {
+                    function (Error, result, fields) {
                         // When done with the connection, release it.
                         connection.release()
 
@@ -248,11 +248,11 @@ describe('User Tests 201-206', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'results')
+                        .that.has.all.keys('Status', 'result')
 
-                    let { Status, results } = res.body
+                    let { Status, result } = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('array').that.is.empty;
+                    result.should.be.an('array').that.is.empty;
                     done()
                 })
         })
@@ -267,11 +267,11 @@ describe('User Tests 201-206', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'results')
+                        .that.has.all.keys('Status', 'result')
 
-                    let { Status, results } = res.body
+                    let { Status, result } = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('array').that.has.length(2);
+                    result.should.be.an('array').that.has.length(2);
                     done()
                 })
         })
@@ -286,11 +286,11 @@ describe('User Tests 201-206', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'results')
+                        .that.has.all.keys('Status', 'result')
 
-                    let { Status, results } = res.body
+                    let { Status, result } = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('array').that.is.empty;
+                    result.should.be.an('array').that.is.empty;
                     done()
                 })
         })
@@ -305,11 +305,11 @@ describe('User Tests 201-206', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'results')
+                        .that.has.all.keys('Status', 'result')
 
-                    let { Status, results } = res.body
+                    let { Status, result } = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('array').that.is.empty;
+                    result.should.be.an('array').that.is.empty;
                     done()
                 })
         })
@@ -324,11 +324,11 @@ describe('User Tests 201-206', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'results')
+                        .that.has.all.keys('Status', 'result')
 
-                    let { Status, results } = res.body
+                    let { Status, result } = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('array').that.has.length(3)
+                    result.should.be.an('array').that.has.length(3)
                     done()
                 })
         })
@@ -343,11 +343,11 @@ describe('User Tests 201-206', () => {
 
                     res.body.should.be
                         .an('object')
-                        .that.has.all.keys('Status', 'results')
+                        .that.has.all.keys('Status', 'result')
 
-                    let { Status, results } = res.body
+                    let { Status, result } = res.body
                     Status.should.be.an('number')
-                    results.should.be.an('array').that.has.length(1);
+                    result.should.be.an('array').that.has.length(1);
                     done()
                 })
         })
@@ -362,7 +362,7 @@ describe('User Tests 201-206', () => {
                 // Use the connection
                 connection.query(
                     CLEAR_ALL + INSERT_USER,
-                    function (Error, results, fields) {
+                    function (Error, result, fields) {
                         // When done with the connection, release it.
                         connection.release()
 
@@ -537,7 +537,7 @@ describe('User Tests 201-206', () => {
                 // Use the connection
                 connection.query(
                     CLEAR_ALL + INSERT_USER,
-                    function (Error, results, fields) {
+                    function (Error, result, fields) {
                         // When done with the connection, release it.
                         connection.release()
 
@@ -744,7 +744,7 @@ describe('User Tests 201-206', () => {
                 // Use the connection
                 connection.query(
                     CLEAR_ALL + INSERT_USER,
-                    function (Error, results, fields) {
+                    function (Error, result, fields) {
                         // When done with the connection, release it.
                         connection.release()
 
