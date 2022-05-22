@@ -17,6 +17,6 @@ router.delete('/:mealId', auth.validateToken, validator.validateOwnerMeal, mealc
 
 router.get('/:mealId/participate', auth.validateToken, mealcontroller.partcipate)
 
-router.delete('/cleanup/:cookId', mealController.clearDB)
+// router.delete('/cleanup/:cookId', mealController.clearDB)
 
 module.exports = router
