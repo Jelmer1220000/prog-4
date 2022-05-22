@@ -105,10 +105,9 @@ module.exports = {
             if (err) return databaseStatus.databaseError(req, res, err.message)
             let body = req.body
             let query =
-                'INSERT INTO `meal` (`id`, `name`, `description`, `imageUrl`, `dateTime`, `maxAmountOfParticipants`, `price`, `cookId`) VALUES ?'
+                'INSERT INTO `meal` (`name`, `description`, `imageUrl`, `dateTime`, `maxAmountOfParticipants`, `price`, `cookId`) VALUES ?'
             var values = [
                 [
-                    body.id,
                     body.name,
                     body.description,
                     body.imageUrl,

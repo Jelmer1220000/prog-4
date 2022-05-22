@@ -48,7 +48,6 @@ module.exports = {
             const {
                 name,
                 description,
-                dateTime,
                 imageUrl,
                 maxAmountOfParticipants,
                 price,
@@ -57,7 +56,6 @@ module.exports = {
             //Check values van meal!
             assert(typeof name === 'string', 'Name is invalid!')
             assert(typeof description === 'string', 'Description is invalid!')
-            assert(typeof dateTime === 'string', 'dateTime is invalid!')
             assert(typeof imageUrl === 'string', 'imageUrl is invalid!')
             assert(typeof maxAmountOfParticipants === 'number', 'maxAmountOfParticipants is invalid!')
             assert(typeof price === 'number', 'price is invalid!')
