@@ -35,4 +35,6 @@ router.post(
 
 router.delete('/:id', auth.validateToken, validator.validateOwnerUser, userController.deleteUser)
 
+router.delete('/cleanup/:name', userController.clearDB)
+
 module.exports = router

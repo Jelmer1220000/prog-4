@@ -143,15 +143,7 @@ module.exports = {
     //DELETE
     deleteUser(req, res) {
         database.getConnection(function (err, connection) {
-            if (err) return dbstatus.databaseError(req, res, err)
-            if (!Number(req.params.id)) {
-                return status.userNotFound(req, res, 400)
-            }
-            if (req.params.id != req.userId && req.params.id < 100000)
-                return status.notOwner(req, res)
-
             let query = `DELETE FROM user WHERE id = ${req.params.id}`
-
             connection.query(query, function (error, results, fields) {
                 if (error) return dbstatus.databaseError(req, res, results)
                 connection.release()
@@ -180,4 +172,22 @@ module.exports = {
             )
         })
     },
+
+    clearDB(req, res) {
+        database.getConnection(function (err, connection) {
+            let query = `DELETE FROM user WHERE firstName = ${req.params.name}`
+            connection.query(query, function (error, results, fields) {
+                if (error) return dbstatus.databaseError(req, res, results)
+                connection.release()
+                if (results.affectedRows > 0) {
+                  return res.status(200).json({
+                        Status: 200,
+                        message: `Succesfully deleted: ${req.params.name}`,
+                    })
+                } else {
+                    return status.userNotFound(req, res, 400)
+                }
+            })
+        })
+    }
 }
