@@ -293,6 +293,7 @@ describe('Meal tests 301-305', () => {
                     description: 'Overheerlijke Lasagne',
                     imageUrl: 'https://www.google.nl',
                     dateTime: '2022-04-26:18:00',
+                    allergenes: ['Gluten', 'Milk', 'random'],
                     maxAmountOfParticipants: 8,
                     price: 5.55,
                 })

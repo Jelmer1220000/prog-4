@@ -142,8 +142,12 @@ module.exports = {
         database.getConnection(function (err, connection) {
             if (err) return databaseStatus.databaseError(req, res, err)
 
-                        if (!req.body.allergenes == null) {
-                            req.body.allergenes = [req.body.allergenes]
+                        if (req.body.allergenes != null) {
+                            var genes = 'allergenes = ';
+                            req.body.allergenes.forEach((aller) => {
+                                genes = genes + `${aller}, `
+                            })
+                            req.body.allergenes = genes;
                         }
                         if (!Number(req.params.mealId))
                             return status.mealNotFound(req, res, 400)
