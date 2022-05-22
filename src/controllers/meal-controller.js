@@ -104,7 +104,9 @@ module.exports = {
         database.getConnection(function (err, connection) {
             if (err) return databaseStatus.databaseError(req, res, err.message)
             let body = req.body
+            //WHERE DO THESE NUMBERS COME FROM
             let time = body.dateTime.replace("T", " ").substring(0, 19)
+            console.log(time)
             let query =
                 'INSERT INTO `meal` (`name`, `description`, `imageUrl`, `dateTime`, `maxAmountOfParticipants`, `price`, `cookId`) VALUES ?'
             var values = [
