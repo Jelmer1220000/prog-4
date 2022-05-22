@@ -79,20 +79,10 @@ module.exports = {
     },
 
     validateEmail(req, res, next) {
-        let forbidden = ['#', '$', '%', '^', '&', '*', '(', ')', '-', '=', '+']
-        let progress = true
         let email = req.body.emailAdress
-        if (email == null || !email.includes('@')) {
-            return Ustatus.emailInvalid(req, res)
-        }
-        forbidden.forEach((letter) => {
-            if (email.includes(letter)) {
-                progress = false
-            }
-        })
-        if (progress != true) {
-            return Ustatus.emailInvalid(req, res)
-        }
+        let regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+        if (!regex.test(email)) return Ustatus.emailInvalid(req, res)
+
         database.getConnection(function (err, connection) {
             if (err) return Ustatus.databaseError(req, res, err.message)
             connection.query(

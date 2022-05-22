@@ -59,7 +59,7 @@ describe('User Tests 201-206', () => {
                     street: 'Info',
                     city: 'Breda',
                     isActive: 1,
-                    emailAdress: 'Heroku.works@server.com',
+                    emailAdress: 'Herokuwork@server.com',
                     password: 'Secret!9321',
                     phoneNumber: '06-11223344',
                 })
