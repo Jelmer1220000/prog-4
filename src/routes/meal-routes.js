@@ -6,7 +6,7 @@ const authController = require('../controllers/auth-controller')
 const router = express.Router()
 
 router.get('', mealcontroller.getAllMeals)
-router.get('/:mealId', authController.validateToken, mealcontroller.getMealById)
+router.get('/:mealId', mealcontroller.getMealById)
 
 router.put('/:mealId', auth.validateToken, validator.validateMeal, validator.validateOwnerMeal, mealcontroller.changeMeal, mealcontroller.getMealById)
 
