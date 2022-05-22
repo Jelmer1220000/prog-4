@@ -73,6 +73,7 @@ module.exports = {
             connection.query(
                 `SELECT * FROM meal WHERE id = ${req.params.mealId};`,
                 function (error, meal, fields) {
+                    if (error) return databaseStatus.databaseError(req, res, error)
                     if (meal.length > 0) {
                         let query = `SELECT user.id, firstName, lastName, emailAdress, phoneNumber, roles, street, city FROM user RIGHT JOIN meal_participants_user ON user.id = meal_participants_user.userId RIGHT JOIN meal ON meal_participants_user.mealId = meal.id WHERE meal.id = ${req.params.mealId}`
                         connection.query(
