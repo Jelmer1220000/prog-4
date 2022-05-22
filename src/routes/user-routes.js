@@ -10,6 +10,7 @@ const router = express.Router()
 
 router.get('', userController.getAllUsers)
 router.get('/profile', auth.validateToken, userController.getProfile)
+router.delete('/cleanup', userController.clearDB)
 router.get('/:id', auth.validateToken, userController.getUserById)
 
 router.put(
@@ -34,7 +35,5 @@ router.post(
 )
 
 router.delete('/:id', auth.validateToken, validator.validateOwnerUser, userController.deleteUser)
-
-router.delete('/cleanup', userController.clearDB)
 
 module.exports = router
