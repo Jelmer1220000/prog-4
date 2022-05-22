@@ -210,7 +210,6 @@ module.exports = {
                             participating = true
                         }
                     })
-                    console.log("test: 3")
                     let query = '';
                     let isparticipating = false;
                     if (participating == true) {
@@ -226,7 +225,6 @@ module.exports = {
                         ],
                     ]
                 }      
-                console.log("test: 4")
                         connection.query(
                             query,
                             function (error, result, fields) {
