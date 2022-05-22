@@ -80,12 +80,12 @@ describe('Uc 101 Login', () => {
         chai.request(server)
             .post('/api/auth/login')
             .send({
-                emailAdress: 'na@rver.nl',
+                emailAdress: 'name#$^&@sver.nl',
                 password: 'secret',
             })
             .end((err, res) => {
                 assert.ifError(err)
-                res.should.have.status(404)
+                res.should.have.status(400)
                 res.should.be.an('object')
 
                 res.body.should.be
@@ -96,7 +96,7 @@ describe('Uc 101 Login', () => {
                 Status.should.be.an('number')
                 message.should.be
                     .an('string')
-                    .that.contains('User not found or password invalid!')
+                    .that.contains('Email Invalid!')
 
                 done()
             })
@@ -111,7 +111,7 @@ describe('Uc 101 Login', () => {
             })
             .end((err, res) => {
                 assert.ifError(err)
-                res.should.have.status(404)
+                res.should.have.status(400)
                 res.should.be.an('object')
 
                 res.body.should.be
@@ -122,7 +122,7 @@ describe('Uc 101 Login', () => {
                 Status.should.be.an('number')
                 message.should.be
                     .an('string')
-                    .that.contains('User not found or password invalid!')
+                    .that.contains('Password or Email invalid')
 
                 done()
             })
@@ -148,7 +148,7 @@ describe('Uc 101 Login', () => {
                 Status.should.be.an('number')
                 message.should.be
                     .an('string')
-                    .that.contains('User not found or password invalid!')
+                    .that.contains('User not found')
 
                 done()
             })

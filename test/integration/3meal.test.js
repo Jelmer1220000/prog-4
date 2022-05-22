@@ -449,7 +449,7 @@ describe('Meal tests 301-305', () => {
                 })
         })
 
-        it('TC-304-2 Meal does exist', (done) => {
+        it('TC-304-2 Meal does exist show details', (done) => {
             chai.request(server)
                 .get('/api/meal/1')
                 .set('authorization', 'Bearer ' + token)
@@ -554,7 +554,7 @@ describe('Meal tests 301-305', () => {
                 .set('authorization', 'Bearer ' + token)
                 .end((err, res) => {
                     assert.ifError(err)
-                    res.should.have.status(400)
+                    res.should.have.status(404)
                     res.should.be.an('object')
 
                     res.body.should.be

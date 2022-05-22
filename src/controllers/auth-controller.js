@@ -7,6 +7,22 @@ const authS = require('../../config/status/authStatus')
 
 module.exports = {
     login(req, res, next) {
+
+        let forbidden = ['#', '$', '%', '^', '&', '*', '(', ')', '-', '=', '+']
+        let progress = true
+        let email = req.body.emailAdress
+        if (email == null || !email.includes('@')) {
+            return authS.emailInvalid(req, res)
+        }
+        forbidden.forEach((letter) => {
+            if (email.includes(letter)) {
+                progress = false
+            }
+        })
+        if (progress != true) {
+            return authS.emailInvalid(req, res)
+        }
+
         database.getConnection((err, connection) => {
             if (err) return databaseStatus.databaseError(req, res, err)
 
@@ -17,11 +33,8 @@ module.exports = {
                     connection.release()
                     if (err) return databaseStatus.databaseError(req, res, err)
 
-                    if (
-                        rows &&
-                        rows.length == 1 &&
-                        rows[0].password == req.body.password
-                    ) {
+                    if (rows.length == 1) {
+                        if (rows[0].password == req.body.password) {
                         const { password, ...userinfo } = rows[0]
                         // Create an object containing the data we want in the payload.
                         const payload = {
@@ -44,7 +57,10 @@ module.exports = {
                     } else {
                         return authS.wrongPassword(req, res)
                     }
+                } else {
+                    return authS.userNotFound(req, res)
                 }
+            }
             )
         })
     },

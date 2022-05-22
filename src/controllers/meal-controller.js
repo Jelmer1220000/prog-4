@@ -208,12 +208,12 @@ module.exports = {
                                 if (result.affectedRows > 0) {
                                     return status.returnDelete(req, res)
                                 } else {
-                                    return status.mealNotFound(req, res, 400)
+                                    return status.mealNotFound(req, res, 404)
                                 }
                             }
                         )
                     } else {
-                        return status.mealNotFound(req, res, 400)
+                        return status.mealNotFound(req, res, 404)
                     }
                 }
             )
