@@ -17,6 +17,7 @@ router.put(
     auth.validateToken,
     validator.validateEmailFormat,
     validator.validateEmail,
+    validator.validatePhone,
     validator.validateUserPut,
     validator.validateOwnerUser,
     userController.changeUser,

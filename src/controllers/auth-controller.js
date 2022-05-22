@@ -55,9 +55,6 @@ module.exports = {
                                     ...userinfo,
                                     token,
                                 }
-
-                                //Login called
-                                console.log(person)
                                 return authS.userLogin(req, res, person)
                             }
                         )

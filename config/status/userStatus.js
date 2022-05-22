@@ -64,6 +64,13 @@ module.exports = {
         })
     },
 
+    phoneInvalid(req, res) {
+        res.status(400).json({
+            Status: 400,
+            message: `phone number is invalid`,
+        })
+    },
+
     emailExists(req, res) {
         res.status(409).json({
             Status: 409,

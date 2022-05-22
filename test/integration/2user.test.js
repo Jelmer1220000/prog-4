@@ -622,7 +622,7 @@ describe('User Tests 201-206', () => {
                     Status.should.be.an('number')
                     message.should.be
                         .an('string')
-                        .that.contains('phoneNumber is invalid!')
+                        .that.contains('phone number is invalid')
                     done()
                 })
         })
@@ -640,7 +640,7 @@ describe('User Tests 201-206', () => {
                     emailAdress: 'Heroku.works@server.com',
                     password: 'Secret!9321',
                     roles: '',
-                    phoneNumber: '06-11223344',
+                    phoneNumber: '+31636363634',
                 })
                 .end((err, res) => {
                     assert.ifError(err)
@@ -705,7 +705,7 @@ describe('User Tests 201-206', () => {
                     emailAdress: 'Heroku3432.works@server.com',
                     password: 'Secret!9321',
                     roles: '',
-                    phoneNumber: '06-11223344',
+                    phoneNumber: '+31636363634',
                 })
                 .end((err, res) => {
                     assert.ifError(err)
@@ -728,7 +728,7 @@ describe('User Tests 201-206', () => {
                         emailAdress: 'Heroku3432.works@server.com',
                         password: 'Secret!9321',
                         roles: '',
-                        phoneNumber: '06-11223344',
+                        phoneNumber: '+31636363634',
                     })
                     done()
                 })

@@ -104,6 +104,13 @@ module.exports = {
         else Ustatus.emailInvalid(req, res)
     },
 
+    validatePhone(req, res, next) {
+        let phone = req.body.phoneNumber
+        let regex = new RegExp(/^\+(?:[0-9] ?){6,14}[0-9]$/);
+        if (regex.test(phone)) next();
+        else Ustatus.phoneInvalid(req, res)
+    },
+
     validateOwnerMeal(req, res, next) {
         database.getConnection(function (err, connection) {
             if (err) return dbstatus.databaseError(req, res, err)
