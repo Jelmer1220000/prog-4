@@ -70,6 +70,8 @@ Om te zorgen dat er een veilige server opgebouwd wordt, heb ik besloten JsonWebt
 
 Er zijn meerdere endpoints gerealiseerd om te zorgen dat mensen aan kunnen roepen waar ze naar zoeken. Dit zorgt voor een gebruiksvriendelijke server.
 
+Base url: https://nodejs-prog-4.herokuapp.com/
+
 ### Inloggen
 
 - POST /api/auth/login
